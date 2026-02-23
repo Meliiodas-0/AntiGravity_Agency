@@ -43,7 +43,7 @@ const Index = () => {
           </div>
         </SectionSlide>
         <SectionSlide index={4}>
-          <div className="section-gradient-dna">
+          <div className="section-gradient-dna relative">
             <MarketingDNA />
           </div>
         </SectionSlide>
