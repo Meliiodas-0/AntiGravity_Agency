@@ -19,20 +19,18 @@ function MarqueeStrip({ items, reverse = false, speed = 45 }: { items: Client[];
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-col items-center justify-center rounded-xl px-6 sm:px-8 md:px-10 py-4 sm:py-5 md:py-6 min-w-[120px] sm:min-w-[150px] md:min-w-[170px] glass-card gradient-border"
+            className="group flex flex-col items-center justify-center rounded-2xl px-8 sm:px-10 md:px-12 py-6 sm:py-8 md:py-10 min-w-[160px] sm:min-w-[180px] md:min-w-[210px] glass-card gradient-border transition-all duration-500 hover:bg-white/5"
           >
-            <div className="w-20 h-10 sm:w-24 sm:h-12 md:w-28 md:h-14 flex items-center justify-center">
+            <div className="w-24 h-12 sm:w-28 sm:h-14 md:w-32 md:h-16 flex items-center justify-center transition-transform duration-500 group-hover:scale-110">
               <img
                 src={item.logo}
                 alt={item.name}
                 loading="eager"
                 decoding="async"
-                width={112}
-                height={56}
-                className="max-w-full max-h-full object-contain"
+                className="w-full h-full object-contain opacity-60 grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100 drop-shadow-sm"
               />
             </div>
-            <span className="text-xs sm:text-sm text-muted-foreground mt-2 sm:mt-3 whitespace-nowrap">
+            <span className="text-xs sm:text-sm font-medium text-muted-foreground mt-4 sm:mt-5 whitespace-nowrap transition-colors duration-500 group-hover:text-primary">
               {item.name}
             </span>
           </a>
