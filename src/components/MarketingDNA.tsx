@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring, useMotionValue, useAnimationFrame } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 import {
     Smartphone,
     Instagram,
@@ -7,18 +7,36 @@ import {
     Facebook,
     Linkedin,
     Twitter,
-    Music2
+    Music2,
+    TrendingUp,
+    Users,
+    Eye,
+    Heart,
+    MessageCircle,
+    ArrowUpRight
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const socialIcons = [
-    { Icon: Instagram, color: "text-[#E4405F]", label: "Instagram", delay: 0 },
-    { Icon: Music2, color: "text-[#000000]", label: "TikTok", delay: 0.1 },
-    { Icon: Youtube, color: "text-[#FF0000]", label: "YouTube", delay: 0.2 },
-    { Icon: Facebook, color: "text-[#1877F2]", label: "Meta", delay: 0.3 },
-    { Icon: Twitter, color: "text-[#1DA1F2]", label: "X", delay: 0.4 },
-    { Icon: Linkedin, color: "text-[#0A66C2]", label: "LinkedIn", delay: 0.5 },
+    { Icon: Instagram, color: "text-[#E4405F]", label: "Instagram" },
+    { Icon: Music2, color: "text-[#000000]", label: "TikTok" },
+    { Icon: Youtube, color: "text-[#FF0000]", label: "YouTube" },
+    { Icon: Facebook, color: "text-[#1877F2]", label: "Meta" },
+    { Icon: Twitter, color: "text-[#1DA1F2]", label: "X" },
+    { Icon: Linkedin, color: "text-[#0A66C2]", label: "LinkedIn" },
 ];
+
+function StatCounter({ value, suffix = "", prefix = "" }: { value: any, suffix?: string, prefix?: string }) {
+    const [displayValue, setDisplayValue] = useState(0);
+
+    useEffect(() => {
+        return value.on("change", (latest: number) => {
+            setDisplayValue(Math.floor(latest));
+        });
+    }, [value]);
+
+    return <span>{prefix}{displayValue.toLocaleString()}{suffix}</span>;
+}
 
 export default function MarketingDNA() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -33,20 +51,27 @@ export default function MarketingDNA() {
     const rotation = useTransform(scrollYProgress, [0, 1], [0, 720]);
     const smoothRotation = useSpring(rotation, { stiffness: 60, damping: 25 });
 
-    // Social Icon "Absorption" path (radius decreases as they flow into phone)
-    const helixRadius = useTransform(scrollYProgress, [0, 0.4, 0.7, 1], [isMobile ? 130 : 200, isMobile ? 110 : 160, 40, 20]);
-    const phoneY = useTransform(scrollYProgress, [0, 1], [120, -120]);
+    // Social Icon "Absorption" path
+    const helixRadius = useTransform(scrollYProgress, [0, 0.4, 0.7, 1], [isMobile ? 120 : 180, isMobile ? 100 : 150, 40, 10]);
+    const phoneY = useTransform(scrollYProgress, [0, 1], [100, -100]);
     const smoothPhoneY = useSpring(phoneY, { stiffness: 60, damping: 25 });
+
+    // Animated Insights Metrics
+    const reachCount = useTransform(scrollYProgress, [0.3, 0.9], [1240, 142800]);
+    const profileVisits = useTransform(scrollYProgress, [0.4, 0.95], [450, 12600]);
+    const followerGrowth = useTransform(scrollYProgress, [0.2, 0.8], [80, 2400]);
+
+    const chartPathLength = useTransform(scrollYProgress, [0.3, 0.8], [0, 1]);
 
     return (
         <section
             ref={containerRef}
             className="relative py-24 sm:py-32 md:py-48 overflow-hidden bg-[#050505]"
-            style={{ perspective: "1200px" }}
+            style={{ perspective: "1500px" }}
         >
             {/* Background Data Particles */}
             <div className="absolute inset-0 pointer-events-none opacity-20">
-                {[...Array(20)].map((_, i) => (
+                {[...Array(25)].map((_, i) => (
                     <motion.div
                         key={i}
                         style={{
@@ -54,9 +79,9 @@ export default function MarketingDNA() {
                             left: `${Math.random() * 100}%`,
                             top: `${Math.random() * 100}%`,
                             width: '1px',
-                            height: '40px',
+                            height: '60px',
                             background: 'linear-gradient(to bottom, transparent, hsl(var(--primary)), transparent)',
-                            y: useTransform(scrollYProgress, [0, 1], [0, (i % 2 === 0 ? 300 : -300)]),
+                            y: useTransform(scrollYProgress, [0, 1], [0, (i % 2 === 0 ? 400 : -400)]),
                         }}
                     />
                 ))}
@@ -68,8 +93,8 @@ export default function MarketingDNA() {
                     {/* Storytelling Side */}
                     <div className="flex-1 text-center lg:text-left">
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] uppercase tracking-widest font-bold mb-6"
                         >
@@ -77,7 +102,7 @@ export default function MarketingDNA() {
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                             </span>
-                            Proprietary Engine
+                            Engineered for Virality
                         </motion.div>
 
                         <motion.h2
@@ -86,9 +111,9 @@ export default function MarketingDNA() {
                             viewport={{ once: true }}
                             className="text-4xl sm:text-6xl md:text-7xl font-bold mb-8 tracking-tighter leading-[0.95]"
                         >
-                            Digital Strategy <br />
+                            Data-Driven <br />
                             <span className="text-secondary-foreground/40 italic font-light">meets</span> <br />
-                            <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/50 bg-clip-text text-transparent">Pure Engineering</span>
+                            <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/50 bg-clip-text text-transparent">Creative Mastery</span>
                         </motion.h2>
 
                         <motion.p
@@ -98,13 +123,13 @@ export default function MarketingDNA() {
                             transition={{ delay: 0.1 }}
                             className="text-muted-foreground text-lg sm:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed font-light mb-10"
                         >
-                            At Antigravity, marketing isn't just a creative pursuit—it's a high-performance system. We engineer multi-channel loops that feed directly into your growth KPIs, ensuring every click is an investment, not an expense.
+                            We analyze the DNA of viral moments to build reliable growth engines. Every revolving icon represents a data stream being processed into tangible ROI.
                         </motion.p>
 
                         <div className="grid grid-cols-2 gap-8 max-w-md mx-auto lg:mx-0 border-t border-white/5 pt-10">
                             {[
-                                { val: "2.4x", label: "Avg. Engagement" },
-                                { val: "15ms", label: "Loop Latency" },
+                                { val: reachCount, label: "Reach Engineered", prefix: "+", suffix: "" },
+                                { val: followerGrowth, label: "New Leads", prefix: "+", suffix: "" },
                             ].map((stat, i) => (
                                 <motion.div
                                     key={i}
@@ -113,7 +138,9 @@ export default function MarketingDNA() {
                                     viewport={{ once: true }}
                                     transition={{ delay: 0.2 + (i * 0.1) }}
                                 >
-                                    <p className="text-3xl font-bold tracking-tighter text-foreground">{stat.val}</p>
+                                    <p className="text-3xl font-bold tracking-tighter text-foreground">
+                                        <StatCounter value={stat.val} prefix={stat.prefix} suffix={stat.suffix} />
+                                    </p>
                                     <p className="text-xs uppercase tracking-widest text-muted-foreground mt-1">{stat.label}</p>
                                 </motion.div>
                             ))}
@@ -122,7 +149,7 @@ export default function MarketingDNA() {
 
                     {/* Integrated 3D Helix Side */}
                     <div
-                        className="flex-1 relative h-[500px] sm:h-[650px] w-full max-w-[600px] flex items-center justify-center pt-20"
+                        className="flex-1 relative h-[500px] sm:h-[700px] w-full max-w-[600px] flex items-center justify-center pt-20"
                         style={{ transformStyle: "preserve-3d" }}
                     >
                         {/* Premium Phone Frame */}
@@ -130,50 +157,97 @@ export default function MarketingDNA() {
                             style={{
                                 y: smoothPhoneY,
                                 transformStyle: "preserve-3d",
-                                rotateX: 5,
-                                rotateY: -10,
-                                translateZ: "0px"
+                                rotateX: 10,
+                                rotateY: -15,
+                                translateZ: "50px"
                             }}
-                            className="relative z-30 w-[160px] h-[320px] sm:w-[220px] sm:h-[440px] bg-[#080808] rounded-[3.5rem] border-[6px] border-[#1a1a1a] shadow-[0_0_80px_rgba(var(--primary-rgb),0.15)] flex items-center justify-center p-3"
+                            className="relative z-30 w-[170px] h-[340px] sm:w-[240px] sm:h-[480px] bg-[#080808] rounded-[3.5rem] border-[8px] border-[#1a1a1a] shadow-[0_0_80px_rgba(var(--primary-rgb),0.2)] flex items-center justify-center p-2.5"
                         >
                             {/* Bezel Polish */}
-                            <div className="absolute inset-0 rounded-[3rem] border border-white/5 pointer-events-none" />
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-b-2xl z-50 border-x border-b border-white/5" />
+                            <div className="absolute inset-0 rounded-[3rem] border border-white/10 pointer-events-none" />
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-b-2xl z-50 border-x border-b border-white/10" />
 
-                            {/* Glowing Screen Content */}
-                            <div className="w-full h-full bg-[#0a0a0a] rounded-[2.8rem] overflow-hidden relative border border-white/5">
-                                <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent opacity-40" />
+                            {/* Instagram UI Screen Content */}
+                            <div className="w-full h-full bg-[#000] rounded-[2.8rem] overflow-hidden relative border border-white/5 flex flex-col font-sans">
+                                {/* Header */}
+                                <div className="pt-8 px-4 pb-2 border-b border-white/5 flex justify-between items-center bg-black/40 backdrop-blur-md sticky top-0 z-10">
+                                    <div className="text-[10px] font-bold text-white tracking-tight">insights_dashboard</div>
+                                    <ArrowUpRight className="w-3 h-3 text-primary" />
+                                </div>
 
-                                {/* Fake UI Particles Inside */}
-                                <div className="p-6 pt-12 space-y-4">
-                                    <div className="h-2 w-12 bg-primary/20 rounded-full" />
-                                    <div className="h-8 w-full bg-white/5 rounded-2xl" />
+                                <div className="flex-1 overflow-hidden p-4 space-y-5">
+                                    {/* Stats Grid */}
                                     <div className="grid grid-cols-2 gap-3">
-                                        <div className="h-24 bg-white/5 rounded-2xl" />
-                                        <div className="h-24 bg-white/5 rounded-2xl animate-pulse" />
-                                    </div>
-                                    <div className="h-32 w-full bg-gradient-to-br from-primary/20 to-transparent rounded-2xl flex items-center justify-center">
-                                        <div className="flex gap-1">
-                                            {[...Array(4)].map((_, i) => (
-                                                <div key={i} className="w-1.5 h-1.5 rounded-full bg-primary" />
-                                            ))}
+                                        <div className="glass-card border-white/10 p-3 flex flex-col justify-center">
+                                            <p className="text-[8px] uppercase tracking-tighter text-muted-foreground mb-1">Reach</p>
+                                            <p className="text-xs font-bold text-primary"><StatCounter value={reachCount} /></p>
                                         </div>
+                                        <div className="glass-card border-white/10 p-3 flex flex-col justify-center">
+                                            <p className="text-[8px] uppercase tracking-tighter text-muted-foreground mb-1">Followers</p>
+                                            <p className="text-xs font-bold text-white"><StatCounter value={followerGrowth} prefix="+" /></p>
+                                        </div>
+                                    </div>
+
+                                    {/* Growth Chart */}
+                                    <div className="relative h-24 sm:h-32 glass-card border-white/10 p-3 overflow-hidden">
+                                        <div className="flex justify-between items-center mb-2">
+                                            <p className="text-[8px] font-medium text-white/50">Engagement Velocity</p>
+                                            <TrendingUp className="w-2.5 h-2.5 text-primary" />
+                                        </div>
+                                        <svg className="w-full h-full overflow-visible" viewBox="0 0 100 40">
+                                            <motion.path
+                                                d="M0 35 Q 25 35, 40 25 T 70 15 T 100 5"
+                                                fill="transparent"
+                                                stroke="hsl(var(--primary))"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                style={{ pathLength: chartPathLength }}
+                                            />
+                                            <motion.path
+                                                d="M0 35 Q 25 35, 40 25 T 70 15 T 100 5"
+                                                fill="transparent"
+                                                stroke="hsl(var(--primary))"
+                                                strokeWidth="8"
+                                                strokeOpacity="0.1"
+                                                strokeLinecap="round"
+                                                style={{ pathLength: chartPathLength }}
+                                            />
+                                        </svg>
+                                    </div>
+
+                                    {/* Interaction Feed */}
+                                    <div className="space-y-3 pt-2">
+                                        {[
+                                            { Icon: Heart, label: "Likes Growing", color: "text-red-500" },
+                                            { Icon: MessageCircle, label: "Deep Engagement", color: "text-blue-400" },
+                                            { Icon: Users, label: "Audience Pipeline", color: "text-green-400" }
+                                        ].map((item, i) => (
+                                            <motion.div
+                                                key={i}
+                                                style={{ opacity: useTransform(scrollYProgress, [0.4 + (i * 0.1), 0.6 + (i * 0.1)], [0, 1]) }}
+                                                className="flex items-center gap-2 border-b border-white/5 pb-2"
+                                            >
+                                                <div className={`p-1 rounded bg-white/5`}>
+                                                    <item.Icon className={`w-2.5 h-2.5 ${item.color}`} />
+                                                </div>
+                                                <p className="text-[9px] text-white/70 font-medium">{item.label}</p>
+                                            </motion.div>
+                                        ))}
                                     </div>
                                 </div>
 
-                                {/* Moving "Data" Overlay on screen */}
-                                <motion.div
-                                    style={{
-                                        top: useTransform(scrollYProgress, [0, 1], ["100%", "-20%"])
-                                    }}
-                                    className="absolute inset-x-0 h-40 bg-gradient-to-t from-primary/10 to-transparent blur-xl"
-                                />
+                                {/* Bottom Navigation */}
+                                <div className="h-10 border-t border-white/5 flex items-center justify-around px-4 bg-black/40 backdrop-blur-md">
+                                    {[...Array(4)].map((_, i) => (
+                                        <div key={i} className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                                    ))}
+                                </div>
                             </div>
                         </motion.div>
 
                         {/* Revolving "Data Stream" Helix */}
                         <div
-                            className="absolute inset-0 flex items-center justify-center"
+                            className="absolute inset-0 flex items-center justify-center pointer-events-none"
                             style={{ transformStyle: "preserve-3d" }}
                         >
                             {socialIcons.map((item, i) => {
@@ -185,21 +259,21 @@ export default function MarketingDNA() {
                                         style={{
                                             x: useTransform(smoothRotation, (r) => Math.cos(angle + (r * Math.PI) / 180) * helixRadius.get()),
                                             y: useTransform(smoothRotation, (r) => Math.sin(angle + (r * Math.PI) / 180) * helixRadius.get() + Math.sin(angle) * 80),
-                                            scale: useTransform(scrollYProgress, [0.6, 0.9], [1, 0.4]),
-                                            translateZ: useTransform(smoothRotation, (r) => Math.cos(angle + (r * Math.PI) / 180) * 150),
+                                            scale: useTransform(scrollYProgress, [0.6, 0.9], [1.1, 0.3]),
+                                            translateZ: useTransform(smoothRotation, (r) => Math.cos(angle + (r * Math.PI) / 180) * 180),
                                             opacity: useTransform(scrollYProgress, [0.7, 0.95], [1, 0]),
                                         }}
-                                        className="absolute w-12 h-12 sm:w-16 sm:h-16 rounded-2xl glass-card gradient-border flex items-center justify-center text-primary shadow-2xl backdrop-blur-md"
+                                        className="absolute w-12 h-12 sm:w-16 sm:h-16 rounded-2xl glass-card gradient-border flex items-center justify-center text-primary shadow-2xl backdrop-blur-md z-40"
                                     >
                                         <item.Icon className={`w-6 h-6 sm:w-8 sm:h-8 ${item.color}`} />
 
-                                        {/* Dynamic Connection Paths */}
+                                        {/* Dynamic Connection Path */}
                                         <motion.div
                                             style={{
-                                                height: useTransform(scrollYProgress, [0, 1], ["120px", "40px"]),
-                                                opacity: useTransform(scrollYProgress, [0.4, 0.8], [0.2, 0])
+                                                height: useTransform(scrollYProgress, [0, 1], ["100px", "0px"]),
+                                                opacity: useTransform(scrollYProgress, [0.3, 0.7], [0.3, 0])
                                             }}
-                                            className="absolute w-[1px] bg-gradient-to-t from-primary/40 to-transparent -top-full left-1/2 -translate-x-1/2"
+                                            className="absolute w-[1px] bg-gradient-to-t from-primary/60 to-transparent -top-full left-1/2 -track-x-1/2"
                                         />
                                     </motion.div>
                                 );
@@ -209,10 +283,10 @@ export default function MarketingDNA() {
                         {/* Core Reactor Glow */}
                         <motion.div
                             style={{
-                                scale: useTransform(scrollYProgress, [0.5, 0.8], [0.5, 2]),
-                                opacity: useTransform(scrollYProgress, [0.5, 0.8, 1], [0, 0.15, 0])
+                                scale: useTransform(scrollYProgress, [0.4, 0.8], [0.8, 2.5]),
+                                opacity: useTransform(scrollYProgress, [0.4, 0.8, 1], [0, 0.25, 0])
                             }}
-                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary blur-[120px] rounded-full pointer-events-none z-0"
+                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary blur-[140px] rounded-full pointer-events-none z-0"
                         />
                     </div>
 
