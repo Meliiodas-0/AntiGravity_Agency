@@ -93,27 +93,65 @@ export default function Hero() {
         </svg>
       </motion.div>
 
-      {/* Transition Particles — Seed for DNA helix */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
-        {[...Array(isMobile ? 8 : 15)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0 }}
-            style={{
-              position: 'absolute',
-              left: `${15 + (i * 70 / 15)}%`,
-              top: `${40 + (i * 30 / 15)}%`,
-              width: i % 2 === 0 ? '4px' : '2px',
-              height: i % 2 === 0 ? '4px' : '2px',
-              backgroundColor: 'hsl(var(--primary))',
-              borderRadius: '50%',
-              boxShadow: '0 0 10px hsl(var(--primary))',
-              opacity: useTransform(scrollYProgress, [0.1, 0.4, 0.9], [0, 0.6, 0]),
-              y: useTransform(scrollYProgress, [0, 1], [0, 300 + (i * 50)]),
-              scale: useTransform(scrollYProgress, [0, 0.5], [1, 1.5]),
-            }}
-          />
-        ))}
+      {/* Neural DNA Transition — A 3D Double Helix Swarm */}
+      <div className="absolute inset-0 pointer-events-none overflow-visible z-20" aria-hidden="true">
+        {[...Array(isMobile ? 12 : 24)].map((_, i) => {
+          const isStrandB = i % 2 === 0;
+          const phase = (i / 12) * Math.PI * 2;
+
+          return (
+            <div key={i}>
+              {/* Neural Node */}
+              <motion.div
+                style={{
+                  position: 'absolute',
+                  left: useTransform(scrollYProgress, [0, 1], [
+                    `${20 + (isStrandB ? Math.sin(phase) * 15 : Math.cos(phase) * 15 + 40)}%`,
+                    `${50 + (isStrandB ? Math.sin(phase + 5) * 5 : Math.cos(phase + 5) * 5)}%`,
+                  ]),
+                  top: useTransform(scrollYProgress, [0, 1], [
+                    `${40 + (i * 2)}%`,
+                    `${100 + (i * 5)}%`
+                  ]),
+                  width: i % 3 === 0 ? '6px' : '3px',
+                  height: i % 3 === 0 ? '6px' : '3px',
+                  backgroundColor: 'hsl(var(--primary))',
+                  borderRadius: '50%',
+                  boxShadow: `0 0 ${i % 3 === 0 ? '15px' : '8px'} hsl(var(--primary))`,
+                  opacity: useTransform(scrollYProgress, [0, 0.3, 0.8], [0, 0.8, 0]),
+                  scale: useTransform(scrollYProgress, [0, 0.5], [1, 1.5]),
+                  zIndex: 30
+                }}
+              />
+
+              {/* Neural Path (Connecting strand) - Only for strand A to B pairs */}
+              {!isStrandB && (
+                <motion.div
+                  style={{
+                    position: 'absolute',
+                    left: useTransform(scrollYProgress, [0, 1], [
+                      `${20 + Math.sin(phase) * 15}%`,
+                      `${50 + Math.sin(phase + 5) * 5}%`,
+                    ]),
+                    width: useTransform(scrollYProgress, [0, 1], [
+                      `${Math.abs(Math.cos(phase) * 15 + 40 - (Math.sin(phase) * 15))}%`,
+                      `2%`
+                    ]),
+                    top: useTransform(scrollYProgress, [0, 1], [
+                      `${40 + (i * 2) + 0.15}%`,
+                      `${100 + (i * 5) + 0.15}%`
+                    ]),
+                    height: '1px',
+                    background: 'linear-gradient(90deg, transparent, hsl(var(--primary)/0.3), transparent)',
+                    opacity: useTransform(scrollYProgress, [0.1, 0.4, 0.7], [0, 0.4, 0]),
+                    transformOrigin: 'left center',
+                    rotate: useTransform(scrollYProgress, [0, 1], [0, 45])
+                  }}
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
     </section>
   );

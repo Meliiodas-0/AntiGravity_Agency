@@ -13,7 +13,12 @@ import {
     Eye,
     Heart,
     MessageCircle,
-    ArrowUpRight
+    ArrowUpRight,
+    MoreHorizontal,
+    Grid,
+    UserPlus,
+    ChevronDown,
+    Play
 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -168,78 +173,120 @@ export default function MarketingDNA() {
                             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-b-2xl z-50 border-x border-b border-white/10" />
 
                             {/* Instagram UI Screen Content */}
-                            <div className="w-full h-full bg-[#000] rounded-[2.8rem] overflow-hidden relative border border-white/5 flex flex-col font-sans">
-                                {/* Header */}
-                                <div className="pt-8 px-4 pb-2 border-b border-white/5 flex justify-between items-center bg-black/40 backdrop-blur-md sticky top-0 z-10">
-                                    <div className="text-[10px] font-bold text-white tracking-tight">insights_dashboard</div>
-                                    <ArrowUpRight className="w-3 h-3 text-primary" />
+                            <div className="w-full h-full bg-[#000] rounded-[2.9rem] overflow-hidden relative border border-white/5 flex flex-col font-sans select-none">
+                                {/* Status Bar */}
+                                <div className="h-10 px-6 flex justify-between items-center text-[10px] text-white/90">
+                                    <span>9:41</span>
+                                    <div className="flex gap-1.5 items-center">
+                                        <div className="w-3.5 h-3.5 bg-white/20 rounded-sm" />
+                                        <div className="w-4 h-2 bg-white rounded-[1px]" />
+                                    </div>
                                 </div>
 
-                                <div className="flex-1 overflow-hidden p-4 space-y-5">
-                                    {/* Stats Grid */}
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <div className="glass-card border-white/10 p-3 flex flex-col justify-center">
-                                            <p className="text-[8px] uppercase tracking-tighter text-muted-foreground mb-1">Reach</p>
-                                            <p className="text-xs font-bold text-primary"><StatCounter value={reachCount} /></p>
+                                {/* Instagram Profile Header */}
+                                <div className="px-4 pb-4 space-y-4">
+                                    <div className="flex justify-between items-center text-white">
+                                        <div className="flex items-center gap-1">
+                                            <span className="font-bold text-xs tracking-tight">antigravity.agency</span>
+                                            <ChevronDown className="w-3 h-3 text-white/60" />
                                         </div>
-                                        <div className="glass-card border-white/10 p-3 flex flex-col justify-center">
-                                            <p className="text-[8px] uppercase tracking-tighter text-muted-foreground mb-1">Followers</p>
-                                            <p className="text-xs font-bold text-white"><StatCounter value={followerGrowth} prefix="+" /></p>
+                                        <div className="flex gap-4">
+                                            <div className="relative">
+                                                <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full border border-black" />
+                                                <TrendingUp className="w-5 h-5" />
+                                            </div>
+                                            <MoreHorizontal className="w-5 h-5" />
                                         </div>
                                     </div>
 
-                                    {/* Growth Chart */}
-                                    <div className="relative h-24 sm:h-32 glass-card border-white/10 p-3 overflow-hidden">
-                                        <div className="flex justify-between items-center mb-2">
-                                            <p className="text-[8px] font-medium text-white/50">Engagement Velocity</p>
-                                            <TrendingUp className="w-2.5 h-2.5 text-primary" />
+                                    {/* Profile Stats */}
+                                    <div className="flex items-center justify-between gap-2">
+                                        <div className="relative">
+                                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-[3px] bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600">
+                                                <div className="w-full h-full rounded-full bg-black border-[2px] border-black flex items-center justify-center overflow-hidden">
+                                                    <div className="w-full h-full bg-primary/20 flex items-center justify-center font-bold text-primary">AG</div>
+                                                </div>
+                                            </div>
+                                            <div className="absolute bottom-0 right-0 w-6 h-6 bg-[#0095f6] rounded-full border-[3px] border-black flex items-center justify-center">
+                                                <span className="text-white text-xs font-bold">+</span>
+                                            </div>
                                         </div>
-                                        <svg className="w-full h-full overflow-visible" viewBox="0 0 100 40">
-                                            <motion.path
-                                                d="M0 35 Q 25 35, 40 25 T 70 15 T 100 5"
-                                                fill="transparent"
-                                                stroke="hsl(var(--primary))"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                style={{ pathLength: chartPathLength }}
-                                            />
-                                            <motion.path
-                                                d="M0 35 Q 25 35, 40 25 T 70 15 T 100 5"
-                                                fill="transparent"
-                                                stroke="hsl(var(--primary))"
-                                                strokeWidth="8"
-                                                strokeOpacity="0.1"
-                                                strokeLinecap="round"
-                                                style={{ pathLength: chartPathLength }}
-                                            />
-                                        </svg>
+                                        <div className="flex gap-4 sm:gap-6 flex-1 justify-center text-center">
+                                            <div>
+                                                <p className="font-bold text-sm text-white">42</p>
+                                                <p className="text-[9px] text-white/60 uppercase">Posts</p>
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-sm text-white"><StatCounter value={followerGrowth} /></p>
+                                                <p className="text-[9px] text-white/60 uppercase">Followers</p>
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-sm text-white">128</p>
+                                                <p className="text-[9px] text-white/60 uppercase">Following</p>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    {/* Interaction Feed */}
-                                    <div className="space-y-3 pt-2">
-                                        {[
-                                            { Icon: Heart, label: "Likes Growing", color: "text-red-500" },
-                                            { Icon: MessageCircle, label: "Deep Engagement", color: "text-blue-400" },
-                                            { Icon: Users, label: "Audience Pipeline", color: "text-green-400" }
-                                        ].map((item, i) => (
+                                    {/* Bio */}
+                                    <div className="text-[10px] text-white">
+                                        <p className="font-bold">Antigravity Agency</p>
+                                        <p className="text-white/80">Everything digital. Fully handled.</p>
+                                        <p className="text-white/60">antigravity.dev</p>
+                                    </div>
+
+                                    {/* Buttons */}
+                                    <div className="flex gap-1.5 pt-1">
+                                        <div className="flex-1 h-7 bg-white/10 rounded-md flex items-center justify-center text-[10px] font-semibold text-white">Edit profile</div>
+                                        <div className="flex-1 h-7 bg-white/10 rounded-md flex items-center justify-center text-[10px] font-semibold text-white">Share profile</div>
+                                        <div className="w-7 h-7 bg-white/10 rounded-md flex items-center justify-center text-white"><UserPlus className="w-3.5 h-3.5" /></div>
+                                    </div>
+
+                                    {/* Professional Dashboard - THE GROWTH ENGINE */}
+                                    <div className="p-3 bg-white/5 rounded-lg border border-white/5 space-y-2">
+                                        <div className="flex justify-between items-center">
+                                            <p className="text-[10px] font-bold text-white">Professional dashboard</p>
+                                            <ArrowUpRight className="w-3 h-3 text-primary" />
+                                        </div>
+                                        <div className="flex items-center gap-1.5">
+                                            <div className="w-1 h-4 bg-primary rounded-full" />
+                                            <p className="text-[9px] text-white/60">
+                                                <span className="text-primary font-bold"><StatCounter value={reachCount} /></span> accounts reached in the last 30 days.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Dynamic Post Grid */}
+                                <div className="border-t border-white/10 pt-1">
+                                    <div className="flex justify-around py-2 border-b border-white/10">
+                                        <Grid className="w-4 h-4 text-white" />
+                                        <Play className="w-4 h-4 text-white/40" />
+                                        <MessageCircle className="w-4 h-4 text-white/40" />
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-[1px]">
+                                        {[...Array(9)].map((_, i) => (
                                             <motion.div
                                                 key={i}
-                                                style={{ opacity: useTransform(scrollYProgress, [0.4 + (i * 0.1), 0.6 + (i * 0.1)], [0, 1]) }}
-                                                className="flex items-center gap-2 border-b border-white/5 pb-2"
+                                                style={{ opacity: useTransform(scrollYProgress, [0.4 + (i * 0.05), 0.6 + (i * 0.05)], [0, 1]) }}
+                                                className="aspect-square bg-white/5 relative group"
                                             >
-                                                <div className={`p-1 rounded bg-white/5`}>
-                                                    <item.Icon className={`w-2.5 h-2.5 ${item.color}`} />
+                                                <div className="absolute inset-x-0 bottom-0 top-0 bg-gradient-to-t from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                <div className="absolute top-1 right-1">
+                                                    {i % 3 === 0 && <Play className="w-2.5 h-2.5 text-white/80" />}
                                                 </div>
-                                                <p className="text-[9px] text-white/70 font-medium">{item.label}</p>
                                             </motion.div>
                                         ))}
                                     </div>
                                 </div>
 
                                 {/* Bottom Navigation */}
-                                <div className="h-10 border-t border-white/5 flex items-center justify-around px-4 bg-black/40 backdrop-blur-md">
-                                    {[...Array(4)].map((_, i) => (
-                                        <div key={i} className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                                <div className="mt-auto h-12 border-t border-white/10 flex items-center justify-around px-4 bg-black">
+                                    {[...Array(5)].map((_, i) => (
+                                        <div key={i} className="w-5 h-5 rounded-sm border border-white/10 flex items-center justify-center">
+                                            {i === 0 && <div className="w-2.5 h-2.5 rounded-[1px] border-white/80 border" />}
+                                            {i === 2 && <div className="w-3.5 h-3.5 rounded-sm border-white/80 border-2" />}
+                                            {i === 4 && <div className="w-4 h-4 rounded-full bg-white/10" />}
+                                        </div>
                                     ))}
                                 </div>
                             </div>
