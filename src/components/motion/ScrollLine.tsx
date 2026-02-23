@@ -104,7 +104,7 @@ export default function ScrollLine() {
   return (
     <div
       className="absolute top-0 left-0 w-full pointer-events-none"
-      style={{ height: h, zIndex: 4 }}
+      style={{ height: h, zIndex: 1 }}
       aria-hidden="true"
     >
       <svg
