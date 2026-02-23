@@ -31,14 +31,14 @@ const socialIcons = [
     { Icon: Linkedin, color: "text-[#0A66C2]", label: "LinkedIn" },
 ];
 
+import { useMotionValueEvent } from "framer-motion";
+
 function StatCounter({ value, suffix = "", prefix = "" }: { value: any, suffix?: string, prefix?: string }) {
     const [displayValue, setDisplayValue] = useState(0);
 
-    useEffect(() => {
-        return value.on("change", (latest: number) => {
-            setDisplayValue(Math.floor(latest));
-        });
-    }, [value]);
+    useMotionValueEvent(value, "change", (latest: number) => {
+        setDisplayValue(Math.floor(latest));
+    });
 
     return <span>{prefix}{displayValue.toLocaleString()}{suffix}</span>;
 }

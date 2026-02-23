@@ -1,4 +1,4 @@
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring, useMotionValueEvent } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Settings } from "lucide-react";
 import { useEffect, useRef, useState, useCallback } from "react";
@@ -42,16 +42,13 @@ export default function ScrollLine() {
     }
   }, [dims]);
 
-  useEffect(() => {
+  useMotionValueEvent(smoothProgress, "change", (v) => {
     if (isMobile) return;
-    const unsub = smoothProgress.on("change", (v) => {
-      if (pathRef.current && pathTotalLength > 0) {
-        const pt = pathRef.current.getPointAtLength(v * pathTotalLength);
-        setGearPos({ x: pt.x, y: pt.y });
-      }
-    });
-    return unsub;
-  }, [smoothProgress, pathTotalLength, isMobile]);
+    if (pathRef.current && pathTotalLength > 0) {
+      const pt = pathRef.current.getPointAtLength(v * pathTotalLength);
+      setGearPos({ x: pt.x, y: pt.y });
+    }
+  });
 
   if (isMobile || dims.h === 0) return null;
 
