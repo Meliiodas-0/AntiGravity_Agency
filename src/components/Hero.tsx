@@ -92,6 +92,29 @@ export default function Hero() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </motion.div>
+
+      {/* Transition Particles — Seed for DNA helix */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        {[...Array(isMobile ? 8 : 15)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0 }}
+            style={{
+              position: 'absolute',
+              left: `${15 + (i * 70 / 15)}%`,
+              top: `${40 + (i * 30 / 15)}%`,
+              width: i % 2 === 0 ? '4px' : '2px',
+              height: i % 2 === 0 ? '4px' : '2px',
+              backgroundColor: 'hsl(var(--primary))',
+              borderRadius: '50%',
+              boxShadow: '0 0 10px hsl(var(--primary))',
+              opacity: useTransform(scrollYProgress, [0.1, 0.4, 0.9], [0, 0.6, 0]),
+              y: useTransform(scrollYProgress, [0, 1], [0, 300 + (i * 50)]),
+              scale: useTransform(scrollYProgress, [0, 0.5], [1, 1.5]),
+            }}
+          />
+        ))}
+      </div>
     </section>
   );
 }

@@ -28,23 +28,23 @@ const Index = () => {
           <Hero />
         </div>
         <SectionSlide index={1}>
+          <div className="section-gradient-dna relative">
+            <MarketingDNA />
+          </div>
+        </SectionSlide>
+        <SectionSlide index={2}>
           <div className="section-gradient-proof">
             <ProofStrips />
           </div>
         </SectionSlide>
-        <SectionSlide index={2}>
+        <SectionSlide index={3}>
           <div className="section-gradient-stats">
             <CounterStats />
           </div>
         </SectionSlide>
-        <SectionSlide index={3}>
+        <SectionSlide index={4}>
           <div className="section-gradient-capabilities">
             <Capabilities />
-          </div>
-        </SectionSlide>
-        <SectionSlide index={4}>
-          <div className="section-gradient-dna relative">
-            <MarketingDNA />
           </div>
         </SectionSlide>
         <SectionSlide index={5}>
