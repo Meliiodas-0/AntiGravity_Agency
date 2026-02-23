@@ -17,12 +17,12 @@ export default function DNANode({ i, scrollYProgress, mouseX, mouseY }: Props) {
     const initialX = isStrandB ? 25 : 65;
 
     // Node position transforms
-    const leftNodeBase = useTransform(scrollYProgress, [0, 1.2], [
+    const leftNodeBase = useTransform(scrollYProgress, [0, 1], [
         initialX + (isStrandB ? Math.sin(phase) * 12 : Math.cos(phase) * 12),
         50 + (isStrandB ? Math.sin(phase + 5) * 8 : Math.cos(phase + 5) * 8),
     ]);
 
-    const topNodeBase = useTransform(scrollYProgress, [0, 1.2], [
+    const topNodeBase = useTransform(scrollYProgress, [0, 1], [
         20 + (i * 2.5),
         100 + (i * 6)
     ]);
@@ -33,22 +33,22 @@ export default function DNANode({ i, scrollYProgress, mouseX, mouseY }: Props) {
     const mouseDisplacementX = useTransform(mouseX, [-0.5, 0.5], [isMobile ? -10 : -30, isMobile ? 10 : 30]);
     const mouseDisplacementY = useTransform(mouseY, [-0.5, 0.5], [isMobile ? -10 : -30, isMobile ? 10 : 30]);
 
-    const opacityNode = useTransform(scrollYProgress, [0, 0.1, 0.8, 1.1], [0, 0.8, 0.8, 0]);
+    const opacityNode = useTransform(scrollYProgress, [0, 0.1, 0.8, 1], [0, 0.8, 0.8, 0]);
     const scaleNode = useTransform(scrollYProgress, [0, 0.5], [1, 1.3]);
 
     // Path transforms
-    const leftPathBase = useTransform(scrollYProgress, [0, 1.2], [
+    const leftPathBase = useTransform(scrollYProgress, [0, 1], [
         25 + Math.sin(phase) * 12,
         50 + Math.sin(phase + 5) * 8,
     ]);
 
     const strandWidth = Math.abs(65 + Math.cos(phase) * 12 - (25 + Math.sin(phase) * 12));
-    const widthPathBase = useTransform(scrollYProgress, [0, 1.2], [
+    const widthPathBase = useTransform(scrollYProgress, [0, 1], [
         strandWidth,
         4
     ]);
 
-    const topPathBase = useTransform(scrollYProgress, [0, 1.2], [
+    const topPathBase = useTransform(scrollYProgress, [0, 1], [
         20 + (i * 2.5) + 0.15,
         100 + (i * 6) + 0.15
     ]);
@@ -57,7 +57,7 @@ export default function DNANode({ i, scrollYProgress, mouseX, mouseY }: Props) {
     const widthPathStr = useTransform(widthPathBase, (v) => `${v}%`);
     const topPathPos = useTransform(topPathBase, (v) => `${v}%`);
 
-    const opacityPath = useTransform(scrollYProgress, [0, 0.1, 0.5, 1.1], [0, 0.5, 0.5, 0]);
+    const opacityPath = useTransform(scrollYProgress, [0, 0.1, 0.5, 1], [0, 0.5, 0.5, 0]);
     const rotatePath = useTransform(scrollYProgress, [0, 1], [0, 35]);
 
     if (!isVisible) return null;
