@@ -11,40 +11,54 @@ import ParallaxOrbs from "@/components/motion/ParallaxOrbs";
 import SectionIndicator from "@/components/motion/SectionIndicator";
 import ScrollLine from "@/components/motion/ScrollLine";
 import CounterStats from "@/components/motion/CounterStats";
+import SmoothScroll from "@/components/motion/SmoothScroll";
+import SectionSlide from "@/components/motion/SectionSlide";
 
 const Index = () => {
   return (
-    <>
+    <SmoothScroll>
       <ScrollProgress />
       <ParallaxOrbs />
       <SectionIndicator />
       <ScrollLine />
       <Header />
-      <main role="main">
+      <main role="main" className="noise-overlay">
         <div className="section-gradient-hero">
           <Hero />
         </div>
-        <div className="section-gradient-proof">
-          <ProofStrips />
-        </div>
-        <div className="section-gradient-stats">
-          <CounterStats />
-        </div>
-        <div className="section-gradient-capabilities">
-          <Capabilities />
-        </div>
-        <div className="section-gradient-process">
-          <Process />
-        </div>
-        <div className="section-gradient-trust">
-          <Trust />
-        </div>
-        <div className="section-gradient-contact">
-          <ContactForm />
-        </div>
+        <SectionSlide index={1}>
+          <div className="section-gradient-proof">
+            <ProofStrips />
+          </div>
+        </SectionSlide>
+        <SectionSlide index={2}>
+          <div className="section-gradient-stats">
+            <CounterStats />
+          </div>
+        </SectionSlide>
+        <SectionSlide index={3}>
+          <div className="section-gradient-capabilities">
+            <Capabilities />
+          </div>
+        </SectionSlide>
+        <SectionSlide index={4}>
+          <div className="section-gradient-process">
+            <Process />
+          </div>
+        </SectionSlide>
+        <SectionSlide index={5}>
+          <div className="section-gradient-trust">
+            <Trust />
+          </div>
+        </SectionSlide>
+        <SectionSlide index={6}>
+          <div className="section-gradient-contact">
+            <ContactForm />
+          </div>
+        </SectionSlide>
       </main>
       <Footer />
-    </>
+    </SmoothScroll>
   );
 };
 

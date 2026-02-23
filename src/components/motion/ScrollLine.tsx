@@ -57,75 +57,40 @@ export default function ScrollLine() {
 
   const { w, h } = dims;
 
-  // Stay strictly OUTSIDE the content column
   const contentW = Math.min(1152, w - 40);
   const marginL = (w - contentW) / 2;
 
-  // Gutter edges — always in the margin area, never inside content
   const gutterL = Math.max(20, marginL * 0.35);
   const gutterR = w - gutterL;
 
-  // Path stays in gutters, only crosses in gaps BETWEEN sections
   const pathPoints = [
-    // Start top-right gutter
     { x: gutterR, y: h * 0.01 },
-
-    // Down right gutter through hero section
     { x: gutterR, y: h * 0.11 },
-
-    // Gap: hero → proof — cross over to left gutter
     { x: gutterL, y: h * 0.155 },
-
-    // Down left gutter through proof strip
     { x: gutterL, y: h * 0.26 },
-
-    // Gap: proof → stats — cross to right gutter
     { x: gutterR, y: h * 0.30 },
-
-    // Down right gutter through stats
     { x: gutterR, y: h * 0.37 },
-
-    // Gap: stats → capabilities — cross to left
     { x: gutterL, y: h * 0.40 },
-
-    // Down left gutter through capabilities
     { x: gutterL, y: h * 0.51 },
-
-    // Gap: capabilities → process — cross to right
     { x: gutterR, y: h * 0.545 },
-
-    // Down right gutter through process
     { x: gutterR, y: h * 0.65 },
-
-    // Gap: process → trust — cross to left
     { x: gutterL, y: h * 0.69 },
-
-    // Down left gutter through trust
     { x: gutterL, y: h * 0.79 },
-
-    // Gap: trust → contact — cross to right
     { x: gutterR, y: h * 0.83 },
-
-    // Down right gutter through contact
     { x: gutterR, y: h * 0.94 },
-
-    // End bottom
     { x: gutterR, y: h * 0.98 },
   ];
 
-  // Build smooth cubic bezier path
   let d = `M ${pathPoints[0].x} ${pathPoints[0].y}`;
   for (let i = 0; i < pathPoints.length - 1; i++) {
     const curr = pathPoints[i];
     const next = pathPoints[i + 1];
     const dy = next.y - curr.y;
-    // Control points: keep vertical midpoint, use current/next x
     const cp1y = curr.y + dy * 0.5;
     const cp2y = curr.y + dy * 0.5;
     d += ` C ${curr.x} ${cp1y}, ${next.x} ${cp2y}, ${next.x} ${next.y}`;
   }
 
-  // Waypoint dots at the horizontal sweep points (section gaps)
   const waypointYFractions = [0.155, 0.30, 0.40, 0.545, 0.69, 0.83];
   const waypointDots = waypointYFractions.map((frac) => {
     const closest = pathPoints.reduce((prev, curr) =>
@@ -149,7 +114,6 @@ export default function ScrollLine() {
         style={{ overflow: "visible" }}
       >
         <defs>
-          {/* Vertical gradient so line fades at top and bottom */}
           <linearGradient id="scroll-line-grad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0" />
             <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity="0.04" />
@@ -158,14 +122,30 @@ export default function ScrollLine() {
             <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
           </linearGradient>
 
-          {/* Glow filter for waypoint dots */}
           <filter id="dot-glow">
-            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feGaussianBlur stdDeviation="4" result="blur" />
             <feMerge>
               <feMergeNode in="blur" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+
+          <filter id="gear-glow">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+
+          {/* Gradient for active trail */}
+          <linearGradient id="trail-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity="0" />
+            <stop offset="10%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
+            <stop offset="90%" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity="0" />
+          </linearGradient>
         </defs>
 
         {/* Ghost path (full, very faint) */}
@@ -177,18 +157,31 @@ export default function ScrollLine() {
           strokeLinecap="round"
         />
 
-        {/* Animated drawn path */}
+        {/* Animated drawn path — brighter active trail */}
         <motion.path
           ref={pathRef}
           d={d}
           fill="none"
-          stroke="hsl(var(--primary))"
-          strokeWidth={1}
+          stroke="url(#trail-grad)"
+          strokeWidth={2}
           strokeLinecap="round"
-          strokeDasharray="6 12"
           style={{
             pathLength: smoothProgress,
-            opacity: 0.15,
+            opacity: 0.5,
+          }}
+        />
+
+        {/* Glow trail behind active path */}
+        <motion.path
+          d={d}
+          fill="none"
+          stroke="hsl(var(--primary))"
+          strokeWidth={6}
+          strokeLinecap="round"
+          filter="url(#gear-glow)"
+          style={{
+            pathLength: smoothProgress,
+            opacity: 0.08,
           }}
         />
 
@@ -198,23 +191,23 @@ export default function ScrollLine() {
             <circle
               cx={dot.x}
               cy={dot.y}
-              r={4}
+              r={5}
               fill="hsl(var(--primary))"
-              opacity={0.08}
+              opacity={0.1}
               filter="url(#dot-glow)"
             />
             <circle
               cx={dot.x}
               cy={dot.y}
-              r={1.5}
+              r={2}
               fill="hsl(var(--primary))"
-              opacity={0.2}
+              opacity={0.25}
             />
           </g>
         ))}
       </svg>
 
-      {/* Gear icon — CSS spin + follows path */}
+      {/* Gear icon — CSS spin + follows path + glow */}
       {pathTotalLength > 0 && (
         <div
           className="absolute"
@@ -224,18 +217,18 @@ export default function ScrollLine() {
           }}
         >
           <div className="relative gear-spin">
-            {/* Radial glow */}
+            {/* Radial glow — larger and more visible */}
             <div
               className="absolute rounded-full"
               style={{
-                inset: -6,
+                inset: -12,
                 background:
-                  "radial-gradient(circle, hsl(var(--primary) / 0.15) 0%, transparent 60%)",
+                  "radial-gradient(circle, hsl(var(--primary) / 0.25) 0%, hsl(var(--primary) / 0.08) 40%, transparent 70%)",
               }}
             />
             <Settings
               size={gearSize}
-              className="text-primary/40 relative z-10 drop-shadow-[0_0_4px_hsl(var(--primary)/0.3)]"
+              className="text-primary/60 relative z-10 drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]"
               strokeWidth={1.5}
             />
           </div>

@@ -6,15 +6,50 @@ type Props = {
   className?: string;
   delay?: number;
   y?: number;
+  blur?: boolean;
+  scale?: boolean;
+  direction?: "up" | "left" | "right";
 };
 
-export default function ScrollReveal({ children, className, delay = 0, y = 30 }: Props) {
+export default function ScrollReveal({
+  children,
+  className,
+  delay = 0,
+  y = 30,
+  blur = true,
+  scale = false,
+  direction = "up",
+}: Props) {
+  const initial: Record<string, number | string> = { opacity: 0 };
+  const animate: Record<string, number | string> = { opacity: 1 };
+
+  if (direction === "up") {
+    initial.y = y;
+    animate.y = 0;
+  } else if (direction === "left") {
+    initial.x = -40;
+    animate.x = 0;
+  } else if (direction === "right") {
+    initial.x = 40;
+    animate.x = 0;
+  }
+
+  if (blur) {
+    initial.filter = "blur(6px)";
+    animate.filter = "blur(0px)";
+  }
+
+  if (scale) {
+    initial.scale = 0.92;
+    animate.scale = 1;
+  }
+
   return (
     <motion.div
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={initial}
+      whileInView={animate}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay }}
       className={className}
     >
       {children}
@@ -40,6 +75,11 @@ export function StaggerChildren({ children, className }: { children: ReactNode; 
 }
 
 export const staggerItem = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
+  hidden: { opacity: 0, y: 20, filter: "blur(4px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const },
+  },
 } as const;
