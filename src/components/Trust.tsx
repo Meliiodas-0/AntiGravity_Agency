@@ -20,8 +20,8 @@ export default function Trust() {
           {content.trust.cards.map((card, i) => (
             <motion.div
               key={card.title}
-              initial={{ opacity: 0, y: 30, scale: 0.92, filter: "blur(6px)" }}
-              whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 30, scale: 0.92, filter: isMobile ? "none" : "blur(6px)" }}
+              whileInView={{ opacity: 1, y: 0, scale: 1, filter: "none" }}
               viewport={{ once: true, margin: "-30px" }}
               transition={{ duration: 0.6, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
               className="group rounded-2xl glass-card gradient-border glow-hover p-8 sm:p-10 relative overflow-hidden"

@@ -42,9 +42,9 @@ export default function ScrollReveal({
     animate.x = 0;
   }
 
-  if (useBlur) {
+  if (useBlur && !isMobile) {
     initial.filter = "blur(6px)";
-    animate.filter = "blur(0px)";
+    animate.filter = "none";
   }
 
   if (scale) {

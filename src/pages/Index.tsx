@@ -13,6 +13,7 @@ import ScrollLine from "@/components/motion/ScrollLine";
 import CounterStats from "@/components/motion/CounterStats";
 import SmoothScroll from "@/components/motion/SmoothScroll";
 import SectionSlide from "@/components/motion/SectionSlide";
+import MarketingDNA from "@/components/MarketingDNA";
 
 const Index = () => {
   return (
@@ -42,16 +43,21 @@ const Index = () => {
           </div>
         </SectionSlide>
         <SectionSlide index={4}>
+          <div className="section-gradient-dna">
+            <MarketingDNA />
+          </div>
+        </SectionSlide>
+        <SectionSlide index={5}>
           <div className="section-gradient-process">
             <Process />
           </div>
         </SectionSlide>
-        <SectionSlide index={5}>
+        <SectionSlide index={6}>
           <div className="section-gradient-trust">
             <Trust />
           </div>
         </SectionSlide>
-        <SectionSlide index={6}>
+        <SectionSlide index={7}>
           <div className="section-gradient-contact">
             <ContactForm />
           </div>
