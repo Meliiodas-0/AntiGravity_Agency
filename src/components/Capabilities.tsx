@@ -1,5 +1,5 @@
 import { content } from "@/content/content";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import ScrollReveal from "./motion/ScrollReveal";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useRef, MouseEvent } from "react";
@@ -11,75 +11,75 @@ function TiltCard({ children, className, idx }: { children: React.ReactNode; cla
   const ref = useRef<HTMLDivElement>(null);
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
-  const springX = useSpring(rotateX, { stiffness: 200, damping: 20 });
-  const springY = useSpring(rotateY, { stiffness: 200, damping: 20 });
+  const springValue = { stiffness: 150, damping: 20 };
+  const springX = useSpring(rotateX, springValue);
+  const springY = useSpring(rotateY, springValue);
 
-  const handleMouse = (e: MouseEvent<HTMLDivElement>) => {
+  function handleMouseMove(e: MouseEvent<HTMLDivElement>) {
     if (isMobile || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const midX = rect.width / 2;
-    const midY = rect.height / 2;
-    rotateX.set((y - midY) / midY * -6);
-    rotateY.set((x - midX) / midX * 6);
-  };
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    rotateX.set((e.clientY - centerY) / 20);
+    rotateY.set((e.clientX - centerX) / -20);
+  }
 
-  const handleLeave = () => {
+  function handleMouseLeave() {
     rotateX.set(0);
     rotateY.set(0);
-  };
+  }
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30, scale: 0.95, filter: "blur(6px)" }}
-      whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: isMobile ? "-30px" : "-80px" }}
-      transition={{ duration: 0.6, delay: isMobile ? idx * 0.08 : idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       style={{
-        rotateX: springX,
-        rotateY: springY,
-        transformPerspective: 800,
+        rotateX: isMobile ? 0 : springX,
+        rotateY: isMobile ? 0 : springY,
+        transformStyle: "preserve-3d",
       }}
-      onMouseMove={handleMouse}
-      onMouseLeave={handleLeave}
       className={className}
     >
-      {children}
+      <div style={{ transform: isMobile ? "none" : "translateZ(30px)" }}>
+        {children}
+      </div>
     </motion.div>
   );
 }
 
 export default function Capabilities() {
-  const items = content.capabilities.items;
+  const isMobile = useIsMobile();
 
   return (
-    <section id="capabilities" className="relative scroll-mt-24 py-20 sm:py-24 md:py-32 px-5 sm:px-6">
-      <div className="max-w-6xl mx-auto">
-        <ScrollReveal className="mb-14 md:mb-20" scale>
-          <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-primary/70 mb-3 sm:mb-4 font-medium">Services</p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-            {content.capabilities.title}
-          </h2>
+    <section id="capabilities" className="py-24 sm:py-32 px-5 sm:px-6 relative overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        <ScrollReveal className="text-center mb-16 sm:mb-20">
+          <h2 className="text-3xl sm:text-5xl font-bold mb-6">{content.capabilities.h2}</h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Our comprehensive digital suite ensures every aspect of your brand is handled with excellence.
+          </p>
         </ScrollReveal>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
-          {items.map((cap, idx) => (
-            <TiltCard
-              key={cap.title}
-              idx={idx}
-              className="group rounded-xl glass-card gradient-border p-6 sm:p-7 md:p-8"
-            >
-              <div className="flex items-start gap-4">
-                <span className="text-2xl sm:text-3xl shrink-0 mt-0.5 select-none" aria-hidden="true">{icons[idx]}</span>
-                <div>
-                  <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-1.5 sm:mb-2 group-hover:text-primary transition-colors">
-                    {cap.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{cap.description}</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {content.capabilities.items.map((item, i) => (
+            <ScrollReveal key={i} delay={i * 0.1} scale blur={!isMobile}>
+              <TiltCard
+                idx={i}
+                className="glass-card p-8 sm:p-10 rounded-2xl border border-white/5 relative overflow-hidden group h-full gradient-border glow-hover"
+              >
+                <div className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-300">
+                  {icons[i % icons.length]}
                 </div>
-              </div>
-            </TiltCard>
+                <h3 className="text-xl sm:text-2xl font-bold mb-4">{item.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  {item.desc}
+                </p>
+                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                  <span className="text-6xl font-black">{i + 1}</span>
+                </div>
+              </TiltCard>
+            </ScrollReveal>
           ))}
         </div>
       </div>

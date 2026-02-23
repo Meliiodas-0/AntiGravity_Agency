@@ -47,14 +47,16 @@
 
 @layer base {
   html {
-    scroll-behavior: auto; /* Lenis handles smooth scroll */
+    scroll-behavior: auto;
+    /* Lenis handles smooth scroll */
   }
 
   * {
     @apply border-border;
   }
 
-  html, body {
+  html,
+  body {
     @apply bg-background text-foreground;
     min-height: 100vh;
     overflow-x: hidden;
@@ -67,6 +69,7 @@
 }
 
 @layer utilities {
+
   /* ─── Marquee ─── */
   .marquee-fade-mask {
     mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
@@ -129,12 +132,10 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(
-      135deg,
-      hsl(var(--primary) / 0) 0%,
-      hsl(var(--primary) / 0.3) 50%,
-      hsl(var(--primary) / 0) 100%
-    );
+    background: linear-gradient(135deg,
+        hsl(var(--primary) / 0) 0%,
+        hsl(var(--primary) / 0.3) 50%,
+        hsl(var(--primary) / 0) 100%);
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: exclude;
     -webkit-mask-composite: xor;
@@ -149,12 +150,10 @@
 
   /* ─── Text Shimmer ─── */
   .text-shimmer {
-    background: linear-gradient(
-      110deg,
-      hsl(var(--foreground)) 35%,
-      hsl(var(--primary) / 0.8) 50%,
-      hsl(var(--foreground)) 65%
-    );
+    background: linear-gradient(110deg,
+        hsl(var(--foreground)) 35%,
+        hsl(var(--primary) / 0.8) 50%,
+        hsl(var(--foreground)) 65%);
     background-size: 250% 100%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -185,6 +184,12 @@
     background-repeat: repeat;
     background-size: 256px 256px;
   }
+
+  @media (max-width: 768px) {
+    .noise-overlay::after {
+      display: none;
+    }
+  }
 }
 
 /* ─── Keyframes ─── */
@@ -192,6 +197,7 @@
   0% {
     transform: translate3d(0, 0, 0);
   }
+
   100% {
     transform: translate3d(-50%, 0, 0);
   }
@@ -201,28 +207,52 @@
   0% {
     transform: translate3d(-50%, 0, 0);
   }
+
   100% {
     transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes shimmer-slide {
-  0% { background-position: 100% 50%; }
-  50% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
+  0% {
+    background-position: 100% 50%;
+  }
+
+  50% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 @keyframes float-up {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
+
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
 }
 
 @media (max-width: 640px) {
+
   .animate-marquee,
   .animate-marquee-reverse {
     animation-duration: 35s !important;
@@ -230,6 +260,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .animate-marquee,
   .animate-marquee-reverse {
     animation-duration: 90s !important;
@@ -242,9 +273,12 @@
 }
 
 @keyframes cta-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 10px 30px -10px hsl(var(--primary) / 0.3);
   }
+
   50% {
     box-shadow: 0 10px 40px -5px hsl(var(--primary) / 0.5);
   }
@@ -256,15 +290,20 @@
 }
 
 @keyframes morph-shape {
-  0%, 100% {
+
+  0%,
+  100% {
     border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
   }
+
   25% {
     border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
   }
+
   50% {
     border-radius: 50% 60% 30% 60% / 30% 40% 70% 50%;
   }
+
   75% {
     border-radius: 40% 30% 60% 50% / 60% 70% 40% 30%;
   }
@@ -305,8 +344,13 @@
 }
 
 @keyframes gear-rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ─── Page Load Entrance ─── */
@@ -315,6 +359,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -329,6 +374,7 @@
   .gear-spin {
     animation-duration: 12s;
   }
+
   .text-shimmer {
     animation: none;
     -webkit-text-fill-color: hsl(var(--foreground));
