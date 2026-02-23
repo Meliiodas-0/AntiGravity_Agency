@@ -1,13 +1,26 @@
 import { content } from "@/content/content";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue } from "framer-motion";
 import { useRef } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import TextReveal from "./motion/TextReveal";
+import DNANode from "./DNANode";
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
   const isMobile = useIsMobile();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+
+  // Mouse tracking for reactive DNA
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    mouseX.set((clientX / innerWidth) - 0.5);
+    mouseY.set((clientY / innerHeight) - 0.5);
+  };
+
   const subY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -15 : -40]);
   const ctaY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -8 : -20]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
@@ -16,7 +29,12 @@ export default function Hero() {
   const filterStr = useTransform(blur, (v) => v > 0 ? `blur(${v}px)` : "none");
 
   return (
-    <section id="hero" ref={ref} className="relative min-h-[85vh] sm:min-h-screen flex flex-col items-center justify-center px-5 sm:px-6 pt-14">
+    <section
+      id="hero"
+      ref={ref}
+      className="relative min-h-[85vh] sm:min-h-screen flex flex-col items-center justify-center px-5 sm:px-6 pt-14 overflow-visible"
+      onMouseMove={handleMouseMove}
+    >
       {/* Layered atmospheric background — simplified on mobile */}
       <div className="absolute inset-0 -bottom-32 pointer-events-none" aria-hidden="true">
         <div className="absolute -top-[20%] -right-[10%] w-[350px] sm:w-[700px] h-[350px] sm:h-[700px] rounded-full bg-primary/8 blur-[80px] sm:blur-[140px]" />
@@ -40,7 +58,7 @@ export default function Hero() {
       </div>
 
       <motion.div
-        className="relative max-w-4xl text-center"
+        className="relative max-w-4xl text-center z-10"
         style={{ opacity, scale, filter: filterStr }}
       >
         <motion.p
@@ -65,7 +83,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
           style={{ y: subY }}
-          className="text-sm sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-14 leading-relaxed px-2"
+          className="text-sm sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-14 leading-relaxed px-2 font-light"
         >
           {content.hero.sub}
         </motion.p>
@@ -85,73 +103,25 @@ export default function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.6 }}
-        className="absolute bottom-6 sm:bottom-10 flex flex-col items-center text-muted-foreground text-xs uppercase tracking-widest"
+        className="absolute bottom-6 sm:bottom-10 flex flex-col items-center text-muted-foreground text-xs uppercase tracking-widest pointer-events-none"
       >
-        <span>Scroll</span>
-        <svg className="w-4 h-4 mt-1 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <span className="opacity-50">Scroll</span>
+        <svg className="w-4 h-4 mt-1 animate-bounce opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </motion.div>
 
-      {/* Neural DNA Transition — A 3D Double Helix Swarm */}
+      {/* Neural DNA Transition — Reactive 3D Double Helix Swarm */}
       <div className="absolute inset-0 pointer-events-none overflow-visible z-20" aria-hidden="true">
-        {[...Array(isMobile ? 12 : 24)].map((_, i) => {
-          const isStrandB = i % 2 === 0;
-          const phase = (i / 12) * Math.PI * 2;
-
-          return (
-            <div key={i}>
-              {/* Neural Node */}
-              <motion.div
-                style={{
-                  position: 'absolute',
-                  left: useTransform(scrollYProgress, [0, 1], [
-                    `${20 + (isStrandB ? Math.sin(phase) * 15 : Math.cos(phase) * 15 + 40)}%`,
-                    `${50 + (isStrandB ? Math.sin(phase + 5) * 5 : Math.cos(phase + 5) * 5)}%`,
-                  ]),
-                  top: useTransform(scrollYProgress, [0, 1], [
-                    `${40 + (i * 2)}%`,
-                    `${100 + (i * 5)}%`
-                  ]),
-                  width: i % 3 === 0 ? '6px' : '3px',
-                  height: i % 3 === 0 ? '6px' : '3px',
-                  backgroundColor: 'hsl(var(--primary))',
-                  borderRadius: '50%',
-                  boxShadow: `0 0 ${i % 3 === 0 ? '15px' : '8px'} hsl(var(--primary))`,
-                  opacity: useTransform(scrollYProgress, [0, 0.3, 0.8], [0, 0.8, 0]),
-                  scale: useTransform(scrollYProgress, [0, 0.5], [1, 1.5]),
-                  zIndex: 30
-                }}
-              />
-
-              {/* Neural Path (Connecting strand) - Only for strand A to B pairs */}
-              {!isStrandB && (
-                <motion.div
-                  style={{
-                    position: 'absolute',
-                    left: useTransform(scrollYProgress, [0, 1], [
-                      `${20 + Math.sin(phase) * 15}%`,
-                      `${50 + Math.sin(phase + 5) * 5}%`,
-                    ]),
-                    width: useTransform(scrollYProgress, [0, 1], [
-                      `${Math.abs(Math.cos(phase) * 15 + 40 - (Math.sin(phase) * 15))}%`,
-                      `2%`
-                    ]),
-                    top: useTransform(scrollYProgress, [0, 1], [
-                      `${40 + (i * 2) + 0.15}%`,
-                      `${100 + (i * 5) + 0.15}%`
-                    ]),
-                    height: '1px',
-                    background: 'linear-gradient(90deg, transparent, hsl(var(--primary)/0.3), transparent)',
-                    opacity: useTransform(scrollYProgress, [0.1, 0.4, 0.7], [0, 0.4, 0]),
-                    transformOrigin: 'left center',
-                    rotate: useTransform(scrollYProgress, [0, 1], [0, 45])
-                  }}
-                />
-              )}
-            </div>
-          );
-        })}
+        {[...Array(30)].map((_, i) => (
+          <DNANode
+            key={i}
+            i={i}
+            scrollYProgress={scrollYProgress}
+            mouseX={mouseX}
+            mouseY={mouseY}
+          />
+        ))}
       </div>
     </section>
   );

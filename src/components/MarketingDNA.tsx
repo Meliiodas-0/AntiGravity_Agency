@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, useSpring, useMotionValue, useAnimationFrame } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import {
     Smartphone,
     Instagram,
@@ -62,9 +62,9 @@ export default function MarketingDNA() {
     const smoothPhoneY = useSpring(phoneY, { stiffness: 60, damping: 25 });
 
     // Animated Insights Metrics
-    const reachCount = useTransform(scrollYProgress, [0.3, 0.9], [1240, 142800]);
-    const profileVisits = useTransform(scrollYProgress, [0.4, 0.95], [450, 12600]);
-    const followerGrowth = useTransform(scrollYProgress, [0.2, 0.8], [80, 2400]);
+    const reachCount = useTransform(scrollYProgress, [0.3, 0.9], [1240, 852400]);
+    const profileVisits = useTransform(scrollYProgress, [0.4, 0.95], [450, 15600]);
+    const followerGrowth = useTransform(scrollYProgress, [0.2, 0.8], [240, 524800]);
 
     const chartPathLength = useTransform(scrollYProgress, [0.3, 0.8], [0, 1]);
 
@@ -72,23 +72,12 @@ export default function MarketingDNA() {
         <section
             ref={containerRef}
             className="relative py-24 sm:py-32 md:py-48 overflow-hidden bg-[#050505]"
-            style={{ perspective: "1500px" }}
+            style={{ perspective: "2000px" }}
         >
             {/* Background Data Particles */}
             <div className="absolute inset-0 pointer-events-none opacity-20">
                 {[...Array(25)].map((_, i) => (
-                    <motion.div
-                        key={i}
-                        style={{
-                            position: 'absolute',
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            width: '1px',
-                            height: '60px',
-                            background: 'linear-gradient(to bottom, transparent, hsl(var(--primary)), transparent)',
-                            y: useTransform(scrollYProgress, [0, 1], [0, (i % 2 === 0 ? 400 : -400)]),
-                        }}
-                    />
+                    <DataParticle key={i} i={i} scrollYProgress={scrollYProgress} />
                 ))}
             </div>
 
@@ -107,7 +96,7 @@ export default function MarketingDNA() {
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                             </span>
-                            Engineered for Virality
+                            Proprietary Engine v3.0
                         </motion.div>
 
                         <motion.h2
@@ -116,9 +105,9 @@ export default function MarketingDNA() {
                             viewport={{ once: true }}
                             className="text-4xl sm:text-6xl md:text-7xl font-bold mb-8 tracking-tighter leading-[0.95]"
                         >
-                            Data-Driven <br />
-                            <span className="text-secondary-foreground/40 italic font-light">meets</span> <br />
-                            <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/50 bg-clip-text text-transparent">Creative Mastery</span>
+                            Marketing In Our <br />
+                            <span className="text-secondary-foreground/40 italic font-light">Very</span> <br />
+                            <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/50 bg-clip-text text-transparent">Digital DNA</span>
                         </motion.h2>
 
                         <motion.p
@@ -128,13 +117,13 @@ export default function MarketingDNA() {
                             transition={{ delay: 0.1 }}
                             className="text-muted-foreground text-lg sm:text-xl max-w-xl mx-auto lg:mx-0 leading-relaxed font-light mb-10"
                         >
-                            We analyze the DNA of viral moments to build reliable growth engines. Every revolving icon represents a data stream being processed into tangible ROI.
+                            We analyze the DNA of viral moments to build reliable growth engines. Our neural pathing turns raw engagement into engineered, compounding growth.
                         </motion.p>
 
                         <div className="grid grid-cols-2 gap-8 max-w-md mx-auto lg:mx-0 border-t border-white/5 pt-10">
                             {[
                                 { val: reachCount, label: "Reach Engineered", prefix: "+", suffix: "" },
-                                { val: followerGrowth, label: "New Leads", prefix: "+", suffix: "" },
+                                { val: followerGrowth, label: "Network Effect", prefix: "+", suffix: "" },
                             ].map((stat, i) => (
                                 <motion.div
                                     key={i}
@@ -154,106 +143,109 @@ export default function MarketingDNA() {
 
                     {/* Integrated 3D Helix Side */}
                     <div
-                        className="flex-1 relative h-[500px] sm:h-[700px] w-full max-w-[600px] flex items-center justify-center pt-20"
+                        className="flex-1 relative h-[600px] sm:h-[800px] w-full max-w-[600px] flex items-center justify-center pt-20"
                         style={{ transformStyle: "preserve-3d" }}
                     >
-                        {/* Premium Phone Frame */}
+                        {/* Premium Phone Frame - SHARPENED PRECISION */}
                         <motion.div
                             style={{
                                 y: smoothPhoneY,
                                 transformStyle: "preserve-3d",
-                                rotateX: 10,
-                                rotateY: -15,
-                                translateZ: "50px"
+                                rotateX: 15,
+                                rotateY: -22,
+                                translateZ: "80px"
                             }}
-                            className="relative z-30 w-[170px] h-[340px] sm:w-[240px] sm:h-[480px] bg-[#080808] rounded-[3.5rem] border-[8px] border-[#1a1a1a] shadow-[0_0_80px_rgba(var(--primary-rgb),0.2)] flex items-center justify-center p-2.5"
+                            className="relative z-30 w-[200px] h-[400px] sm:w-[280px] sm:h-[560px] bg-[#0c0c0c] rounded-[4.2rem] border-[12px] border-[#151515] shadow-[0_40px_100px_rgba(0,0,0,0.8),0_0_80px_rgba(var(--primary-rgb),0.15)] flex items-center justify-center p-2.5 transition-shadow duration-500"
                         >
-                            {/* Bezel Polish */}
-                            <div className="absolute inset-0 rounded-[3rem] border border-white/10 pointer-events-none" />
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-black rounded-b-2xl z-50 border-x border-b border-white/10" />
+                            {/* Inner Bezel Polish */}
+                            <div className="absolute inset-[-2px] rounded-[3.8rem] border border-white/10 pointer-events-none" />
+                            <div className="absolute inset-[-6px] rounded-[4rem] border border-white/5 pointer-events-none" />
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-8 bg-black rounded-b-[2.5rem] z-50 border-x border-b border-white/10 shadow-inner" />
 
                             {/* Instagram UI Screen Content */}
-                            <div className="w-full h-full bg-[#000] rounded-[2.9rem] overflow-hidden relative border border-white/5 flex flex-col font-sans select-none">
+                            <div className="w-full h-full bg-[#000] rounded-[3.2rem] overflow-hidden relative border border-white/5 flex flex-col font-sans select-none shadow-2xl">
                                 {/* Status Bar */}
-                                <div className="h-10 px-6 flex justify-between items-center text-[10px] text-white/90">
-                                    <span>9:41</span>
+                                <div className="h-10 px-8 flex justify-between items-center text-[10px] text-white/90">
+                                    <span className="font-semibold">9:41</span>
                                     <div className="flex gap-1.5 items-center">
-                                        <div className="w-3.5 h-3.5 bg-white/20 rounded-sm" />
-                                        <div className="w-4 h-2 bg-white rounded-[1px]" />
+                                        <div className="w-4 h-4 rounded-sm border-[1px] border-white/30 flex items-center justify-center">
+                                            <div className="w-2 h-2 bg-white/10 rounded-full" />
+                                        </div>
+                                        <div className="w-5 h-2.5 bg-white rounded-[2px]" />
                                     </div>
                                 </div>
 
                                 {/* Instagram Profile Header */}
-                                <div className="px-4 pb-4 space-y-4">
+                                <div className="px-5 pb-5 space-y-4">
                                     <div className="flex justify-between items-center text-white">
-                                        <div className="flex items-center gap-1">
-                                            <span className="font-bold text-xs tracking-tight">antigravity.agency</span>
-                                            <ChevronDown className="w-3 h-3 text-white/60" />
+                                        <div className="flex items-center gap-1.5">
+                                            <span className="font-bold text-sm tracking-tight">antigravity.agency</span>
+                                            <ChevronDown className="w-3.5 h-3.5 text-white/60" />
                                         </div>
                                         <div className="flex gap-4">
-                                            <div className="relative">
-                                                <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full border border-black" />
-                                                <TrendingUp className="w-5 h-5" />
-                                            </div>
-                                            <MoreHorizontal className="w-5 h-5" />
+                                            <TrendingUp className="w-6 h-6" />
+                                            <MoreHorizontal className="w-6 h-6" />
                                         </div>
                                     </div>
 
                                     {/* Profile Stats */}
-                                    <div className="flex items-center justify-between gap-2">
+                                    <div className="flex items-center justify-between gap-2 pt-2">
                                         <div className="relative">
-                                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full p-[3px] bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600">
-                                                <div className="w-full h-full rounded-full bg-black border-[2px] border-black flex items-center justify-center overflow-hidden">
-                                                    <div className="w-full h-full bg-primary/20 flex items-center justify-center font-bold text-primary">AG</div>
+                                            <div className="w-18 h-18 sm:w-22 sm:h-22 rounded-full p-[3px] bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 shadow-lg shadow-primary/20">
+                                                <div className="w-full h-full rounded-full bg-black border-[3px] border-black flex items-center justify-center overflow-hidden">
+                                                    <div className="w-full h-full bg-primary/20 flex items-center justify-center font-bold text-primary text-lg">AG</div>
                                                 </div>
                                             </div>
-                                            <div className="absolute bottom-0 right-0 w-6 h-6 bg-[#0095f6] rounded-full border-[3px] border-black flex items-center justify-center">
-                                                <span className="text-white text-xs font-bold">+</span>
+                                            <div className="absolute bottom-0 right-0 w-7 h-7 bg-[#0095f6] rounded-full border-[3px] border-black flex items-center justify-center shadow-md">
+                                                <span className="text-white text-sm font-bold">+</span>
                                             </div>
                                         </div>
-                                        <div className="flex gap-4 sm:gap-6 flex-1 justify-center text-center">
+                                        <div className="flex gap-4 sm:gap-7 flex-1 justify-center text-center">
                                             <div>
-                                                <p className="font-bold text-sm text-white">42</p>
-                                                <p className="text-[9px] text-white/60 uppercase">Posts</p>
+                                                <p className="font-bold text-base text-white">124</p>
+                                                <p className="text-[10px] text-white/50 uppercase tracking-tighter">Posts</p>
                                             </div>
                                             <div>
-                                                <p className="font-bold text-sm text-white"><StatCounter value={followerGrowth} /></p>
-                                                <p className="text-[9px] text-white/60 uppercase">Followers</p>
+                                                <p className="font-bold text-base text-white">524k</p>
+                                                <p className="text-[10px] text-white/50 uppercase tracking-tighter">Followers</p>
                                             </div>
                                             <div>
-                                                <p className="font-bold text-sm text-white">128</p>
-                                                <p className="text-[9px] text-white/60 uppercase">Following</p>
+                                                <p className="font-bold text-base text-white">1,412</p>
+                                                <p className="text-[10px] text-white/50 uppercase tracking-tighter">Following</p>
                                             </div>
                                         </div>
                                     </div>
 
                                     {/* Bio */}
-                                    <div className="text-[10px] text-white">
+                                    <div className="text-[11px] text-white leading-snug">
                                         <p className="font-bold">Antigravity Agency</p>
-                                        <p className="text-white/80">Everything digital. Fully handled.</p>
-                                        <p className="text-white/60">antigravity.dev</p>
+                                        <p className="text-white/90">Everything digital. Fully handled.</p>
+                                        <p className="text-primary font-medium">antigravity.dev</p>
                                     </div>
 
                                     {/* Buttons */}
-                                    <div className="flex gap-1.5 pt-1">
-                                        <div className="flex-1 h-7 bg-white/10 rounded-md flex items-center justify-center text-[10px] font-semibold text-white">Edit profile</div>
-                                        <div className="flex-1 h-7 bg-white/10 rounded-md flex items-center justify-center text-[10px] font-semibold text-white">Share profile</div>
-                                        <div className="w-7 h-7 bg-white/10 rounded-md flex items-center justify-center text-white"><UserPlus className="w-3.5 h-3.5" /></div>
+                                    <div className="flex gap-2 pt-1">
+                                        <div className="flex-1 h-8 bg-white/10 rounded-lg flex items-center justify-center text-[11px] font-bold text-white active:bg-white/20 transition-colors">Edit profile</div>
+                                        <div className="flex-1 h-8 bg-white/10 rounded-lg flex items-center justify-center text-[11px] font-bold text-white active:bg-white/20 transition-colors">Share profile</div>
+                                        <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center text-white active:bg-white/20 transition-colors"><UserPlus className="w-4 h-4" /></div>
                                     </div>
 
                                     {/* Professional Dashboard - THE GROWTH ENGINE */}
-                                    <div className="p-3 bg-white/5 rounded-lg border border-white/5 space-y-2">
+                                    <motion.div
+                                        className="p-4 bg-white/5 rounded-xl border border-white/10 space-y-2.5 shadow-xl"
+                                        whileHover={{ scale: 1.02 }}
+                                    >
                                         <div className="flex justify-between items-center">
-                                            <p className="text-[10px] font-bold text-white">Professional dashboard</p>
-                                            <ArrowUpRight className="w-3 h-3 text-primary" />
+                                            <p className="text-[11px] font-bold text-white tracking-tight">Professional dashboard</p>
+                                            <ArrowUpRight className="w-4 h-4 text-primary" />
                                         </div>
-                                        <div className="flex items-center gap-1.5">
-                                            <div className="w-1 h-4 bg-primary rounded-full" />
-                                            <p className="text-[9px] text-white/60">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-1 h-5 bg-primary rounded-full shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]" />
+                                            <p className="text-[10px] text-white/70 leading-relaxed">
                                                 <span className="text-primary font-bold"><StatCounter value={reachCount} /></span> accounts reached in the last 30 days.
                                             </p>
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 </div>
 
                                 {/* Dynamic Post Grid */}
@@ -265,16 +257,7 @@ export default function MarketingDNA() {
                                     </div>
                                     <div className="grid grid-cols-3 gap-[1px]">
                                         {[...Array(9)].map((_, i) => (
-                                            <motion.div
-                                                key={i}
-                                                style={{ opacity: useTransform(scrollYProgress, [0.4 + (i * 0.05), 0.6 + (i * 0.05)], [0, 1]) }}
-                                                className="aspect-square bg-white/5 relative group"
-                                            >
-                                                <div className="absolute inset-x-0 bottom-0 top-0 bg-gradient-to-t from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                                <div className="absolute top-1 right-1">
-                                                    {i % 3 === 0 && <Play className="w-2.5 h-2.5 text-white/80" />}
-                                                </div>
-                                            </motion.div>
+                                            <PostGridItem key={i} i={i} scrollYProgress={scrollYProgress} />
                                         ))}
                                     </div>
                                 </div>
@@ -297,34 +280,17 @@ export default function MarketingDNA() {
                             className="absolute inset-0 flex items-center justify-center pointer-events-none"
                             style={{ transformStyle: "preserve-3d" }}
                         >
-                            {socialIcons.map((item, i) => {
-                                const angle = (i / socialIcons.length) * Math.PI * 2;
-
-                                return (
-                                    <motion.div
-                                        key={i}
-                                        style={{
-                                            x: useTransform(smoothRotation, (r) => Math.cos(angle + (r * Math.PI) / 180) * helixRadius.get()),
-                                            y: useTransform(smoothRotation, (r) => Math.sin(angle + (r * Math.PI) / 180) * helixRadius.get() + Math.sin(angle) * 80),
-                                            scale: useTransform(scrollYProgress, [0.6, 0.9], [1.1, 0.3]),
-                                            translateZ: useTransform(smoothRotation, (r) => Math.cos(angle + (r * Math.PI) / 180) * 180),
-                                            opacity: useTransform(scrollYProgress, [0.7, 0.95], [1, 0]),
-                                        }}
-                                        className="absolute w-12 h-12 sm:w-16 sm:h-16 rounded-2xl glass-card gradient-border flex items-center justify-center text-primary shadow-2xl backdrop-blur-md z-40"
-                                    >
-                                        <item.Icon className={`w-6 h-6 sm:w-8 sm:h-8 ${item.color}`} />
-
-                                        {/* Dynamic Connection Path */}
-                                        <motion.div
-                                            style={{
-                                                height: useTransform(scrollYProgress, [0, 1], ["100px", "0px"]),
-                                                opacity: useTransform(scrollYProgress, [0.3, 0.7], [0.3, 0])
-                                            }}
-                                            className="absolute w-[1px] bg-gradient-to-t from-primary/60 to-transparent -top-full left-1/2 -track-x-1/2"
-                                        />
-                                    </motion.div>
-                                );
-                            })}
+                            {socialIcons.map((item, i) => (
+                                <SocialIconHelix
+                                    key={i}
+                                    item={item}
+                                    i={i}
+                                    total={socialIcons.length}
+                                    smoothRotation={smoothRotation}
+                                    helixRadius={helixRadius}
+                                    scrollYProgress={scrollYProgress}
+                                />
+                            ))}
                         </div>
 
                         {/* Core Reactor Glow */}
@@ -336,9 +302,86 @@ export default function MarketingDNA() {
                             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary blur-[140px] rounded-full pointer-events-none z-0"
                         />
                     </div>
-
                 </div>
             </div>
         </section>
+    );
+}
+
+function DataParticle({ i, scrollYProgress }: { i: number, scrollYProgress: any }) {
+    const left = useMemo(() => `${Math.random() * 100}%`, [i]);
+    const top = useMemo(() => `${Math.random() * 100}%`, [i]);
+    const yTransform = useTransform(scrollYProgress, [0, 1], [0, (i % 2 === 0 ? 400 : -400)]);
+
+    return (
+        <motion.div
+            style={{
+                position: 'absolute',
+                left,
+                top,
+                width: '1px',
+                height: '60px',
+                background: 'linear-gradient(to bottom, transparent, hsl(var(--primary)), transparent)',
+                y: yTransform,
+            }}
+        />
+    );
+}
+
+function PostGridItem({ i, scrollYProgress }: { i: number, scrollYProgress: any }) {
+    const opacity = useTransform(scrollYProgress, [0.4 + (i * 0.05), 0.6 + (i * 0.05)], [0, 1]);
+
+    return (
+        <motion.div
+            style={{ opacity }}
+            className="aspect-square bg-white/5 relative group"
+        >
+            <div className="absolute inset-x-0 bottom-0 top-0 bg-gradient-to-t from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute top-1 right-1">
+                {i % 3 === 0 && <Play className="w-2.5 h-2.5 text-white/80" />}
+            </div>
+        </motion.div>
+    );
+}
+
+function SocialIconHelix({ item, i, total, smoothRotation, helixRadius, scrollYProgress }: {
+    item: any,
+    i: number,
+    total: number,
+    smoothRotation: any,
+    helixRadius: any,
+    scrollYProgress: any
+}) {
+    const angle = (i / total) * Math.PI * 2;
+
+    const x = useTransform(smoothRotation, (r: any) => Math.cos(angle + (r * Math.PI) / 180) * helixRadius.get());
+    const y = useTransform(smoothRotation, (r: any) => Math.sin(angle + (r * Math.PI) / 180) * helixRadius.get() + Math.sin(angle) * 80);
+    const scale = useTransform(scrollYProgress, [0.6, 0.9], [1.1, 0.3]);
+    const translateZ = useTransform(smoothRotation, (r: any) => Math.cos(angle + (r * Math.PI) / 180) * 180);
+    const opacity = useTransform(scrollYProgress, [0.7, 0.95], [1, 0]);
+
+    const connHeight = useTransform(scrollYProgress, [0, 1], ["100px", "0px"]);
+    const connOpacity = useTransform(scrollYProgress, [0.3, 0.7], [0.3, 0]);
+
+    const Icon = item.Icon;
+
+    return (
+        <motion.div
+            style={{
+                x, y, scale, translateZ, opacity
+            }}
+            className="absolute w-12 h-12 sm:w-16 sm:h-16 rounded-2xl glass-card gradient-border flex items-center justify-center text-primary shadow-2xl backdrop-blur-md z-40"
+        >
+            <Icon className={`w-6 h-6 sm:w-8 sm:h-8 ${item.color}`} />
+
+            {/* Dynamic Connection Path */}
+            <motion.div
+                style={{
+                    height: connHeight,
+                    opacity: connOpacity
+                }}
+                className="absolute w-[1px] bg-gradient-to-t from-primary/60 to-transparent -top-full left-1/2 -translate-x-1/2"
+            />
+        </motion.div>
     );
 }
