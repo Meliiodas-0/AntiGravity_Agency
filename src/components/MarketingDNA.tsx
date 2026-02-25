@@ -158,7 +158,7 @@ function DataTrail({
 // ─── Instagram Screen ─────────────────────────────────────────────────────────
 function InstagramScreen() {
     return (
-        <div className="w-full h-full bg-black flex flex-col overflow-hidden select-none text-white">
+        <div className="w-full h-full bg-black flex flex-col overflow-hidden select-none text-white antialiased" style={{ textRendering: "optimizeLegibility", transform: "translateZ(0)", WebkitTransform: "translateZ(0)" }}>
 
             {/* Status bar */}
             <div className="flex justify-between items-center px-4 pt-3 pb-1.5 text-[10px] sm:text-[11px] font-medium shrink-0">
@@ -197,53 +197,53 @@ function InstagramScreen() {
                 <div className="flex gap-2 flex-1 text-center">
                     {[["124", "Posts"], ["524k", "Followers"], ["1.4k", "Following"]].map(([n, l]) => (
                         <div key={l} className="flex-1">
-                            <p className="font-bold text-[10px]">{n}</p>
-                            <p className="text-white/40 text-[7px] uppercase tracking-tighter">{l}</p>
+                            <p className="font-bold text-[13px] sm:text-[14px]">{n}</p>
+                            <p className="text-white/40 text-[9px] uppercase tracking-tighter">{l}</p>
                         </div>
                     ))}
                 </div>
             </div>
 
             {/* Bio */}
-            <div className="px-3 pb-1.5 shrink-0 space-y-[2px]">
-                <p className="font-semibold text-[10px]">{BRAND.name}</p>
-                <p className="text-white/50 text-[8px]">{BRAND.category}</p>
-                <p className="text-white/80 text-[9px]">{BRAND.bio}</p>
-                <p className="text-[#0095f6] text-[9px]">🔗 {BRAND.link}</p>
+            <div className="px-4 pb-2 shrink-0 space-y-[3px]">
+                <p className="font-semibold text-[13px] sm:text-[14px]">{BRAND.name}</p>
+                <p className="text-white/50 text-[10px] sm:text-[11px] font-medium">{BRAND.category}</p>
+                <p className="text-white/80 text-[11px] sm:text-[12px] leading-tight">{BRAND.bio}</p>
+                <p className="text-[#0095f6] text-[11px] sm:text-[12px] font-medium">🔗 {BRAND.link}</p>
             </div>
 
             {/* Professional Dashboard — inline dark card, right above buttons */}
-            <div className="mx-3 mb-1.5 shrink-0 bg-white/8 border border-white/10 rounded-xl px-2.5 py-1.5">
+            <div className="mx-4 mb-2 shrink-0 bg-white/10 border border-white/10 rounded-xl px-3 py-2">
                 <div className="flex items-center justify-between">
                     <div>
-                        <p className="text-[8px] font-semibold text-white">Professional dashboard</p>
-                        <div className="flex items-center gap-0.5 mt-[1px]">
-                            <TrendingUp size={6} className="text-green-400" />
-                            <span className="text-[6px] text-white/50">1.4K views in the last 30 days.</span>
+                        <p className="text-[11px] font-semibold text-white">Professional dashboard</p>
+                        <div className="flex items-center gap-1 mt-[2px]">
+                            <TrendingUp size={10} className="text-green-400" />
+                            <span className="text-[9px] text-white/50">1.4K views in the last 30 days.</span>
                         </div>
                     </div>
-                    <ArrowUpRight size={9} className="text-white/40" />
+                    <ArrowUpRight size={12} className="text-white/40" />
                 </div>
             </div>
 
             {/* Buttons */}
-            <div className="flex gap-1.5 px-3 pb-2 shrink-0">
+            <div className="flex gap-2 px-4 pb-3 shrink-0">
                 {["Edit profile", "Share profile"].map(t => (
-                    <div key={t} className="flex-1 h-5 bg-white/10 rounded text-[8px] font-semibold flex items-center justify-center">{t}</div>
+                    <div key={t} className="flex-1 h-7 bg-white/10 rounded-lg text-[11px] font-semibold flex items-center justify-center border border-white/5">{t}</div>
                 ))}
-                <div className="w-5 h-5 bg-white/10 rounded flex items-center justify-center">
-                    <UserPlus size={9} />
+                <div className="w-7 h-7 bg-white/10 rounded-lg flex items-center justify-center border border-white/5">
+                    <UserPlus size={12} />
                 </div>
             </div>
 
             {/* Story highlights */}
-            <div className="flex gap-2.5 px-3 pb-2 overflow-x-hidden shrink-0">
+            <div className="flex gap-3 px-4 pb-3 overflow-x-hidden shrink-0">
                 {HIGHLIGHTS.map(h => (
-                    <div key={h} className="flex flex-col items-center gap-0.5 shrink-0">
-                        <div className="w-9 h-9 rounded-full border border-white/15 bg-gradient-to-br from-[#c0392b]/50 to-black flex items-center justify-center text-[8px] font-bold">
+                    <div key={h} className="flex flex-col items-center gap-1 shrink-0">
+                        <div className="w-12 h-12 rounded-full border border-white/20 bg-gradient-to-br from-[#c0392b]/50 to-black flex items-center justify-center text-[10px] font-bold">
                             {h[0]}
                         </div>
-                        <span className="text-[6px] text-white/40">{h}</span>
+                        <span className="text-[9px] text-white/40 font-medium">{h}</span>
                     </div>
                 ))}
             </div>
@@ -260,12 +260,12 @@ function InstagramScreen() {
             {/* Post grid */}
             <div className="grid grid-cols-3 gap-px flex-1 min-h-0 overflow-hidden">
                 {POST_GRID.map((p, i) => (
-                    <div key={i} className={`relative bg-gradient-to-br ${p.bg} flex flex-col justify-end p-1`}>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-3 h-0.5 rounded-full" style={{ background: p.accent + "60" }} />
+                    <div key={i} className={`relative bg-gradient-to-br ${p.bg} flex flex-col justify-end p-1.5`}>
+                        <div className="absolute inset-0 flex items-center justify-center opacity-40">
+                            <div className="w-5 h-1 rounded-full" style={{ background: p.accent }} />
                         </div>
-                        <p className="text-[5.5px] font-bold text-white/90 z-10 leading-tight">{p.label}</p>
-                        {p.reel && <Play size={5} className="absolute top-1 right-1 text-white/50" />}
+                        <p className="text-[9px] font-bold text-white z-10 leading-tight drop-shadow-sm">{p.label}</p>
+                        {p.reel && <Play size={8} className="absolute top-1.5 right-1.5 text-white/80" />}
                     </div>
                 ))}
             </div>
