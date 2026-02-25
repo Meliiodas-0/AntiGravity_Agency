@@ -157,6 +157,7 @@ function DataTrail({
 
 // ─── Instagram Screen ─────────────────────────────────────────────────────────
 function InstagramScreen() {
+    const isMobile = useIsMobile();
     return (
         <div className="w-full h-full bg-black flex flex-col overflow-hidden select-none text-white antialiased" style={{ textRendering: "optimizeLegibility", transform: "translateZ(0)", WebkitTransform: "translateZ(0)" }}>
 
@@ -197,8 +198,8 @@ function InstagramScreen() {
                 <div className="flex gap-2 flex-1 text-center">
                     {[["124", "Posts"], ["524k", "Followers"], ["1.4k", "Following"]].map(([n, l]) => (
                         <div key={l} className="flex-1">
-                            <p className="font-bold text-[13px] sm:text-[14px]">{n}</p>
-                            <p className="text-white/40 text-[9px] uppercase tracking-tighter">{l}</p>
+                            <p className="font-bold text-[12px] sm:text-[14px]">{n}</p>
+                            <p className="text-white/40 text-[8px] sm:text-[9px] uppercase tracking-tighter">{l}</p>
                         </div>
                     ))}
                 </div>
@@ -206,33 +207,33 @@ function InstagramScreen() {
 
             {/* Bio */}
             <div className="px-4 pb-2 shrink-0 space-y-[3px]">
-                <p className="font-semibold text-[13px] sm:text-[14px]">{BRAND.name}</p>
-                <p className="text-white/50 text-[10px] sm:text-[11px] font-medium">{BRAND.category}</p>
-                <p className="text-white/80 text-[11px] sm:text-[12px] leading-tight">{BRAND.bio}</p>
-                <p className="text-[#0095f6] text-[11px] sm:text-[12px] font-medium">🔗 {BRAND.link}</p>
+                <p className="font-semibold text-[12px] sm:text-[14px]">{BRAND.name}</p>
+                <p className="text-white/50 text-[9px] sm:text-[11px] font-medium">{BRAND.category}</p>
+                <p className="text-white/80 text-[10px] sm:text-[12px] leading-tight">{BRAND.bio}</p>
+                <p className="text-[#0095f6] text-[10px] sm:text-[12px] font-medium">🔗 {BRAND.link}</p>
             </div>
 
             {/* Professional Dashboard — inline dark card, right above buttons */}
             <div className="mx-4 mb-2 shrink-0 bg-white/10 border border-white/10 rounded-xl px-3 py-2">
                 <div className="flex items-center justify-between">
                     <div>
-                        <p className="text-[11px] font-semibold text-white">Professional dashboard</p>
+                        <p className="text-[10px] sm:text-[11px] font-semibold text-white">Professional dashboard</p>
                         <div className="flex items-center gap-1 mt-[2px]">
-                            <TrendingUp size={10} className="text-green-400" />
-                            <span className="text-[9px] text-white/50">1.4K views in the last 30 days.</span>
+                            <TrendingUp size={isMobile ? 9 : 10} className="text-green-400" />
+                            <span className="text-[8px] sm:text-[9px] text-white/50">1.4K views in the last 30 days.</span>
                         </div>
                     </div>
-                    <ArrowUpRight size={12} className="text-white/40" />
+                    <ArrowUpRight size={isMobile ? 11 : 12} className="text-white/40" />
                 </div>
             </div>
 
             {/* Buttons */}
             <div className="flex gap-2 px-4 pb-3 shrink-0">
                 {["Edit profile", "Share profile"].map(t => (
-                    <div key={t} className="flex-1 h-7 bg-white/10 rounded-lg text-[11px] font-semibold flex items-center justify-center border border-white/5">{t}</div>
+                    <div key={t} className="flex-1 h-6 sm:h-7 bg-white/10 rounded-lg text-[10px] sm:text-[11px] font-semibold flex items-center justify-center border border-white/5">{t}</div>
                 ))}
-                <div className="w-7 h-7 bg-white/10 rounded-lg flex items-center justify-center border border-white/5">
-                    <UserPlus size={12} />
+                <div className="w-6 h-6 sm:w-7 sm:h-7 bg-white/10 rounded-lg flex items-center justify-center border border-white/5">
+                    <UserPlus size={isMobile ? 11 : 12} />
                 </div>
             </div>
 
@@ -240,10 +241,10 @@ function InstagramScreen() {
             <div className="flex gap-3 px-4 pb-3 overflow-x-hidden shrink-0">
                 {HIGHLIGHTS.map(h => (
                     <div key={h} className="flex flex-col items-center gap-1 shrink-0">
-                        <div className="w-12 h-12 rounded-full border border-white/20 bg-gradient-to-br from-[#c0392b]/50 to-black flex items-center justify-center text-[10px] font-bold">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/20 bg-gradient-to-br from-[#c0392b]/50 to-black flex items-center justify-center text-[9px] sm:text-[10px] font-bold">
                             {h[0]}
                         </div>
-                        <span className="text-[9px] text-white/40 font-medium">{h}</span>
+                        <span className="text-[8px] sm:text-[9px] text-white/40 font-medium">{h}</span>
                     </div>
                 ))}
             </div>
@@ -262,10 +263,10 @@ function InstagramScreen() {
                 {POST_GRID.map((p, i) => (
                     <div key={i} className={`relative bg-gradient-to-br ${p.bg} flex flex-col justify-end p-1.5`}>
                         <div className="absolute inset-0 flex items-center justify-center opacity-40">
-                            <div className="w-5 h-1 rounded-full" style={{ background: p.accent }} />
+                            <div className="w-4 h-0.5 sm:w-5 sm:h-1 rounded-full" style={{ background: p.accent }} />
                         </div>
-                        <p className="text-[9px] font-bold text-white z-10 leading-tight drop-shadow-sm">{p.label}</p>
-                        {p.reel && <Play size={8} className="absolute top-1.5 right-1.5 text-white/80" />}
+                        <p className="text-[8px] sm:text-[9px] font-bold text-white z-10 leading-tight drop-shadow-sm">{p.label}</p>
+                        {p.reel && <Play size={isMobile ? 7 : 8} className="absolute top-1.5 right-1.5 text-white/80" />}
                     </div>
                 ))}
             </div>
@@ -323,12 +324,12 @@ export default function MarketingDNA() {
     const reactorScale = useTransform(scrollYProgress, [0.82, 0.90, 1.0], [1, 1.5, 1]);
     const reactorOpacity = useTransform(scrollYProgress, [0.82, 0.88, 1.0], [0, 0.18, 0]);
 
-    // Dimensions — mobile matches desktop proportions (80% scale), same 3D look
-    const phoneW = isMobile ? 218 : 315;
-    const phoneH = isMobile ? 443 : 640;
-    const radiusX = isMobile ? 172 : 280;   // large enough to clear phone edge
-    const radiusY = isMobile ? 78 : 120;
-    const iconSize = isMobile ? 48 : 68;
+    // Dimensions — mobile matches desktop proportions, same high-detail look
+    const phoneW = isMobile ? 260 : 315;
+    const phoneH = isMobile ? 528 : 640;
+    const radiusX = isMobile ? 200 : 280;   // large enough to clear phone edge
+    const radiusY = isMobile ? 90 : 120;
+    const iconSize = isMobile ? 54 : 68;
 
     // Filter icons on mobile for cleaner look
     const activeIcons = isMobile ? ORBIT_ICONS.slice(0, 2) : ORBIT_ICONS;
