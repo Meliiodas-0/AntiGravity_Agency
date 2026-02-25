@@ -26,23 +26,23 @@ const BRAND = {
 
 // ─── Social Icons ─────────────────────────────────────────────────────────────
 const ORBIT_ICONS = [
-    { Icon: Instagram, color: "#E4405F", bg: "#1a0008" },
-    { Icon: Twitter, color: "#1DA1F2", bg: "#010d17" },
-    { Icon: Linkedin, color: "#0A66C2", bg: "#01091a" },
-    { Icon: Youtube, color: "#FF0000", bg: "#1a0101" },
+    { Icon: Instagram, color: "#E4405F", bg: "#0d0a1f" },
+    { Icon: Twitter, color: "#1DA1F2", bg: "#020d1c" },
+    { Icon: Linkedin, color: "#0A66C2", bg: "#040b2a" },
+    { Icon: Youtube, color: "#FF0000", bg: "#1a0410" },
 ];
 
 // ─── Post Grid ────────────────────────────────────────────────────────────────
 const POST_GRID = [
-    { bg: "from-[#200a0a] to-[#0f0f0f]", accent: "#c0392b", label: "300K REACH", reel: true },
-    { bg: "from-[#0f0f0f] to-[#111]", accent: "#555", label: "Ad Creative", reel: false },
-    { bg: "from-[#050d17] to-[#0f0f0f]", accent: "#1DA1F2", label: "Client Win", reel: false },
-    { bg: "from-[#111] to-[#0f0f0f]", accent: "#888", label: "Brand Shoot", reel: false },
-    { bg: "from-[#200a0a] to-[#111]", accent: "#c0392b", label: "CASE STUDY", reel: true },
-    { bg: "from-[#0a0f15] to-[#111]", accent: "#666", label: "BTS", reel: false },
-    { bg: "from-[#111] to-[#0f0f0f]", accent: "#c0392b", label: "Motion", reel: true },
-    { bg: "from-[#050d17] to-[#0f0f0f]", accent: "#4ade80", label: "+220k Reach", reel: false },
-    { bg: "from-[#0f0f0f] to-[#111]", accent: "#888", label: "Interview", reel: false },
+    { bg: "from-[#100a1a] to-[#020408]", accent: "#7b61ff", label: "300K REACH", reel: true },
+    { bg: "from-[#020408] to-[#0a0a0a]", accent: "#444", label: "Ad Creative", reel: false },
+    { bg: "from-[#020d1c] to-[#020408]", accent: "#1DA1F2", label: "Client Win", reel: false },
+    { bg: "from-[#0a0a0a] to-[#020408]", accent: "#666", label: "Brand Shoot", reel: false },
+    { bg: "from-[#1a0a14] to-[#020408]", accent: "#ff4d6d", label: "CASE STUDY", reel: true },
+    { bg: "from-[#0a0b15] to-[#0a0a0a]", accent: "#555", label: "BTS", reel: false },
+    { bg: "from-[#020408] to-[#0a0a0a]", accent: "#7b61ff", label: "Motion", reel: true },
+    { bg: "from-[#020d1c] to-[#020408]", accent: "#4ade80", label: "+220k Reach", reel: false },
+    { bg: "from-[#020408] to-[#0a0a0a]", accent: "#666", label: "Interview", reel: false },
 ];
 
 const HIGHLIGHTS = ["Results", "Clients", "Reels", "Ads", "BTS"];
@@ -146,7 +146,7 @@ function DataTrail({
                 width,
                 rotate,
                 transformOrigin: "left center",
-                background: "linear-gradient(to right, hsl(4 72% 54% / 0.7), transparent)",
+                background: "linear-gradient(to right, hsl(239 84% 67% / 0.7), transparent)",
                 opacity: trailOpacity,
                 zIndex: 18,
                 pointerEvents: "none",
@@ -188,9 +188,9 @@ function InstagramScreen() {
 
             {/* Profile row */}
             <div className="flex items-center gap-3 px-3 pb-2 shrink-0">
-                <div className="w-14 h-14 rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 shrink-0">
+                <div className="w-14 h-14 rounded-full p-[2px] bg-gradient-to-tr from-[#7b61ff] via-[#9f7aea] to-[#ff4d6d] shrink-0">
                     <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
-                        <div className="w-full h-full rounded-full bg-gradient-to-br from-[#c0392b] to-[#700] flex items-center justify-center text-[12px] font-black">
+                        <div className="w-full h-full rounded-full bg-gradient-to-br from-[#1a0a2e] to-[#020408] flex items-center justify-center text-[12px] font-black">
                             SA
                         </div>
                     </div>
@@ -241,7 +241,7 @@ function InstagramScreen() {
             <div className="flex gap-3 px-4 pb-3 overflow-x-hidden shrink-0">
                 {HIGHLIGHTS.map(h => (
                     <div key={h} className="flex flex-col items-center gap-1 shrink-0">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/20 bg-gradient-to-br from-[#c0392b]/50 to-black flex items-center justify-center text-[9px] sm:text-[10px] font-bold">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/20 bg-gradient-to-br from-[#7b61ff]/30 to-black flex items-center justify-center text-[9px] sm:text-[10px] font-bold">
                             {h[0]}
                         </div>
                         <span className="text-[8px] sm:text-[9px] text-white/40 font-medium">{h}</span>
@@ -469,7 +469,7 @@ export default function MarketingDNA() {
                                 boxShadow: `
                                     0 0 0 1px rgba(255,255,255,0.1),
                                     0 40px 100px rgba(0,0,0,0.9),
-                                    0 0 80px rgba(192,57,43,0.12),
+                                    0 0 80px rgba(123,97,255,0.12),
                                     inset 0 0 0 1px rgba(255,255,255,0.08)
                                 `,
                                 position: "relative",
