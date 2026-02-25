@@ -258,54 +258,32 @@ function InstagramScreen({ analyticsProgress }: { analyticsProgress: MotionValue
                 ))}
             </div>
 
-            {/* Analytics overlay */}
-            <motion.div
-                style={{ y: analyticsY }}
-                className="absolute inset-x-0 bottom-0 bg-[#080808]/98 border-t border-white/10 rounded-t-xl p-2.5 z-50"
-            >
-                <div className="flex items-center justify-between mb-2">
-                    <span className="text-[9px] font-bold">Professional Dashboard</span>
-                    <ArrowUpRight size={10} className="text-[#c0392b]" />
-                </div>
-                <div className="grid grid-cols-2 gap-1 mb-2">
-                    {[
-                        { icon: Eye, label: "Reach", val: "524.8k" },
-                        { icon: Users, label: "Profile Visits", val: "12,400" },
-                        { icon: Link2, label: "Link Taps", val: "3,241" },
-                        { icon: Heart, label: "Engagement", val: "6.8%" },
-                    ].map(({ icon: Icon, label, val }) => (
-                        <div key={label} className="bg-white/5 rounded-lg px-1.5 py-1 border border-white/8">
-                            <div className="flex items-center gap-0.5 mb-0.5">
-                                <Icon size={7} className="text-white/35" />
-                                <span className="text-[6px] text-white/35">{label}</span>
-                            </div>
-                            <p className="text-[9px] font-bold">{val}</p>
+            {/* Professional Dashboard card — always visible, matches Instagram ref */}
+            <div className="absolute inset-x-0 bottom-0 bg-[#fafafa] rounded-t-2xl p-2.5 z-50 border-t border-gray-200">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-1">
+                    <div>
+                        <p className="text-[9px] font-bold text-gray-900">Professional dashboard</p>
+                        <div className="flex items-center gap-0.5 mt-[1px]">
+                            <TrendingUp size={7} className="text-green-500" />
+                            <span className="text-[7px] text-gray-500">1.4K views in the last 30 days.</span>
                         </div>
-                    ))}
-                </div>
-                {/* Bar chart */}
-                <div className="bg-white/5 rounded-lg p-1.5 border border-white/8">
-                    <div className="flex items-center justify-between mb-1">
-                        <span className="text-[6px] text-white/40">30-day reach</span>
-                        <BarChart3 size={7} className="text-[#c0392b]" />
                     </div>
-                    <div className="flex items-end gap-[2px] h-7">
-                        {[35, 52, 44, 63, 57, 74, 70, 82, 77, 92, 86, 100, 96, 88].map((h, i) => (
-                            <motion.div
-                                key={i}
-                                className="flex-1 rounded-t-[1px]"
-                                style={{
-                                    background: `hsl(4 72% ${42 + h * 0.13}%)`,
-                                    opacity: 0.65 + h * 0.0035,
-                                    transformOrigin: "bottom",
-                                    scaleY: 1,
-                                    height: `${h}%`,
-                                }}
-                            />
-                        ))}
+                    <ArrowUpRight size={10} className="text-gray-600 mt-0.5" />
+                </div>
+                {/* Buttons */}
+                <div className="flex gap-1.5">
+                    <div className="flex-1 h-[22px] bg-white border border-gray-300 rounded-lg text-[8px] font-semibold text-gray-800 flex items-center justify-center shadow-sm">
+                        Edit profile
+                    </div>
+                    <div className="flex-1 h-[22px] bg-white border border-gray-300 rounded-lg text-[8px] font-semibold text-gray-800 flex items-center justify-center shadow-sm">
+                        Share profile
+                    </div>
+                    <div className="w-[22px] h-[22px] bg-white border border-gray-300 rounded-lg flex items-center justify-center shadow-sm">
+                        <UserPlus size={9} className="text-gray-700" />
                     </div>
                 </div>
-            </motion.div>
+            </div>
 
             {/* Bottom nav */}
             <div className="flex justify-around px-3 py-1 border-t border-white/10 bg-black shrink-0">
