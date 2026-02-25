@@ -161,23 +161,23 @@ function InstagramScreen() {
         <div className="w-full h-full bg-black flex flex-col overflow-hidden select-none text-white">
 
             {/* Status bar */}
-            <div className="flex justify-between items-center px-4 pt-2 pb-1 text-[9px] font-medium shrink-0">
+            <div className="flex justify-between items-center px-4 pt-3 pb-1.5 text-[10px] sm:text-[11px] font-medium shrink-0">
                 <span className="text-white/90">9:41</span>
-                <div className="flex items-center gap-0.5">
+                <div className="flex items-center gap-1">
                     {[0.3, 0.6, 1].map((o, i) => (
-                        <div key={i} style={{ width: 3, height: 6 + i * 2, borderRadius: 1, background: `rgba(255,255,255,${o})` }} />
+                        <div key={i} style={{ width: 4, height: 8 + i * 2, borderRadius: 1.5, background: `rgba(255,255,255,${o})` }} />
                     ))}
-                    <div className="w-4 h-2.5 rounded-[2px] border border-white/40 ml-1 flex items-center px-[1px]">
-                        <div className="w-2 h-1.5 bg-white rounded-[1px]" />
+                    <div className="w-5 h-3 rounded-[3px] border border-white/40 ml-1.5 flex items-center px-[2px]">
+                        <div className="w-2.5 h-2 bg-white rounded-[1.5px]" />
                     </div>
                 </div>
             </div>
 
             {/* IG header */}
-            <div className="flex items-center justify-between px-3 pb-1.5 shrink-0">
-                <div className="flex items-center gap-1">
-                    <span className="font-bold text-[11px]">{BRAND.handle}</span>
-                    <ChevronDown size={10} className="text-white/50" />
+            <div className="flex items-center justify-between px-4 pb-2 shrink-0">
+                <div className="flex items-center gap-1.5">
+                    <span className="font-bold text-[13px] sm:text-[15px]">{BRAND.handle}</span>
+                    <ChevronDown size={14} className="text-white/50" />
                 </div>
                 <div className="flex gap-3">
                     <TrendingUp size={15} />
@@ -324,11 +324,11 @@ export default function MarketingDNA() {
     const reactorOpacity = useTransform(scrollYProgress, [0.82, 0.88, 1.0], [0, 0.18, 0]);
 
     // Dimensions — mobile matches desktop proportions (80% scale), same 3D look
-    const phoneW = isMobile ? 218 : 250;
-    const phoneH = isMobile ? 443 : 508;
-    const radiusX = isMobile ? 172 : 215;   // large enough to clear phone edge
-    const radiusY = isMobile ? 78 : 98;
-    const iconSize = isMobile ? 48 : 54;
+    const phoneW = isMobile ? 218 : 315;
+    const phoneH = isMobile ? 443 : 640;
+    const radiusX = isMobile ? 172 : 280;   // large enough to clear phone edge
+    const radiusY = isMobile ? 78 : 120;
+    const iconSize = isMobile ? 48 : 68;
 
     // Filter icons on mobile for cleaner look
     const activeIcons = isMobile ? ORBIT_ICONS.slice(0, 2) : ORBIT_ICONS;
