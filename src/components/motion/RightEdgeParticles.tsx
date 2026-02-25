@@ -1,92 +1,100 @@
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 // 10 particles spread across the full page height
+// Slightly staggered left position to avoid a perfectly straight line
 const PARTICLES = [
-    { topPct: 6, size: 3, speed: 0.7, delay: 0 },
-    { topPct: 14, size: 2, speed: 0.5, delay: 0.4 },
-    { topPct: 24, size: 4, speed: 0.9, delay: 0.8 },
-    { topPct: 35, size: 2, speed: 0.6, delay: 0.2 },
-    { topPct: 46, size: 3, speed: 1.0, delay: 1.0 },
-    { topPct: 56, size: 2, speed: 0.7, delay: 0.6 },
-    { topPct: 66, size: 4, speed: 0.8, delay: 0.3 },
-    { topPct: 75, size: 2, speed: 0.5, delay: 0.9 },
-    { topPct: 85, size: 3, speed: 0.9, delay: 0.5 },
-    { topPct: 93, size: 2, speed: 0.6, delay: 1.2 },
+    { topPct: 5, size: 3, xOff: 22, speed: 0.6 },
+    { topPct: 14, size: 2, xOff: 14, speed: 0.4 },
+    { topPct: 23, size: 4, xOff: 24, speed: 0.8 },
+    { topPct: 33, size: 2, xOff: 18, speed: 0.5 },
+    { topPct: 43, size: 3, xOff: 26, speed: 0.9 },
+    { topPct: 53, size: 2, xOff: 12, speed: 0.7 },
+    { topPct: 63, size: 3, xOff: 22, speed: 0.6 },
+    { topPct: 72, size: 2, xOff: 16, speed: 0.4 },
+    { topPct: 82, size: 4, xOff: 24, speed: 0.8 },
+    { topPct: 91, size: 2, xOff: 18, speed: 0.5 },
 ];
 
 function Particle({
-    particle,
-    scrollProgress,
+    p,
+    smoothProgress,
+    index,
 }: {
-    particle: (typeof PARTICLES)[0];
-    scrollProgress: ReturnType<typeof useSpring>;
+    p: (typeof PARTICLES)[0];
+    smoothProgress: MotionValue<number>;
+    index: number;
 }) {
-    // Each particle has its own vertical parallax shift
-    const shift = particle.topPct / 100; // 0–1 position on page
-
-    // Vertical movement: particles near top drift down, near bottom drift up (parallax)
+    // Vertical parallax: particles drift at individual speeds as you scroll
     const yPx = useTransform(
-        scrollProgress,
+        smoothProgress,
         [0, 1],
-        [0, (shift - 0.5) * 160 * particle.speed]
+        [0, (p.topPct / 100 - 0.5) * 200 * p.speed]
     );
 
-    // Opacity: particle is brightest when scroll progress is near its "zone"
-    const zone = shift;
-    const opacityBase = useTransform(scrollProgress, [
-        Math.max(0, zone - 0.4),
-        Math.max(0, zone - 0.15),
-        zone,
-        Math.min(1, zone + 0.15),
-        Math.min(1, zone + 0.4),
-    ], [0.04, 0.25, 0.5, 0.25, 0.04]);
+    // Brightness: particle glows more when scroll is near its "zone" on the page
+    // BUT it is always visible at a base opacity of 0.22
+    const zone = p.topPct / 100;
+    const glow = useTransform(
+        smoothProgress,
+        [
+            Math.max(0, zone - 0.35),
+            Math.max(0, zone - 0.1),
+            zone,
+            Math.min(1, zone + 0.1),
+            Math.min(1, zone + 0.35),
+        ],
+        [0, 0.32, 0.72, 0.32, 0]
+    );
 
-    const s = particle.size;
+    // Base opacity constant + scroll-reactive glow layer handled via boxShadow intensity
+    const shadowBlur = useTransform(glow, (g) => `0 0 ${4 + g * 20}px hsl(4 72% 54% / ${0.5 + g * 0.5})`);
 
     return (
         <motion.div
             style={{
                 position: "absolute",
-                top: `${particle.topPct}%`,
-                right: 12 + (s % 2) * 10, // alternate slightly inward
-                width: s,
-                height: s,
+                top: `${p.topPct}%`,
+                right: p.xOff,
+                width: p.size,
+                height: p.size,
                 borderRadius: "50%",
-                background: "hsl(4 72% 54%)",
-                boxShadow: `0 0 ${s * 4}px hsl(4 72% 54% / 0.7)`,
+                background: "hsl(4 72% 56%)",
+                boxShadow: shadowBlur,
                 y: yPx,
-                opacity: opacityBase,
+                // Always visible at 0.22 — scroll makes it brighter, never invisible
+                opacity: useTransform(glow, (g) => 0.22 + g * 0.55),
             }}
-            // Ambient pulse independent of scroll
-            animate={{
-                scale: [1, 1.3, 1],
-            }}
+            // Slow ambient pulse
+            animate={{ scale: [1, 1.25, 1] }}
             transition={{
-                duration: 3.5 + particle.delay,
+                duration: 4 + (index % 3),
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: particle.delay,
+                delay: index * 0.38,
             }}
         />
     );
 }
 
-// Thin vertical line that connects particles — grows with scroll
-function ConnectionLine({ scrollProgress }: { scrollProgress: ReturnType<typeof useSpring> }) {
-    const height = useTransform(scrollProgress, [0, 1], ["0%", "100%"]);
-    const opacity = useTransform(scrollProgress, [0, 0.05, 0.95, 1], [0, 0.12, 0.12, 0]);
+// Thin right-edge guide line that fills in as you scroll
+function GuideRail({ smoothProgress }: { smoothProgress: MotionValue<number> }) {
+    const scaleY = useTransform(smoothProgress, [0, 1], [0, 1]);
+    const opacity = useTransform(smoothProgress, [0, 0.04, 0.96, 1], [0, 0.1, 0.1, 0]);
 
     return (
         <motion.div
             style={{
                 position: "absolute",
                 top: 0,
-                right: 19,
+                right: 28,
                 width: 1,
-                height,
-                background: "linear-gradient(to bottom, transparent, hsl(4 72% 54% / 0.18), transparent)",
+                height: "100%",
+                scaleY,
+                transformOrigin: "top",
+                background:
+                    "linear-gradient(to bottom, transparent 0%, hsl(4 72% 54% / 0.22) 15%, hsl(4 72% 54% / 0.22) 85%, transparent 100%)",
                 opacity,
             }}
         />
@@ -95,24 +103,23 @@ function ConnectionLine({ scrollProgress }: { scrollProgress: ReturnType<typeof 
 
 export default function RightEdgeParticles() {
     const isMobile = useIsMobile();
-    // Also hide on narrower viewports where there isn't empty right-edge space
-    const wrapperRef = useRef<HTMLDivElement>(null);
+    const ref = useRef<HTMLDivElement>(null);
 
-    const { scrollYProgress } = useScroll(); // whole-document scroll
-    const smoothProgress = useSpring(scrollYProgress, { stiffness: 50, damping: 25 });
+    const { scrollYProgress } = useScroll();
+    const smoothProgress = useSpring(scrollYProgress, { stiffness: 55, damping: 28 });
 
-    // Hide on mobile / small screens — not enough safe space on right edge
     if (isMobile) return null;
 
     return (
+        // Show on lg+ (≥1024px) where right-edge space exists
         <div
-            ref={wrapperRef}
-            className="fixed top-0 right-0 h-screen w-10 pointer-events-none z-40 hidden xl:block"
+            ref={ref}
+            className="fixed top-0 right-0 h-screen w-14 pointer-events-none z-40 hidden lg:block"
             aria-hidden="true"
         >
-            <ConnectionLine scrollProgress={smoothProgress} />
+            <GuideRail smoothProgress={smoothProgress} />
             {PARTICLES.map((p, i) => (
-                <Particle key={i} particle={p} scrollProgress={smoothProgress} />
+                <Particle key={i} p={p} smoothProgress={smoothProgress} index={i} />
             ))}
         </div>
     );
