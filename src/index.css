@@ -4,44 +4,44 @@
 
 @layer base {
   :root {
-    --background: 222 47% 4%;
-    --foreground: 40 18% 96%;
+    --background: 222 50% 2%;
+    --foreground: 40 18% 98%;
 
-    --card: 222 47% 6%;
-    --card-foreground: 40 18% 96%;
+    --card: 222 50% 4%;
+    --card-foreground: 40 18% 98%;
 
-    --popover: 222 47% 6%;
-    --popover-foreground: 40 18% 96%;
+    --popover: 222 50% 4%;
+    --popover-foreground: 40 18% 98%;
 
-    --primary: 239 84% 67%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 45 93% 58%;
+    --primary-foreground: 0 0% 0%;
 
-    --secondary: 222 47% 10%;
-    --secondary-foreground: 40 18% 96%;
+    --secondary: 222 30% 8%;
+    --secondary-foreground: 40 18% 98%;
 
-    --muted: 222 47% 14%;
-    --muted-foreground: 222 10% 60%;
+    --muted: 222 20% 12%;
+    --muted-foreground: 222 10% 65%;
 
-    --accent: 350 89% 60%;
+    --accent: 210 100% 50%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 40 18% 96%;
+    --destructive-foreground: 40 18% 98%;
 
-    --border: 222 47% 12%;
-    --input: 222 47% 12%;
-    --ring: 239 84% 67%;
+    --border: 222 30% 12%;
+    --input: 222 30% 12%;
+    --ring: 45 93% 58%;
 
     --radius: 0.6rem;
 
-    --sidebar-background: 222 47% 5%;
-    --sidebar-foreground: 40 18% 96%;
-    --sidebar-primary: 239 84% 67%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 222 47% 10%;
-    --sidebar-accent-foreground: 40 18% 96%;
-    --sidebar-border: 222 47% 12%;
-    --sidebar-ring: 239 84% 67%;
+    --sidebar-background: 222 50% 3%;
+    --sidebar-foreground: 40 18% 98%;
+    --sidebar-primary: 45 93% 58%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 222 30% 8%;
+    --sidebar-accent-foreground: 40 18% 98%;
+    --sidebar-border: 222 30% 12%;
+    --sidebar-ring: 45 93% 58%;
   }
 }
 
@@ -64,8 +64,8 @@
   }
 
   body {
-    /* Theme 0002: Night Obsidian background */
-    background: #020408;
+    /* Theme 0004: Midnight Void background */
+    background: #010308;
   }
 }
 
@@ -310,37 +310,37 @@
   }
 }
 
-/* Section gradient backgrounds — Theme 0002: Rich Nebula Depth */
+/* Section gradient backgrounds — Theme 0004: Midnight Gold Depth */
 .section-gradient-hero {
-  background: linear-gradient(180deg, #020408 0%, #050512 100%);
+  background: linear-gradient(180deg, #010308 0%, #020612 100%);
 }
 
 .section-gradient-dna {
-  background: linear-gradient(180deg, #050512 0%, #03030a 100%);
+  background: linear-gradient(180deg, #020612 0%, #01040a 100%);
 }
 
 .section-gradient-proof {
-  background: linear-gradient(180deg, #03030a 0%, #060614 100%);
+  background: linear-gradient(180deg, #01040a 0%, #03081a 100%);
 }
 
 .section-gradient-stats {
-  background: linear-gradient(180deg, #060614 0%, #04040c 100%);
+  background: linear-gradient(180deg, #03081a 0%, #020612 100%);
 }
 
 .section-gradient-capabilities {
-  background: linear-gradient(180deg, #04040c 0%, #050512 100%);
+  background: linear-gradient(180deg, #020612 0%, #01040a 100%);
 }
 
 .section-gradient-process {
-  background: linear-gradient(180deg, #050512 0%, #03030a 100%);
+  background: linear-gradient(180deg, #01040a 0%, #03081a 100%);
 }
 
 .section-gradient-trust {
-  background: linear-gradient(180deg, #03030a 0%, #060614 100%);
+  background: linear-gradient(180deg, #03081a 0%, #020612 100%);
 }
 
 .section-gradient-contact {
-  background: linear-gradient(180deg, #060614 0%, #020408 100%);
+  background: linear-gradient(180deg, #020612 0%, #010308 100%);
 }
 
 /* Gear continuous spin */
