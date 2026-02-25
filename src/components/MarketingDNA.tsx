@@ -349,19 +349,6 @@ export default function MarketingDNA() {
 
                     {/* ── Left: Copy + KPIs ──────────────────────── */}
                     <div className="flex-1 text-center lg:text-left z-20">
-                        {/* Badge */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] uppercase tracking-widest font-bold mb-6"
-                        >
-                            <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-                            </span>
-                            Proprietary Engine v3.0
-                        </motion.div>
 
                         <motion.h2
                             initial={{ opacity: 0, y: 22 }}
