@@ -104,18 +104,6 @@ export default function RightEdgeParticles() {
                 ctx.fill();
             }
 
-            // Vignette fade at edges so it blends into the page
-            const vigT = ctx.createLinearGradient(0, 0, 0, 70);
-            vigT.addColorStop(0, "rgba(5,5,5,1)");
-            vigT.addColorStop(1, "rgba(5,5,5,0)");
-            ctx.fillStyle = vigT;
-            ctx.fillRect(0, 0, STRIP_W, 70);
-
-            const vigB = ctx.createLinearGradient(0, h - 70, 0, h);
-            vigB.addColorStop(0, "rgba(5,5,5,0)");
-            vigB.addColorStop(1, "rgba(5,5,5,1)");
-            ctx.fillStyle = vigB;
-            ctx.fillRect(0, h - 70, STRIP_W, 70);
 
             rafRef.current = requestAnimationFrame(draw);
         };
@@ -139,7 +127,7 @@ export default function RightEdgeParticles() {
                 width: STRIP_W,
                 height: "100vh",
                 pointerEvents: "none",
-                zIndex: 45,
+                zIndex: 9999,
             }}
             className="hidden lg:block"
             aria-hidden="true"
