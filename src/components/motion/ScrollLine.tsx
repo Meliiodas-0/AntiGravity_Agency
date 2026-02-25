@@ -1,4 +1,4 @@
-import { motion, useScroll, useSpring, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useSpring, useMotionValueEvent, useTransform } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Settings } from "lucide-react";
 import { useEffect, useRef, useState, useCallback } from "react";
@@ -41,6 +41,8 @@ export default function ScrollLine() {
       setPathTotalLength(pathRef.current.getTotalLength());
     }
   }, [dims]);
+
+  const gearOpacity = useTransform(smoothProgress, [0, 0.78, 0.83, 0.93, 0.98], [1, 1, 0.15, 0.15, 1]);
 
   useMotionValueEvent(smoothProgress, "change", (v) => {
     if (isMobile) return;
@@ -207,11 +209,12 @@ export default function ScrollLine() {
 
       {/* Gear icon — CSS spin + follows path + glow */}
       {pathTotalLength > 0 && (
-        <div
+        <motion.div
           className="absolute"
           style={{
             left: gearPos.x - gearSize / 2,
             top: gearPos.y - gearSize / 2,
+            opacity: gearOpacity
           }}
         >
           <div className="relative gear-spin">
@@ -226,11 +229,11 @@ export default function ScrollLine() {
             />
             <Settings
               size={gearSize}
-              className="text-primary/60 relative z-10 drop-shadow-[0_0_8px_hsl(var(--primary)/0.5)]"
+              className="text-primary/90 relative z-10 drop-shadow-[0_0_10px_hsl(var(--primary)/0.4)]"
               strokeWidth={1.5}
             />
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );

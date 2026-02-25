@@ -45,16 +45,16 @@ export default function Process() {
                 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.7, delay: idx * 0.15, ease: [0.22, 1, 0.36, 1] }}
-                className="relative group p-8 sm:p-10 rounded-2xl glass-card gradient-border glow-hover transition-all duration-500 h-full"
+                className="relative group p-8 sm:p-10 rounded-2xl bg-[#0b0b0b] border border-white/5 glow-hover transition-all duration-500 h-full"
               >
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary text-sm font-mono font-bold mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500">
+                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 text-white text-sm font-mono font-bold mb-6 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500">
                   {idx + 1}
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-4 tracking-tight group-hover:text-primary transition-colors duration-300">{step.title}</h3>
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-light">{step.description}</p>
+                <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 tracking-tight group-hover:text-primary transition-colors duration-300">{step.title}</h3>
+                <p className="text-sm sm:text-base text-white/50 leading-relaxed font-light">{step.description}</p>
 
                 {/* Visual marker for line connection points */}
-                <div className="hidden lg:block absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border border-primary/20 bg-[#0a0a0a]" />
+                <div className="hidden lg:block absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border border-white/10 bg-[#0a0a0a]" />
               </motion.div>
             ))}
           </div>

@@ -24,17 +24,17 @@ export default function Trust() {
               whileInView={{ opacity: 1, y: 0, scale: 1, filter: "none" }}
               viewport={{ once: true, margin: "-30px" }}
               transition={{ duration: 0.6, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-              className="group rounded-2xl glass-card gradient-border glow-hover p-8 sm:p-10 relative overflow-hidden"
+              className="group rounded-2xl bg-[#0b0b0b] border border-white/5 glow-hover p-8 sm:p-10 relative overflow-hidden"
             >
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-px w-8 bg-primary/30 group-hover:w-12 group-hover:bg-primary transition-all duration-500" />
-                <span className="text-xs font-mono font-bold text-primary/60 group-hover:text-primary transition-colors">0{i + 1}</span>
+                <div className="h-px w-8 bg-white/20 group-hover:w-12 group-hover:bg-primary transition-all duration-500" />
+                <span className="text-xs font-mono font-bold text-white/40 group-hover:text-primary transition-colors">0{i + 1}</span>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-bold text-foreground mb-4 group-hover:text-primary transition-colors duration-300 tracking-tight">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors duration-300 tracking-tight">
                 {card.title}
               </h3>
-              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-light">{card.description}</p>
+              <p className="text-sm sm:text-base text-white/50 leading-relaxed font-light">{card.description}</p>
 
               {/* Subtle background glow on hover */}
               <div className="absolute inset-0 bg-primary/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />

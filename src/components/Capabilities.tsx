@@ -71,7 +71,7 @@ export default function Capabilities() {
       <div className="max-w-7xl mx-auto">
         <ScrollReveal className="text-center mb-16 sm:mb-24">
           <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-primary/70 mb-4 font-medium">Expertise</p>
-          <h2 className="text-3xl sm:text-5xl font-bold mb-6 tracking-tight">{content.capabilities.h2}</h2>
+          <h2 className="text-3xl sm:text-5xl font-bold mb-6 tracking-tight">{content.capabilities.title}</h2>
           <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
             Our comprehensive digital suite ensures every aspect of your brand is handled with absolute precision and creative excellence.
           </p>
@@ -84,17 +84,17 @@ export default function Capabilities() {
               <ScrollReveal key={i} delay={i * 0.1} scale blur={!isMobile}>
                 <TiltCard
                   idx={i}
-                  className="glass-card p-8 sm:p-10 rounded-2xl border border-white/5 relative overflow-hidden group h-full gradient-border glow-hover"
+                  className="bg-[#0b0b0b] p-8 sm:p-10 rounded-2xl border border-white/5 relative overflow-hidden group h-full glow-hover transition-all duration-500"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500">
-                    <IconComponent className="w-6 h-6 text-primary group-hover:text-primary transition-colors" />
+                  <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-8 group-hover:bg-white/10 group-hover:scale-110 transition-all duration-500">
+                    <IconComponent className="w-6 h-6 text-white group-hover:text-white transition-colors" />
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-bold mb-4 tracking-tight group-hover:text-primary transition-colors duration-300">{item.title}</h3>
-                  <p className="text-muted-foreground text-sm sm:text-base leading-relaxed font-light">
-                    {item.desc}
+                  <h3 className="text-xl sm:text-2xl font-bold mb-4 tracking-tight text-white group-hover:text-primary transition-colors duration-300">{item.title}</h3>
+                  <p className="text-white/60 text-sm sm:text-base leading-relaxed font-light">
+                    {item.description}
                   </p>
                   {/* Subtle index number instead of giant one */}
-                  <div className="absolute bottom-6 right-8 text-primary/5 font-mono text-sm tracking-tighter select-none">
+                  <div className="absolute bottom-6 right-8 text-white/5 font-mono text-sm tracking-tighter select-none">
                     0{i + 1}
                   </div>
                 </TiltCard>
