@@ -4,6 +4,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 const STRIP_W = 52;
 const CX = STRIP_W / 2;
+const PARTICLE_COUNT = 38;  // dense cloud
 
 // Seeded pseudo-random so layout is stable across renders
 function seededRand(seed: number) {
@@ -12,21 +13,21 @@ function seededRand(seed: number) {
 }
 
 // Generate scattered particles once
-const PARTICLES = Array.from({ length: 22 }, (_, i) => {
+const PARTICLES = Array.from({ length: PARTICLE_COUNT }, (_, i) => {
     const r1 = seededRand(i * 3);
     const r2 = seededRand(i * 3 + 1);
     const r3 = seededRand(i * 3 + 2);
     return {
-        // Vertical position as fraction of strip height — spread evenly with jitter
-        baseFrac: (i / 21) + (r1 - 0.5) * 0.04,
+        // Vertical position spread evenly across 38 particles with slight jitter
+        baseFrac: (i / (PARTICLE_COUNT - 1)) + (r1 - 0.5) * 0.025,
         // Angle in degrees around the centre axis (initial spread for scattered look)
         initAngle: r2 * 360,
-        // Orbit radius — scattered from 8 to 20px
-        orbitR: 8 + r3 * 12,
-        // Radius of dot — 1.5 to 4.5px
-        dotR: 1.5 + seededRand(i * 7) * 3,
-        // Vertical offset jitter so they don't sit on perfect intervals
-        jitterY: (seededRand(i * 5) - 0.5) * 22,
+        // Orbit radius — tight 5–15px for dense feel
+        orbitR: 5 + r3 * 10,
+        // Fine dots: 0.7 to 2.2px
+        dotR: 0.7 + seededRand(i * 7) * 1.5,
+        // Soft vertical jitter
+        jitterY: (seededRand(i * 5) - 0.5) * 12,
         // Speed multiplier (some rotate faster than others)
         speedMult: 0.6 + seededRand(i * 11) * 0.8,
     };
