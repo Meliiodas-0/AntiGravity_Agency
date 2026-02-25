@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type Props = {
   text: string;
@@ -10,6 +11,7 @@ type Props = {
 };
 
 export default function TextReveal({ text, className = "", as: Tag = "h1", blurIn = true, heroMode = false }: Props) {
+  const isMobile = useIsMobile();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -18,6 +20,7 @@ export default function TextReveal({ text, className = "", as: Tag = "h1", blurI
 
   const words = text.split(" ");
 
+  // Hero always uses entrance animation (no scroll dependency)
   if (heroMode) {
     return (
       <div ref={ref}>
@@ -32,6 +35,29 @@ export default function TextReveal({ text, className = "", as: Tag = "h1", blurI
     );
   }
 
+  // Mobile: use whileInView stagger — words reveal once and stay visible even on scroll-back
+  if (isMobile) {
+    return (
+      <div ref={ref}>
+        <Tag className={className}>
+          {words.map((word, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0.08, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-block mr-[0.3em]"
+            >
+              {word}
+            </motion.span>
+          ))}
+        </Tag>
+      </div>
+    );
+  }
+
+  // Desktop: full scroll-driven word reveal
   return (
     <div ref={ref}>
       <Tag className={className}>
@@ -49,7 +75,6 @@ export default function TextReveal({ text, className = "", as: Tag = "h1", blurI
 function HeroWord({
   children,
   index,
-  total,
   blurIn,
 }: {
   children: string;
@@ -73,7 +98,7 @@ function HeroWord({
   );
 }
 
-/* Scroll-driven words for non-hero sections */
+/* Scroll-driven words for non-hero sections on desktop */
 function Word({
   children,
   index,
