@@ -1,40 +1,33 @@
-// Sections are eagerly imported EXCEPT ContactForm (58KB form library).
-// ContactForm is lazy but preloaded on idle so it's ready before user scrolls to it.
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import ProofStrips from "@/components/ProofStrips";
-import Capabilities from "@/components/Capabilities";
-import Process from "@/components/Process";
-import Trust from "@/components/Trust";
 import Footer from "@/components/Footer";
 import ParallaxOrbs from "@/components/motion/ParallaxOrbs";
 import SectionIndicator from "@/components/motion/SectionIndicator";
-import CounterStats from "@/components/motion/CounterStats";
-import MarketingDNA from "@/components/MarketingDNA";
 import RightEdgeParticles from "@/components/motion/RightEdgeParticles";
 import SmoothScroll from "@/components/motion/SmoothScroll";
 import ScrollProgress from "@/components/motion/ScrollProgress";
 import ScrollLine from "@/components/motion/ScrollLine";
 import SectionSlide from "@/components/motion/SectionSlide";
+import SectionPlaceholder from "@/components/motion/SectionPlaceholder";
 
-// Only ContactForm is lazy — it's 58KB (form library). Everything else is eager.
+// LEAVE EAGER (First Fold):
+// - Header
+// - Hero
+// - ProofStrips
+// This ensures the user sees content immediately.
+
+// MOVE TO LAZY (Below Fold):
+// Splitting these reduces initial JS parse time on mobile/iOS.
+const MarketingDNA = lazy(() => import("@/components/MarketingDNA"));
+const CounterStats = lazy(() => import("@/components/motion/CounterStats"));
+const Capabilities = lazy(() => import("@/components/Capabilities"));
+const Process = lazy(() => import("@/components/Process"));
+const Trust = lazy(() => import("@/components/Trust"));
 const ContactForm = lazy(() => import("@/components/ContactForm"));
 
-// Preload ContactForm chunk as soon as browser is idle (not blocking first paint)
-const preloadContactForm = () => import("@/components/ContactForm");
-
 const Index = () => {
-  // Kick off preload on idle so ContactForm is ready before user scrolls to it
-  useEffect(() => {
-    if ("requestIdleCallback" in window) {
-      (window as Window & typeof globalThis & { requestIdleCallback: (cb: () => void) => void })
-        .requestIdleCallback(preloadContactForm);
-    } else {
-      setTimeout(preloadContactForm, 2000);
-    }
-  }, []);
-
   return (
     <SmoothScroll>
       <ScrollProgress />
@@ -48,9 +41,12 @@ const Index = () => {
           <Hero />
         </div>
 
+        {/* MarketingDNA: Lazy with stable placeholder */}
         <SectionSlide index={1}>
           <div className="section-gradient-dna relative">
-            <MarketingDNA />
+            <Suspense fallback={<SectionPlaceholder height="80vh" />}>
+              <MarketingDNA />
+            </Suspense>
           </div>
         </SectionSlide>
 
@@ -60,34 +56,46 @@ const Index = () => {
           </div>
         </SectionSlide>
 
+        {/* Stats: Lazy */}
         <SectionSlide index={3}>
           <div className="section-gradient-stats">
-            <CounterStats />
+            <Suspense fallback={<SectionPlaceholder height="400px" />}>
+              <CounterStats />
+            </Suspense>
           </div>
         </SectionSlide>
 
+        {/* Capabilities: Lazy */}
         <SectionSlide index={4}>
           <div className="section-gradient-capabilities">
-            <Capabilities />
+            <Suspense fallback={<SectionPlaceholder height="600px" />}>
+              <Capabilities />
+            </Suspense>
           </div>
         </SectionSlide>
 
+        {/* Process: Lazy */}
         <SectionSlide index={5}>
           <div className="section-gradient-process">
-            <Process />
+            <Suspense fallback={<SectionPlaceholder height="600px" />}>
+              <Process />
+            </Suspense>
           </div>
         </SectionSlide>
 
+        {/* Trust: Lazy */}
         <SectionSlide index={6}>
           <div className="section-gradient-trust">
-            <Trust />
+            <Suspense fallback={<SectionPlaceholder height="600px" />}>
+              <Trust />
+            </Suspense>
           </div>
         </SectionSlide>
 
-        {/* ContactForm: lazy with Suspense — but chunk is preloaded on idle so it's ready */}
+        {/* ContactForm: Lazy */}
         <SectionSlide index={7}>
           <div className="section-gradient-contact">
-            <Suspense fallback={<div style={{ minHeight: "50vh" }} />}>
+            <Suspense fallback={<SectionPlaceholder height="80vh" />}>
               <ContactForm />
             </Suspense>
           </div>

@@ -33,9 +33,7 @@ export default function TextReveal({ text, className = "", as: Tag = "h1", blurI
         </Tag>
       </div>
     );
-  }
-
-  // Mobile: use whileInView stagger — words reveal once and stay visible even on scroll-back
+  }  // Mobile: use whileInView stagger — words reveal once and stay visible even on scroll-back
   if (isMobile) {
     return (
       <div ref={ref}>
@@ -43,7 +41,7 @@ export default function TextReveal({ text, className = "", as: Tag = "h1", blurI
           {words.map((word, i) => (
             <motion.span
               key={i}
-              initial={{ opacity: 0.08, y: 10 }}
+              initial={{ opacity: 1, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0 }}
               transition={{ duration: 0.4, delay: i * 0.04, ease: [0.22, 1, 0.36, 1] }}

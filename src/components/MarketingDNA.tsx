@@ -6,7 +6,6 @@ import {
     useSpring,
     useMotionValueEvent,
     MotionValue,
-    useReducedMotion,
 } from "framer-motion";
 import {
     Instagram, Youtube, Linkedin, Twitter,
@@ -317,10 +316,8 @@ export default function MarketingDNA() {
     const radiusY = isMobile ? 78 : 98;
     const iconSize = isMobile ? 48 : 54;
 
-    const shouldReduceMotion = useReducedMotion();
-
     // Filter icons on mobile for cleaner look
-    const activeIcons = isMobile ? ORBIT_ICONS.slice(0, 3) : ORBIT_ICONS;
+    const activeIcons = isMobile ? ORBIT_ICONS.slice(0, 2) : ORBIT_ICONS;
 
     return (
         <section
@@ -461,9 +458,10 @@ export default function MarketingDNA() {
                                     inset 0 1px 0 rgba(255,255,255,0.07)
                                 `,
                                 position: "relative",
-                                transform: shouldReduceMotion
-                                    ? "none"
-                                    : `perspective(1200px) rotateX(5deg) rotateY(-14deg)`,
+                                transform: `perspective(1200px) rotateX(5deg) rotateY(-14deg)`,
+                                WebkitTransform: `perspective(1200px) rotateX(5deg) rotateY(-14deg)`,
+                                transformStyle: "preserve-3d",
+                                WebkitTransformStyle: "preserve-3d",
                                 overflow: "hidden",
                             }}>
                                 {/* Notch */}
@@ -504,7 +502,7 @@ export default function MarketingDNA() {
                         </motion.div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </div >
+        </section >
     );
 }
