@@ -156,9 +156,7 @@ function DataTrail({
 }
 
 // ─── Instagram Screen ─────────────────────────────────────────────────────────
-function InstagramScreen({ analyticsProgress }: { analyticsProgress: MotionValue<number> }) {
-    const analyticsY = useTransform(analyticsProgress, [0, 1], ["104%", "0%"]);
-
+function InstagramScreen() {
     return (
         <div className="w-full h-full bg-black flex flex-col overflow-hidden select-none text-white">
 
@@ -214,6 +212,20 @@ function InstagramScreen({ analyticsProgress }: { analyticsProgress: MotionValue
                 <p className="text-[#0095f6] text-[9px]">🔗 {BRAND.link}</p>
             </div>
 
+            {/* Professional Dashboard — inline dark card, right above buttons */}
+            <div className="mx-3 mb-1.5 shrink-0 bg-white/8 border border-white/10 rounded-xl px-2.5 py-1.5">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <p className="text-[8px] font-semibold text-white">Professional dashboard</p>
+                        <div className="flex items-center gap-0.5 mt-[1px]">
+                            <TrendingUp size={6} className="text-green-400" />
+                            <span className="text-[6px] text-white/50">1.4K views in the last 30 days.</span>
+                        </div>
+                    </div>
+                    <ArrowUpRight size={9} className="text-white/40" />
+                </div>
+            </div>
+
             {/* Buttons */}
             <div className="flex gap-1.5 px-3 pb-2 shrink-0">
                 {["Edit profile", "Share profile"].map(t => (
@@ -256,33 +268,6 @@ function InstagramScreen({ analyticsProgress }: { analyticsProgress: MotionValue
                         {p.reel && <Play size={5} className="absolute top-1 right-1 text-white/50" />}
                     </div>
                 ))}
-            </div>
-
-            {/* Professional Dashboard card — always visible, matches Instagram ref */}
-            <div className="absolute inset-x-0 bottom-0 bg-[#fafafa] rounded-t-2xl p-2.5 z-50 border-t border-gray-200">
-                {/* Header */}
-                <div className="flex items-start justify-between mb-1">
-                    <div>
-                        <p className="text-[9px] font-bold text-gray-900">Professional dashboard</p>
-                        <div className="flex items-center gap-0.5 mt-[1px]">
-                            <TrendingUp size={7} className="text-green-500" />
-                            <span className="text-[7px] text-gray-500">1.4K views in the last 30 days.</span>
-                        </div>
-                    </div>
-                    <ArrowUpRight size={10} className="text-gray-600 mt-0.5" />
-                </div>
-                {/* Buttons */}
-                <div className="flex gap-1.5">
-                    <div className="flex-1 h-[22px] bg-white border border-gray-300 rounded-lg text-[8px] font-semibold text-gray-800 flex items-center justify-center shadow-sm">
-                        Edit profile
-                    </div>
-                    <div className="flex-1 h-[22px] bg-white border border-gray-300 rounded-lg text-[8px] font-semibold text-gray-800 flex items-center justify-center shadow-sm">
-                        Share profile
-                    </div>
-                    <div className="w-[22px] h-[22px] bg-white border border-gray-300 rounded-lg flex items-center justify-center shadow-sm">
-                        <UserPlus size={9} className="text-gray-700" />
-                    </div>
-                </div>
             </div>
 
             {/* Bottom nav */}
