@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useSpring, useMotionValue, useAnimationFrame } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring, useMotionValue, useAnimationFrame, MotionValue } from "framer-motion";
 import { useRef, useState, useEffect, useMemo } from "react";
 import {
     Smartphone,
@@ -33,8 +33,8 @@ const socialIcons = [
 
 import { useMotionValueEvent } from "framer-motion";
 
-function StatCounter({ value, suffix = "", prefix = "" }: { value: any, suffix?: string, prefix?: string }) {
-    const [displayValue, setDisplayValue] = useState(0);
+function StatCounter({ value, suffix = "", prefix = "" }: { value: MotionValue<number>, suffix?: string, prefix?: string }) {
+    const [displayValue, setDisplayValue] = useState(value.get ? Math.floor(value.get()) : 0);
 
     useMotionValueEvent(value, "change", (latest: number) => {
         setDisplayValue(Math.floor(latest));
@@ -308,9 +308,9 @@ export default function MarketingDNA() {
     );
 }
 
-function DataParticle({ i, scrollYProgress }: { i: number, scrollYProgress: any }) {
-    const left = useMemo(() => `${Math.random() * 100}%`, [i]);
-    const top = useMemo(() => `${Math.random() * 100}%`, [i]);
+function DataParticle({ i, scrollYProgress }: { i: number, scrollYProgress: MotionValue<number> }) {
+    const left = useMemo(() => `${Math.random() * 100}%`, []);
+    const top = useMemo(() => `${Math.random() * 100}%`, []);
     const yTransform = useTransform(scrollYProgress, [0, 1], [0, (i % 2 === 0 ? 400 : -400)]);
 
     return (
@@ -328,7 +328,7 @@ function DataParticle({ i, scrollYProgress }: { i: number, scrollYProgress: any 
     );
 }
 
-function PostGridItem({ i, scrollYProgress }: { i: number, scrollYProgress: any }) {
+function PostGridItem({ i, scrollYProgress }: { i: number, scrollYProgress: MotionValue<number> }) {
     const opacity = useTransform(scrollYProgress, [0.4 + (i * 0.05), 0.6 + (i * 0.05)], [0, 1]);
 
     return (
@@ -345,19 +345,19 @@ function PostGridItem({ i, scrollYProgress }: { i: number, scrollYProgress: any 
 }
 
 function SocialIconHelix({ item, i, total, smoothRotation, helixRadius, scrollYProgress }: {
-    item: any,
+    item: { Icon: React.ElementType, color: string, label: string },
     i: number,
     total: number,
-    smoothRotation: any,
-    helixRadius: any,
-    scrollYProgress: any
+    smoothRotation: MotionValue<number>,
+    helixRadius: MotionValue<number>,
+    scrollYProgress: MotionValue<number>
 }) {
     const angle = (i / total) * Math.PI * 2;
 
-    const x = useTransform(smoothRotation, (r: any) => Math.cos(angle + (r * Math.PI) / 180) * helixRadius.get());
-    const y = useTransform(smoothRotation, (r: any) => Math.sin(angle + (r * Math.PI) / 180) * helixRadius.get() + Math.sin(angle) * 80);
+    const x = useTransform(smoothRotation, (r: number) => Math.cos(angle + (r * Math.PI) / 180) * helixRadius.get());
+    const y = useTransform(smoothRotation, (r: number) => Math.sin(angle + (r * Math.PI) / 180) * helixRadius.get() + Math.sin(angle) * 80);
     const scale = useTransform(scrollYProgress, [0.6, 0.9], [1.1, 0.3]);
-    const translateZ = useTransform(smoothRotation, (r: any) => Math.cos(angle + (r * Math.PI) / 180) * 180);
+    const translateZ = useTransform(smoothRotation, (r: number) => Math.cos(angle + (r * Math.PI) / 180) * 180);
     const opacity = useTransform(scrollYProgress, [0.7, 0.95], [1, 0]);
 
     const connHeight = useTransform(scrollYProgress, [0, 1], ["100px", "0px"]);

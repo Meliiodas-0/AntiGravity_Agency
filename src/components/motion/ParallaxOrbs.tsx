@@ -30,8 +30,8 @@ function Orb({ orb, scrollYProgress, isMobile }: {
       className={`absolute rounded-full ${isMobile ? "blur-[80px]" : "blur-[140px] morph-blob"}`}
       style={{
         top: orb.top,
-        left: (orb as any).left,
-        right: (orb as any).right,
+        left: (orb as Record<string, unknown>).left as string,
+        right: (orb as Record<string, unknown>).right as string,
         width: orb.size,
         height: orb.size,
         opacity: orb.opacity,

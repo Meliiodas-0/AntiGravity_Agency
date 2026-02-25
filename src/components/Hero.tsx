@@ -11,14 +11,14 @@ export default function Hero() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
 
   // Mouse tracking for reactive DNA
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const { clientX, clientY } = e;
     const { innerWidth, innerHeight } = window;
-    mouseX.set((clientX / innerWidth) - 0.5);
-    mouseY.set((clientY / innerHeight) - 0.5);
+    mouseX.set(clientX / innerWidth);
+    mouseY.set(clientY / innerHeight);
   };
 
   const subY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -15 : -40]);

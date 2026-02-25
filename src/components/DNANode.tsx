@@ -1,11 +1,11 @@
-import { motion, useTransform } from "framer-motion";
+import { motion, useTransform, MotionValue } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 type Props = {
     i: number;
-    scrollYProgress: any;
-    mouseX: any;
-    mouseY: any;
+    scrollYProgress: MotionValue<number>;
+    mouseX: MotionValue<number>;
+    mouseY: MotionValue<number>;
 };
 
 export default function DNANode({ i, scrollYProgress, mouseX, mouseY }: Props) {
@@ -30,8 +30,8 @@ export default function DNANode({ i, scrollYProgress, mouseX, mouseY }: Props) {
     const leftNodePos = useTransform(leftNodeBase, (v) => `${v}%`);
     const topNodePos = useTransform(topNodeBase, (v) => `${v}%`);
 
-    const mouseDisplacementX = useTransform(mouseX, [-0.5, 0.5], [isMobile ? -10 : -30, isMobile ? 10 : 30]);
-    const mouseDisplacementY = useTransform(mouseY, [-0.5, 0.5], [isMobile ? -10 : -30, isMobile ? 10 : 30]);
+    const mouseDisplacementX = useTransform(mouseX, [0, 1], [isMobile ? -10 : -30, isMobile ? 10 : 30]);
+    const mouseDisplacementY = useTransform(mouseY, [0, 1], [isMobile ? -10 : -30, isMobile ? 10 : 30]);
 
     const opacityNode = useTransform(scrollYProgress, [0, 0.1, 0.8, 1], [0, 0.8, 0.8, 0]);
     const scaleNode = useTransform(scrollYProgress, [0, 0.5], [1, 1.3]);
