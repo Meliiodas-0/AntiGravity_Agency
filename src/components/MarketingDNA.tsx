@@ -482,7 +482,7 @@ export default function MarketingDNA() {
                                     borderRadius: isMobile ? 30 : 40,
                                     overflow: "hidden",
                                 }}>
-                                    <InstagramScreen analyticsProgress={smoothAnalytics} />
+                                    <InstagramScreen />
                                 </div>
 
                                 {/* Rim light */}
