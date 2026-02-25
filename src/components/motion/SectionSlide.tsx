@@ -17,10 +17,12 @@ export default function SectionSlide({ children, className = "", index = 0 }: Pr
         offset: ["start end", "start start"],
     });
 
-    const scale = useTransform(scrollYProgress, [0, 1], [0.92, 1]);
-    const y = useTransform(scrollYProgress, [0, 1], [60, 0]);
-    const opacity = useTransform(scrollYProgress, [0, 0.3, 1], [0.4, 0.8, 1]);
-    const borderRadius = useTransform(scrollYProgress, [0, 1], [24, 0]);
+    // Tighter scale range (0.97→1) so there's no visible dark gap around the edges
+    const scale = useTransform(scrollYProgress, [0, 1], [0.97, 1]);
+    const y = useTransform(scrollYProgress, [0, 1], [40, 0]);
+    const opacity = useTransform(scrollYProgress, [0, 0.25, 1], [0, 0.9, 1]);
+    // Remove borderRadius — it was creating the visible dark rounded blob
+    // because the section's background colour showed through the rounded corners
 
     if (isMobile) {
         return <div className={className}>{children}</div>;
@@ -34,9 +36,9 @@ export default function SectionSlide({ children, className = "", index = 0 }: Pr
                 scale,
                 y,
                 opacity,
-                borderRadius,
                 zIndex: index + 1,
                 transformOrigin: "center top",
+                // No borderRadius here — avoids the dark card artifact
             }}
         >
             {children}
