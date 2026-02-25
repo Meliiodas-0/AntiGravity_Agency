@@ -1,126 +1,187 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { useScroll, useSpring } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-// 10 particles spread across the full page height
-// Slightly staggered left position to avoid a perfectly straight line
-const PARTICLES = [
-    { topPct: 5, size: 3, xOff: 22, speed: 0.6 },
-    { topPct: 14, size: 2, xOff: 14, speed: 0.4 },
-    { topPct: 23, size: 4, xOff: 24, speed: 0.8 },
-    { topPct: 33, size: 2, xOff: 18, speed: 0.5 },
-    { topPct: 43, size: 3, xOff: 26, speed: 0.9 },
-    { topPct: 53, size: 2, xOff: 12, speed: 0.7 },
-    { topPct: 63, size: 3, xOff: 22, speed: 0.6 },
-    { topPct: 72, size: 2, xOff: 16, speed: 0.4 },
-    { topPct: 82, size: 4, xOff: 24, speed: 0.8 },
-    { topPct: 91, size: 2, xOff: 18, speed: 0.5 },
-];
+// ── Canvas-based right-edge particle stream ──────────────────────────────────
+// Renders on a fixed canvas covering the right 56px of the viewport.
+// Scroll drives a "wave" crest that travels down the column.
+// Each dot has permanent visibility + a breathing pulse + scroll glow.
 
-function Particle({
-    p,
-    smoothProgress,
-    index,
-}: {
-    p: (typeof PARTICLES)[0];
-    smoothProgress: MotionValue<number>;
-    index: number;
-}) {
-    // Vertical parallax: particles drift at individual speeds as you scroll
-    const yPx = useTransform(
-        smoothProgress,
-        [0, 1],
-        [0, (p.topPct / 100 - 0.5) * 200 * p.speed]
-    );
+const PARTICLE_COUNT = 26;
+const STRIP_WIDTH = 56;
 
-    // Brightness: particle glows more when scroll is near its "zone" on the page
-    // BUT it is always visible at a base opacity of 0.22
-    const zone = p.topPct / 100;
-    const glow = useTransform(
-        smoothProgress,
-        [
-            Math.max(0, zone - 0.35),
-            Math.max(0, zone - 0.1),
-            zone,
-            Math.min(1, zone + 0.1),
-            Math.min(1, zone + 0.35),
-        ],
-        [0, 0.32, 0.72, 0.32, 0]
-    );
-
-    // Base opacity constant + scroll-reactive glow layer handled via boxShadow intensity
-    const shadowBlur = useTransform(glow, (g) => `0 0 ${4 + g * 20}px hsl(4 72% 54% / ${0.5 + g * 0.5})`);
-
-    return (
-        <motion.div
-            style={{
-                position: "absolute",
-                top: `${p.topPct}%`,
-                right: p.xOff,
-                width: p.size,
-                height: p.size,
-                borderRadius: "50%",
-                background: "hsl(4 72% 56%)",
-                boxShadow: shadowBlur,
-                y: yPx,
-                // Always visible at 0.22 — scroll makes it brighter, never invisible
-                opacity: useTransform(glow, (g) => 0.22 + g * 0.55),
-            }}
-            // Slow ambient pulse
-            animate={{ scale: [1, 1.25, 1] }}
-            transition={{
-                duration: 4 + (index % 3),
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: index * 0.38,
-            }}
-        />
-    );
+interface Dot {
+    // Fraction 0–1 of the column height
+    baseFrac: number;
+    // Slight horizontal variation within the strip
+    x: number;
+    radius: number;
+    // Individual pulse phase offset
+    phase: number;
+    speed: number; // vertical drift multiplier
 }
 
-// Thin right-edge guide line that fills in as you scroll
-function GuideRail({ smoothProgress }: { smoothProgress: MotionValue<number> }) {
-    const scaleY = useTransform(smoothProgress, [0, 1], [0, 1]);
-    const opacity = useTransform(smoothProgress, [0, 0.04, 0.96, 1], [0, 0.1, 0.1, 0]);
-
-    return (
-        <motion.div
-            style={{
-                position: "absolute",
-                top: 0,
-                right: 28,
-                width: 1,
-                height: "100%",
-                scaleY,
-                transformOrigin: "top",
-                background:
-                    "linear-gradient(to bottom, transparent 0%, hsl(4 72% 54% / 0.22) 15%, hsl(4 72% 54% / 0.22) 85%, transparent 100%)",
-                opacity,
-            }}
-        />
-    );
+function buildDots(): Dot[] {
+    const dots: Dot[] = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+        dots.push({
+            baseFrac: i / (PARTICLE_COUNT - 1),
+            x: STRIP_WIDTH / 2 + (Math.sin(i * 2.4) * 10), // gentle zigzag ~±10px
+            radius: 2 + (i % 3 === 0 ? 1.5 : 0) + (i % 7 === 0 ? 1 : 0),
+            phase: i * 0.45,
+            speed: 0.5 + (i % 4) * 0.12,
+        });
+    }
+    return dots;
 }
+
+const DOTS = buildDots();
 
 export default function RightEdgeParticles() {
     const isMobile = useIsMobile();
-    const ref = useRef<HTMLDivElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const rafRef = useRef<number>(0);
 
+    // Whole-document scroll progress [0,1]
     const { scrollYProgress } = useScroll();
-    const smoothProgress = useSpring(scrollYProgress, { stiffness: 55, damping: 28 });
+    const smooth = useSpring(scrollYProgress, { stiffness: 60, damping: 28 });
+
+    useEffect(() => {
+        if (isMobile) return;
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+
+        const resize = () => {
+            canvas.width = STRIP_WIDTH;
+            canvas.height = window.innerHeight;
+        };
+        resize();
+        window.addEventListener("resize", resize);
+
+        let startTime: number | null = null;
+
+        const draw = (ts: number) => {
+            if (!startTime) startTime = ts;
+            const elapsed = (ts - startTime) / 1000; // seconds
+            const scroll = smooth.get(); // 0–1
+
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return;
+
+            const h = canvas.height;
+            ctx.clearRect(0, 0, STRIP_WIDTH, h);
+
+            // ── Guide rail line ────────────────────────────────────────────────────
+            const railGrad = ctx.createLinearGradient(0, 0, 0, h);
+            railGrad.addColorStop(0, "rgba(192,57,43,0)");
+            railGrad.addColorStop(0.15, "rgba(192,57,43,0.14)");
+            railGrad.addColorStop(0.85, "rgba(192,57,43,0.14)");
+            railGrad.addColorStop(1, "rgba(192,57,43,0)");
+            ctx.strokeStyle = railGrad;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(STRIP_WIDTH / 2, 0);
+            ctx.lineTo(STRIP_WIDTH / 2, h);
+            ctx.stroke();
+
+            // ── "Wave crest": a bright highlight that travels down as you scroll ──
+            // crestY moves from top to bottom as scroll goes 0→1
+            const crestFrac = scroll;
+            const crestY = crestFrac * h;
+            const crestGlow = ctx.createRadialGradient(
+                STRIP_WIDTH / 2, crestY, 0,
+                STRIP_WIDTH / 2, crestY, 60
+            );
+            crestGlow.addColorStop(0, "rgba(220,60,43,0.22)");
+            crestGlow.addColorStop(0.5, "rgba(192,57,43,0.08)");
+            crestGlow.addColorStop(1, "rgba(192,57,43,0)");
+            ctx.fillStyle = crestGlow;
+            ctx.fillRect(0, Math.max(0, crestY - 60), STRIP_WIDTH, 120);
+
+            // ── Dots ───────────────────────────────────────────────────────────────
+            DOTS.forEach((dot) => {
+                // Vertical position: base + parallax shift from scroll
+                const parallaxShift = (dot.baseFrac - 0.5) * 180 * dot.speed * scroll;
+                const rawY = dot.baseFrac * h + parallaxShift;
+                const y = Math.max(dot.radius, Math.min(h - dot.radius, rawY));
+
+                // Breathing pulse: each dot pulses independently
+                const pulse = 0.5 + 0.5 * Math.sin(elapsed * 1.6 + dot.phase);
+
+                // Base opacity — always visible
+                const baseOpacity = 0.35 + pulse * 0.15;
+
+                // Proximity to wave crest → extra glow
+                const dist = Math.abs(y - crestY);
+                const crestBoost = Math.max(0, 1 - dist / 160);
+                const finalOpacity = Math.min(1, baseOpacity + crestBoost * 0.5);
+
+                // Core dot
+                const r = dot.radius * (1 + pulse * 0.18);
+                ctx.beginPath();
+                ctx.arc(dot.x, y, r, 0, Math.PI * 2);
+
+                const coreHue = 4 + crestBoost * 6;
+                const coreLit = 54 + crestBoost * 10;
+                ctx.fillStyle = `hsla(${coreHue}, 72%, ${coreLit}%, ${finalOpacity})`;
+                ctx.fill();
+
+                // Soft glow halo
+                const glowR = r * (2.8 + crestBoost * 2);
+                const grad = ctx.createRadialGradient(dot.x, y, 0, dot.x, y, glowR);
+                grad.addColorStop(0, `hsla(4,72%,56%,${finalOpacity * 0.55})`);
+                grad.addColorStop(0.5, `hsla(4,72%,54%,${finalOpacity * 0.18})`);
+                grad.addColorStop(1, "hsla(4,72%,54%,0)");
+                ctx.beginPath();
+                ctx.arc(dot.x, y, glowR, 0, Math.PI * 2);
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                // Connector segment to next dot
+                const nextDot = DOTS[(DOTS.indexOf(dot) + 1) % DOTS.length];
+                if (nextDot) {
+                    const nextParallax = (nextDot.baseFrac - 0.5) * 180 * nextDot.speed * scroll;
+                    const nextY = Math.max(
+                        nextDot.radius,
+                        Math.min(h - nextDot.radius, nextDot.baseFrac * h + nextParallax)
+                    );
+                    const segOpacity = (finalOpacity * 0.25);
+                    ctx.beginPath();
+                    ctx.moveTo(dot.x, y);
+                    ctx.lineTo(nextDot.x, nextY);
+                    ctx.strokeStyle = `hsla(4,72%,54%,${segOpacity})`;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            });
+
+            rafRef.current = requestAnimationFrame(draw);
+        };
+
+        rafRef.current = requestAnimationFrame(draw);
+
+        return () => {
+            window.removeEventListener("resize", resize);
+            cancelAnimationFrame(rafRef.current);
+        };
+    }, [isMobile, smooth]);
 
     if (isMobile) return null;
 
     return (
-        // Show on lg+ (≥1024px) where right-edge space exists
-        <div
-            ref={ref}
-            className="fixed top-0 right-0 h-screen w-14 pointer-events-none z-40 hidden lg:block"
+        <canvas
+            ref={canvasRef}
+            style={{
+                position: "fixed",
+                top: 0,
+                right: 0,
+                width: STRIP_WIDTH,
+                height: "100vh",
+                pointerEvents: "none",
+                zIndex: 45,
+            }}
+            className="hidden lg:block"
             aria-hidden="true"
-        >
-            <GuideRail smoothProgress={smoothProgress} />
-            {PARTICLES.map((p, i) => (
-                <Particle key={i} p={p} smoothProgress={smoothProgress} index={i} />
-            ))}
-        </div>
+        />
     );
 }
