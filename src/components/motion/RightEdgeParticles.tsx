@@ -128,6 +128,7 @@ export default function RightEdgeParticles() {
                 height: "100vh",
                 pointerEvents: "none",
                 zIndex: 9999,
+                background: "transparent",
             }}
             className="hidden lg:block"
             aria-hidden="true"
