@@ -309,12 +309,12 @@ export default function MarketingDNA() {
     const reactorScale = useTransform(scrollYProgress, [0.82, 0.90, 1.0], [1, 1.5, 1]);
     const reactorOpacity = useTransform(scrollYProgress, [0.82, 0.88, 1.0], [0, 0.18, 0]);
 
-    // Dimensions
-    const phoneW = isMobile ? 200 : 250;
-    const phoneH = isMobile ? 406 : 508;
-    const radiusX = isMobile ? 114 : 215;   // large enough to clear phone edge
-    const radiusY = isMobile ? 56 : 98;
-    const iconSize = isMobile ? 42 : 54;
+    // Dimensions — mobile matches desktop proportions (80% scale), same 3D look
+    const phoneW = isMobile ? 218 : 250;
+    const phoneH = isMobile ? 443 : 508;
+    const radiusX = isMobile ? 172 : 215;   // large enough to clear phone edge
+    const radiusY = isMobile ? 78 : 98;
+    const iconSize = isMobile ? 48 : 54;
 
     return (
         <section
@@ -397,10 +397,10 @@ export default function MarketingDNA() {
                     <div
                         className="flex-1 flex items-center justify-center relative"
                         style={{
-                            minHeight: isMobile ? 480 : 640,
+                            minHeight: isMobile ? 560 : 640,
                             // Extra horizontal room so orbit icons don't clip
-                            paddingLeft: isMobile ? 0 : radiusX * 0.6,
-                            paddingRight: isMobile ? 0 : radiusX * 0.6,
+                            paddingLeft: radiusX * 0.6,
+                            paddingRight: radiusX * 0.6,
                         }}
                     >
                         {/* Reactor glow */}
@@ -455,7 +455,7 @@ export default function MarketingDNA() {
                                     inset 0 1px 0 rgba(255,255,255,0.07)
                                 `,
                                 position: "relative",
-                                transform: `perspective(1200px) rotateX(5deg) rotateY(${isMobile ? 0 : -14}deg)`,
+                                transform: `perspective(1200px) rotateX(5deg) rotateY(-14deg)`,
                                 overflow: "hidden",
                             }}>
                                 {/* Notch */}
