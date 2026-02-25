@@ -309,33 +309,37 @@
   }
 }
 
-/* Section gradient backgrounds for color shifting */
+/* Section gradient backgrounds — pure near-black, no blue hue */
 .section-gradient-hero {
-  background: linear-gradient(180deg, hsl(210 15% 5%) 0%, hsl(210 12% 6%) 100%);
+  background: linear-gradient(180deg, #050505 0%, #070707 100%);
+}
+
+.section-gradient-dna {
+  background: linear-gradient(180deg, #070707 0%, #060606 100%);
 }
 
 .section-gradient-proof {
-  background: linear-gradient(180deg, hsl(210 12% 6%) 0%, hsl(215 12% 7%) 100%);
+  background: linear-gradient(180deg, #060606 0%, #080808 100%);
 }
 
 .section-gradient-stats {
-  background: linear-gradient(180deg, hsl(215 12% 7%) 0%, hsl(210 14% 6.5%) 100%);
+  background: linear-gradient(180deg, #080808 0%, #060606 100%);
 }
 
 .section-gradient-capabilities {
-  background: linear-gradient(180deg, hsl(210 14% 6.5%) 0%, hsl(220 12% 7%) 100%);
+  background: linear-gradient(180deg, #060606 0%, #070707 100%);
 }
 
 .section-gradient-process {
-  background: linear-gradient(180deg, hsl(220 12% 7%) 0%, hsl(210 10% 6%) 100%);
+  background: linear-gradient(180deg, #070707 0%, #060606 100%);
 }
 
 .section-gradient-trust {
-  background: linear-gradient(180deg, hsl(210 10% 6%) 0%, hsl(205 13% 7%) 100%);
+  background: linear-gradient(180deg, #060606 0%, #080808 100%);
 }
 
 .section-gradient-contact {
-  background: linear-gradient(180deg, hsl(205 13% 7%) 0%, hsl(210 15% 5%) 100%);
+  background: linear-gradient(180deg, #080808 0%, #050505 100%);
 }
 
 /* Gear continuous spin */

@@ -49,8 +49,34 @@ export default function ParallaxOrbs() {
   const { scrollYProgress } = useScroll();
   const isMobile = useIsMobile();
 
-  // Skip entirely on mobile — heavy blur causes GPU stalls and slows first paint
-  if (isMobile) return null;
+  if (isMobile) {
+    // Single lightweight ambient glow on mobile — warm red top-right
+    // blur-[100px] instead of 140px, no morph animation, very low opacity
+    return (
+      <div className="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
+        <div
+          className="absolute rounded-full"
+          style={{
+            top: "5%", right: "-10%",
+            width: 280, height: 280,
+            background: "hsl(4 72% 54%)",
+            opacity: 0.055,
+            filter: "blur(90px)",
+          }}
+        />
+        <div
+          className="absolute rounded-full"
+          style={{
+            top: "55%", left: "-8%",
+            width: 200, height: 200,
+            background: "hsl(4 72% 54%)",
+            opacity: 0.04,
+            filter: "blur(80px)",
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
@@ -60,3 +86,4 @@ export default function ParallaxOrbs() {
     </div>
   );
 }
+
