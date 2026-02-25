@@ -463,19 +463,22 @@ export default function MarketingDNA() {
                             <div style={{
                                 width: phoneW, height: phoneH,
                                 borderRadius: isMobile ? 38 : 48,
-                                background: "#0c0c0c",
-                                border: "9px solid #181818",
+                                background: "#050505",
+                                border: "9px solid #141414",
                                 boxShadow: `
-                                    0 0 0 1px rgba(255,255,255,0.06),
-                                    0 40px 100px rgba(0,0,0,0.85),
-                                    0 0 50px rgba(192,57,43,0.07),
-                                    inset 0 1px 0 rgba(255,255,255,0.07)
+                                    0 0 0 1px rgba(255,255,255,0.1),
+                                    0 40px 100px rgba(0,0,0,0.9),
+                                    0 0 80px rgba(192,57,43,0.12),
+                                    inset 0 0 0 1px rgba(255,255,255,0.08)
                                 `,
                                 position: "relative",
-                                transform: `perspective(1200px) rotateX(5deg) rotateY(-14deg)`,
-                                WebkitTransform: `perspective(1200px) rotateX(5deg) rotateY(-14deg)`,
+                                transform: `perspective(1800px) rotateX(5deg) rotateY(-14deg) translateZ(0)`,
+                                WebkitTransform: `perspective(1800px) rotateX(5deg) rotateY(-14deg) translateZ(0)`,
                                 transformStyle: "preserve-3d",
                                 WebkitTransformStyle: "preserve-3d",
+                                WebkitFontSmoothing: "antialiased",
+                                backfaceVisibility: "hidden",
+                                WebkitBackfaceVisibility: "hidden",
                                 overflow: "hidden",
                             }}>
                                 {/* Notch */}
@@ -483,16 +486,16 @@ export default function MarketingDNA() {
                                     position: "absolute", top: 0, left: "50%",
                                     transform: "translateX(-50%)",
                                     width: "38%", height: 22,
-                                    background: "#0c0c0c",
-                                    borderBottomLeftRadius: 14, borderBottomRightRadius: 14,
-                                    zIndex: 60, border: "1px solid rgba(255,255,255,0.04)", borderTop: "none",
+                                    background: "#121212",
+                                    borderBottomLeftRadius: 16, borderBottomRightRadius: 16,
+                                    zIndex: 60, border: "1px solid rgba(255,255,255,0.08)", borderTop: "none",
                                 }} />
 
                                 {/* Glass glare */}
                                 <div style={{
                                     position: "absolute", top: 0, left: "-15%",
                                     width: "40%", height: "100%",
-                                    background: "linear-gradient(115deg, rgba(255,255,255,0.04) 0%, transparent 55%)",
+                                    background: "linear-gradient(115deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.02) 30%, transparent 60%)",
                                     zIndex: 55, pointerEvents: "none",
                                 }} />
 
