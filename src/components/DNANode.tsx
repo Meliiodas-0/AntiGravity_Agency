@@ -8,109 +8,54 @@ type Props = {
     mouseY: MotionValue<number>;
 };
 
+// Fixed edge positions — never overlapping the center headline text
+const EDGE_POSITIONS = [
+    { baseX: 4, baseY: 15 }, { baseX: 6, baseY: 40 }, { baseX: 3, baseY: 70 },
+    { baseX: 94, baseY: 20 }, { baseX: 96, baseY: 55 }, { baseX: 92, baseY: 80 },
+    { baseX: 20, baseY: 5 }, { baseX: 80, baseY: 8 },
+    { baseX: 15, baseY: 88 }, { baseX: 85, baseY: 90 },
+];
+
 export default function DNANode({ i, scrollYProgress, mouseX, mouseY }: Props) {
     const isMobile = useIsMobile();
-    const isVisible = isMobile ? i < 12 : true;
+    const pos = EDGE_POSITIONS[i % EDGE_POSITIONS.length];
 
-    const isStrandB = i % 2 === 0;
-    const phase = (i / (isMobile ? 6 : 15)) * Math.PI * 2;
-    const initialX = isStrandB ? 25 : 65;
+    // All hooks always called — gating done via conditional render at the bottom
+    const mouseDisplacementX = useTransform(mouseX, [0, 1], [-12, 12]);
+    const mouseDisplacementY = useTransform(mouseY, [0, 1], [-12, 12]);
+    const opacityNode = useTransform(scrollYProgress, [0, 0.05, 0.6, 0.85], [0, 0.3, 0.3, 0]);
 
-    // Node position transforms
-    const leftNodeBase = useTransform(scrollYProgress, [0, 1], [
-        initialX + (isStrandB ? Math.sin(phase) * 12 : Math.cos(phase) * 12),
-        50 + (isStrandB ? Math.sin(phase + 5) * 8 : Math.cos(phase + 5) * 8),
-    ]);
+    // Conditionally skip rendering on mobile for higher-index nodes
+    if (isMobile && i >= 4) return null;
 
-    const topNodeBase = useTransform(scrollYProgress, [0, 1], [
-        20 + (i * 2.5),
-        100 + (i * 6)
-    ]);
-
-    const leftNodePos = useTransform(leftNodeBase, (v) => `${v}%`);
-    const topNodePos = useTransform(topNodeBase, (v) => `${v}%`);
-
-    const mouseDisplacementX = useTransform(mouseX, [0, 1], [isMobile ? -10 : -30, isMobile ? 10 : 30]);
-    const mouseDisplacementY = useTransform(mouseY, [0, 1], [isMobile ? -10 : -30, isMobile ? 10 : 30]);
-
-    const opacityNode = useTransform(scrollYProgress, [0, 0.1, 0.8, 1], [0, 0.8, 0.8, 0]);
-    const scaleNode = useTransform(scrollYProgress, [0, 0.5], [1, 1.3]);
-
-    // Path transforms
-    const leftPathBase = useTransform(scrollYProgress, [0, 1], [
-        25 + Math.sin(phase) * 12,
-        50 + Math.sin(phase + 5) * 8,
-    ]);
-
-    const strandWidth = Math.abs(65 + Math.cos(phase) * 12 - (25 + Math.sin(phase) * 12));
-    const widthPathBase = useTransform(scrollYProgress, [0, 1], [
-        strandWidth,
-        4
-    ]);
-
-    const topPathBase = useTransform(scrollYProgress, [0, 1], [
-        20 + (i * 2.5) + 0.15,
-        100 + (i * 6) + 0.15
-    ]);
-
-    const leftPathPos = useTransform(leftPathBase, (v) => `${v}%`);
-    const widthPathStr = useTransform(widthPathBase, (v) => `${v}%`);
-    const topPathPos = useTransform(topPathBase, (v) => `${v}%`);
-
-    const opacityPath = useTransform(scrollYProgress, [0, 0.1, 0.5, 1], [0, 0.5, 0.5, 0]);
-    const rotatePath = useTransform(scrollYProgress, [0, 1], [0, 35]);
-
-    if (!isVisible) return null;
+    const size = i % 3 === 0 ? 5 : 3;
 
     return (
-        <>
-            {/* Neural Node */}
-            <motion.div
-                style={{
-                    position: 'absolute',
-                    left: leftNodePos,
-                    x: mouseDisplacementX,
-                    y: mouseDisplacementY,
-                    top: topNodePos,
-                    width: i % 3 === 0 ? '6px' : '4px',
-                    height: i % 3 === 0 ? '6px' : '4px',
-                    backgroundColor: 'hsl(var(--primary))',
-                    borderRadius: '50%',
-                    boxShadow: `0 0 ${i % 3 === 0 ? '20px' : '10px'} hsl(var(--primary))`,
-                    opacity: opacityNode,
-                    scale: scaleNode,
-                    zIndex: 30
-                }}
-                animate={{
-                    opacity: [0.4, 1, 0.4],
-                    scale: [1, 1.2, 1]
-                }}
-                transition={{
-                    duration: 3 + (i % 5) * 0.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: (i % 10) * 0.2
-                }}
-            />
-
-            {/* Neural Path (Connecting strand) */}
-            {!isStrandB && (
-                <motion.div
-                    style={{
-                        position: 'absolute',
-                        left: leftPathPos,
-                        x: mouseDisplacementX,
-                        y: mouseDisplacementY,
-                        width: widthPathStr,
-                        top: topPathPos,
-                        height: '2px',
-                        background: 'linear-gradient(90deg, transparent, hsl(var(--primary)/0.4), transparent)',
-                        opacity: opacityPath,
-                        transformOrigin: 'left center',
-                        rotate: rotatePath
-                    }}
-                />
-            )}
-        </>
+        <motion.div
+            style={{
+                position: 'absolute',
+                left: `${pos.baseX}%`,
+                top: `${pos.baseY}%`,
+                x: mouseDisplacementX,
+                y: mouseDisplacementY,
+                width: `${size}px`,
+                height: `${size}px`,
+                backgroundColor: 'hsl(var(--primary))',
+                borderRadius: '50%',
+                boxShadow: `0 0 ${size * 3}px hsl(var(--primary) / 0.6)`,
+                opacity: opacityNode,
+                zIndex: 5,
+            }}
+            animate={{
+                opacity: [0.15, 0.35, 0.15],
+                scale: [1, 1.15, 1],
+            }}
+            transition={{
+                duration: 6 + (i % 4) * 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: (i % 5) * 1.2,
+            }}
+        />
     );
 }

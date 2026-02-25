@@ -111,9 +111,9 @@ export default function Hero() {
         </svg>
       </motion.div>
 
-      {/* Neural DNA Transition — Reactive 3D Double Helix Swarm */}
+      {/* Neural DNA Transition — Subtle edge particles only */}
       <div className="absolute inset-0 pointer-events-none overflow-visible z-20" aria-hidden="true">
-        {[...Array(30)].map((_, i) => (
+        {[...Array(10)].map((_, i) => (
           <DNANode
             key={i}
             i={i}
