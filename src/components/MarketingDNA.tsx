@@ -6,6 +6,7 @@ import {
     useSpring,
     useMotionValueEvent,
     MotionValue,
+    useReducedMotion,
 } from "framer-motion";
 import {
     Instagram, Youtube, Linkedin, Twitter,
@@ -316,6 +317,11 @@ export default function MarketingDNA() {
     const radiusY = isMobile ? 78 : 98;
     const iconSize = isMobile ? 48 : 54;
 
+    const shouldReduceMotion = useReducedMotion();
+
+    // Filter icons on mobile for cleaner look
+    const activeIcons = isMobile ? ORBIT_ICONS.slice(0, 3) : ORBIT_ICONS;
+
     return (
         <section
             ref={containerRef}
@@ -416,20 +422,20 @@ export default function MarketingDNA() {
                         <div style={{ position: "absolute", top: "50%", left: "50%", zIndex: 1 }}>
 
                             {/* Icons */}
-                            {ORBIT_ICONS.map((item, i) => (
+                            {activeIcons.map((item, i) => (
                                 <OrbitIcon
                                     key={item.color}
-                                    item={item} index={i} total={ORBIT_ICONS.length}
+                                    item={item} index={i} total={activeIcons.length}
                                     orbitProgress={orbitProgress}
                                     radiusX={radiusX} radiusY={radiusY} iconSize={iconSize}
                                 />
                             ))}
 
                             {/* Data trails */}
-                            {ORBIT_ICONS.map((_, i) => (
+                            {activeIcons.map((_, i) => (
                                 <DataTrail
                                     key={i}
-                                    index={i} total={ORBIT_ICONS.length}
+                                    index={i} total={activeIcons.length}
                                     orbitProgress={orbitProgress}
                                     trailOpacity={trailOpacity}
                                     radiusX={radiusX} radiusY={radiusY}
@@ -455,7 +461,9 @@ export default function MarketingDNA() {
                                     inset 0 1px 0 rgba(255,255,255,0.07)
                                 `,
                                 position: "relative",
-                                transform: `perspective(1200px) rotateX(5deg) rotateY(-14deg)`,
+                                transform: shouldReduceMotion
+                                    ? "none"
+                                    : `perspective(1200px) rotateX(5deg) rotateY(-14deg)`,
                                 overflow: "hidden",
                             }}>
                                 {/* Notch */}
