@@ -112,11 +112,11 @@ export default function ScrollLine() {
       >
         <defs>
           <linearGradient id="scroll-line-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0" />
-            <stop offset="5%" stopColor="#ffffff" stopOpacity="0.04" />
-            <stop offset="50%" stopColor="#00ffa3" stopOpacity="0.06" />
-            <stop offset="95%" stopColor="#ffffff" stopOpacity="0.04" />
-            <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+            <stop offset="0%" stopColor="#000000" stopOpacity="0" />
+            <stop offset="5%" stopColor="#000000" stopOpacity="0.04" />
+            <stop offset="50%" stopColor="#000000" stopOpacity="0.08" />
+            <stop offset="95%" stopColor="#000000" stopOpacity="0.04" />
+            <stop offset="100%" stopColor="#000000" stopOpacity="0" />
           </linearGradient>
 
           <filter id="dot-glow">
@@ -138,11 +138,11 @@ export default function ScrollLine() {
 
           {/* Gradient for active trail */}
           <linearGradient id="trail-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#00ffa3" stopOpacity="0" />
-            <stop offset="15%" stopColor="#00ffa3" stopOpacity="0.6" />
-            <stop offset="50%" stopColor="#ffffff" stopOpacity="0.8" />
-            <stop offset="85%" stopColor="#00ffa3" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#00ffa3" stopOpacity="0" />
+            <stop offset="0%" stopColor="#000000" stopOpacity="0" />
+            <stop offset="15%" stopColor="#000000" stopOpacity="0.6" />
+            <stop offset="50%" stopColor="#555555" stopOpacity="0.8" />
+            <stop offset="85%" stopColor="#000000" stopOpacity="0.6" />
+            <stop offset="100%" stopColor="#000000" stopOpacity="0" />
           </linearGradient>
         </defs>
 

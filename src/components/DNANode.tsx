@@ -40,9 +40,9 @@ export default function DNANode({ i, scrollYProgress, mouseX, mouseY }: Props) {
                 y: mouseDisplacementY,
                 width: `${size}px`,
                 height: `${size}px`,
-                backgroundColor: '#00ffa3',
+                backgroundColor: '#0d0d0d',
                 borderRadius: '50%',
-                boxShadow: `0 0 ${size * 4}px rgba(0, 255, 163, 0.4)`,
+                boxShadow: `0 0 ${size * 4}px rgba(0, 0, 0, 0.15)`,
                 opacity: opacityNode,
                 zIndex: 5,
             }}

@@ -26,23 +26,23 @@ const BRAND = {
 
 // ─── Social Icons ─────────────────────────────────────────────────────────────
 const ORBIT_ICONS = [
-    { Icon: Instagram, color: "#E4405F", bg: "#050505" },
-    { Icon: Twitter, color: "#1DA1F2", bg: "#050505" },
-    { Icon: Linkedin, color: "#0A66C2", bg: "#050505" },
-    { Icon: Youtube, color: "#FF0000", bg: "#050505" },
+    { Icon: Instagram, color: "#E4405F", bg: "#f0f0f0" },
+    { Icon: Twitter, color: "#1DA1F2", bg: "#f0f0f0" },
+    { Icon: Linkedin, color: "#0A66C2", bg: "#f0f0f0" },
+    { Icon: Youtube, color: "#FF0000", bg: "#f0f0f0" },
 ];
 
 // ─── Post Grid ────────────────────────────────────────────────────────────────
 const POST_GRID = [
-    { bg: "from-[#050505] to-[#000000]", accent: "#00ffa3", label: "300K REACH", reel: true },
-    { bg: "from-[#000000] to-[#0a0a0a]", accent: "#444", label: "Ad Creative", reel: false },
-    { bg: "from-[#020d1c] to-[#000000]", accent: "#00ffa3", label: "Client Win", reel: false },
-    { bg: "from-[#0a0a0a] to-[#000000]", accent: "#666", label: "Brand Shoot", reel: false },
-    { bg: "from-[#1a0820] to-[#000000]", accent: "#fff", label: "CASE STUDY", reel: true },
-    { bg: "from-[#0a0e2a] to-[#0a0a0a]", accent: "#555", label: "BTS", reel: false },
-    { bg: "from-[#000000] to-[#0a0a0a]", accent: "#00ffa3", label: "Motion", reel: true },
-    { bg: "from-[#020d1c] to-[#000000]", accent: "#4ade80", label: "+220k Reach", reel: false },
-    { bg: "from-[#000000] to-[#0a0a0a]", accent: "#666", label: "Interview", reel: false },
+    { bg: "from-[#f0f0f0] to-[#ffffff]", accent: "#000000", label: "300K REACH", reel: true },
+    { bg: "from-[#ffffff] to-[#f9f9f9]", accent: "#aaa", label: "Ad Creative", reel: false },
+    { bg: "from-[#f0f9ff] to-[#ffffff]", accent: "#007bff", label: "Client Win", reel: false },
+    { bg: "from-[#f9f9f9] to-[#ffffff]", accent: "#bbb", label: "Brand Shoot", reel: false },
+    { bg: "from-[#fff0f5] to-[#ffffff]", accent: "#ff007f", label: "CASE STUDY", reel: true },
+    { bg: "from-[#f5f5ff] to-[#f9f9f9]", accent: "#ccc", label: "BTS", reel: false },
+    { bg: "from-[#ffffff] to-[#f9f9f9]", accent: "#000000", label: "Motion", reel: true },
+    { bg: "from-[#effdf5] to-[#ffffff]", accent: "#10b981", label: "+220k Reach", reel: false },
+    { bg: "from-[#ffffff] to-[#f9f9f9]", accent: "#aaa", label: "Interview", reel: false },
 ];
 
 const HIGHLIGHTS = ["Results", "Clients", "Reels", "Ads", "BTS"];
@@ -146,7 +146,7 @@ function DataTrail({
                 width,
                 rotate,
                 transformOrigin: "left center",
-                background: "linear-gradient(to right, hsl(170 100% 50% / 0.7), transparent)",
+                background: "linear-gradient(to right, rgba(0,0,0,0.15), transparent)",
                 opacity: trailOpacity,
                 zIndex: 18,
                 pointerEvents: "none",
@@ -188,9 +188,9 @@ function InstagramScreen() {
 
             {/* Profile row */}
             <div className="flex items-center gap-3 px-3 pb-2 shrink-0">
-                <div className="w-14 h-14 rounded-full p-[2px] bg-gradient-to-tr from-[#00ffa3] via-[#ffffff] to-[#00ffa3] shrink-0">
-                    <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
-                        <div className="w-full h-full rounded-full bg-gradient-to-br from-[#050505] to-[#000000] flex items-center justify-center text-[12px] font-black text-white">
+                <div className="w-14 h-14 rounded-full p-[2px] bg-gradient-to-tr from-[#000000] via-[#555555] to-[#000000] shrink-0">
+                    <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
+                        <div className="w-full h-full rounded-full bg-gradient-to-br from-[#f0f0f0] to-[#ffffff] flex items-center justify-center text-[12px] font-black text-black">
                             SA
                         </div>
                     </div>
@@ -241,7 +241,7 @@ function InstagramScreen() {
             <div className="flex gap-3 px-4 pb-3 overflow-x-hidden shrink-0">
                 {HIGHLIGHTS.map(h => (
                     <div key={h} className="flex flex-col items-center gap-1 shrink-0">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-white/20 bg-gradient-to-br from-[#00ffa3]/30 to-black flex items-center justify-center text-[9px] sm:text-[10px] font-bold text-white">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-black/10 bg-gradient-to-br from-[#f0f0f0] to-white flex items-center justify-center text-[9px] sm:text-[10px] font-bold text-black shadow-sm">
                             {h[0]}
                         </div>
                         <span className="text-[8px] sm:text-[9px] text-white/40 font-medium">{h}</span>
@@ -337,7 +337,7 @@ export default function MarketingDNA() {
     return (
         <section
             ref={containerRef}
-            className="relative py-20 sm:py-32 md:py-52 overflow-visible bg-[#050505]"
+            className="relative py-20 sm:py-32 md:py-52 overflow-visible bg-transparent"
         >
             {/* Ambient glow */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -412,7 +412,7 @@ export default function MarketingDNA() {
                         <motion.div style={{
                             scale: reactorScale, opacity: reactorOpacity,
                             position: "absolute", width: 280, height: 280, borderRadius: "50%",
-                            background: "hsl(4 72% 54%)", filter: "blur(70px)",
+                            background: "rgba(0,0,0,0.03)", filter: "blur(70px)",
                             zIndex: 0, top: "50%", left: "50%", x: "-50%", y: "-50%",
                             pointerEvents: "none",
                         }} />
@@ -454,10 +454,10 @@ export default function MarketingDNA() {
                                 background: "#050505",
                                 border: "9px solid #141414",
                                 boxShadow: `
-                                    0 0 0 1px rgba(255,255,255,0.1),
-                                    0 40px 100px rgba(0,0,0,0.9),
-                                    0 0 80px rgba(0,255,163,0.12),
-                                    inset 0 0 0 1px rgba(255,255,255,0.08)
+                                    0 0 0 1px rgba(0,0,0,0.05),
+                                    0 40px 100px rgba(0,0,0,0.08),
+                                    0 0 80px rgba(0,0,0,0.03),
+                                    inset 0 0 0 1px rgba(255,255,255,0.8)
                                 `,
                                 position: "relative",
                                 transform: `perspective(1800px) rotateX(5deg) rotateY(-14deg) translateZ(0)`,

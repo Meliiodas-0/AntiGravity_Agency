@@ -36,84 +36,68 @@ const Index = () => {
       <RightEdgeParticles />
       <ScrollLine />
       <Header />
-      <main role="main" className="noise-overlay bg-white">
-        <div className="p-3 sm:p-6 lg:p-10">
-          <div className="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-            <Hero />
-          </div>
+      <main role="main" className="noise-overlay">
+        <div className="section-gradient-hero">
+          <Hero />
         </div>
 
         {/* MarketingDNA: Lazy with stable placeholder */}
         <SectionSlide index={1}>
-          <div className="p-3 sm:p-6 lg:p-10 -mt-6 sm:-mt-10">
-            <div className="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative min-h-[80vh]">
-              <Suspense fallback={<SectionPlaceholder height="80vh" />}>
-                <MarketingDNA />
-              </Suspense>
-            </div>
+          <div className="section-gradient-dna relative">
+            <Suspense fallback={<SectionPlaceholder height="80vh" />}>
+              <MarketingDNA />
+            </Suspense>
           </div>
         </SectionSlide>
 
         <SectionSlide index={2}>
-          <div className="p-3 sm:p-6 lg:p-10 -mt-6 sm:-mt-10">
-            <div className="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-              <ProofStrips />
-            </div>
+          <div className="section-gradient-proof">
+            <ProofStrips />
           </div>
         </SectionSlide>
 
         {/* Stats: Lazy */}
         <SectionSlide index={3}>
-          <div className="p-3 sm:p-6 lg:p-10 -mt-6 sm:-mt-10">
-            <div className="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-              <Suspense fallback={<SectionPlaceholder height="400px" />}>
-                <CounterStats />
-              </Suspense>
-            </div>
+          <div className="section-gradient-stats">
+            <Suspense fallback={<SectionPlaceholder height="400px" />}>
+              <CounterStats />
+            </Suspense>
           </div>
         </SectionSlide>
 
         {/* Capabilities: Lazy */}
         <SectionSlide index={4}>
-          <div className="p-3 sm:p-6 lg:p-10 -mt-6 sm:-mt-10">
-            <div className="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-              <Suspense fallback={<SectionPlaceholder height="600px" />}>
-                <Capabilities />
-              </Suspense>
-            </div>
+          <div className="section-gradient-capabilities">
+            <Suspense fallback={<SectionPlaceholder height="600px" />}>
+              <Capabilities />
+            </Suspense>
           </div>
         </SectionSlide>
 
         {/* Process: Lazy */}
         <SectionSlide index={5}>
-          <div className="p-3 sm:p-6 lg:p-10 -mt-6 sm:-mt-10">
-            <div className="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-              <Suspense fallback={<SectionPlaceholder height="600px" />}>
-                <Process />
-              </Suspense>
-            </div>
+          <div className="section-gradient-process">
+            <Suspense fallback={<SectionPlaceholder height="600px" />}>
+              <Process />
+            </Suspense>
           </div>
         </SectionSlide>
 
         {/* Trust: Lazy */}
         <SectionSlide index={6}>
-          <div className="p-3 sm:p-6 lg:p-10 -mt-6 sm:-mt-10">
-            <div className="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-              <Suspense fallback={<SectionPlaceholder height="600px" />}>
-                <Trust />
-              </Suspense>
-            </div>
+          <div className="section-gradient-trust">
+            <Suspense fallback={<SectionPlaceholder height="600px" />}>
+              <Trust />
+            </Suspense>
           </div>
         </SectionSlide>
 
         {/* ContactForm: Lazy */}
         <SectionSlide index={7}>
-          <div className="p-3 sm:p-6 lg:p-10 -mt-6 sm:-mt-10">
-            <div className="bg-black rounded-[2.5rem] overflow-hidden shadow-2xl relative min-h-[80vh]">
-              <Suspense fallback={<SectionPlaceholder height="80vh" />}>
-                <ContactForm />
-              </Suspense>
-            </div>
+          <div className="section-gradient-contact">
+            <Suspense fallback={<SectionPlaceholder height="80vh" />}>
+              <ContactForm />
+            </Suspense>
           </div>
         </SectionSlide>
       </main>
