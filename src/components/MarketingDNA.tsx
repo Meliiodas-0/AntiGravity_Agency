@@ -285,10 +285,24 @@ export default function MarketingDNA() {
     const containerRef = useRef<HTMLDivElement>(null);
     const isMobile = useIsMobile();
 
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start end", "end start"],
-    });
+    // Use global scroll and calculate relative progress manually. 
+    // This is much more reliable on mobile Safari/iOS than the 'target' prop.
+    const { scrollY } = useScroll();
+    const [elementTop, setElementTop] = useState(0);
+    const [elementHeight, setElementHeight] = useState(0);
+
+    useEffect(() => {
+        if (!containerRef.current) return;
+        const rect = containerRef.current.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        setElementTop(rect.top + scrollTop);
+        setElementHeight(rect.height);
+    }, []);
+
+    const scrollYProgress = useTransform(scrollY,
+        [elementTop - window.innerHeight, elementTop + elementHeight],
+        [0, 1]
+    );
 
     // Orbit: starts at scroll 0.2, completes a full revolution by 1.0
     const rawOrbit = useTransform(scrollYProgress, [0.2, 1.0], [0, 1]);
