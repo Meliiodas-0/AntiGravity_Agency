@@ -2,49 +2,19 @@ import { useEffect, useRef } from "react";
 import { useScroll, useSpring } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-// ── Canvas-based right-edge particle stream ──────────────────────────────────
-// Renders on a fixed canvas covering the right 56px of the viewport.
-// Scroll drives a "wave" crest that travels down the column.
-// Each dot has permanent visibility + a breathing pulse + scroll glow.
-
-const PARTICLE_COUNT = 26;
-const STRIP_WIDTH = 56;
-
-interface Dot {
-    // Fraction 0–1 of the column height
-    baseFrac: number;
-    // Slight horizontal variation within the strip
-    x: number;
-    radius: number;
-    // Individual pulse phase offset
-    phase: number;
-    speed: number; // vertical drift multiplier
-}
-
-function buildDots(): Dot[] {
-    const dots: Dot[] = [];
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-        dots.push({
-            baseFrac: i / (PARTICLE_COUNT - 1),
-            x: STRIP_WIDTH / 2 + (Math.sin(i * 2.4) * 10), // gentle zigzag ~±10px
-            radius: 2 + (i % 3 === 0 ? 1.5 : 0) + (i % 7 === 0 ? 1 : 0),
-            phase: i * 0.45,
-            speed: 0.5 + (i % 4) * 0.12,
-        });
-    }
-    return dots;
-}
-
-const DOTS = buildDots();
+const STRIP_W = 52;
+const NODE_COUNT = 22;        // nodes per strand
+const NODE_SPACING = 38;      // px between nodes vertically
+const AMPLITUDE = 16;         // horizontal sine amplitude
+const CROSS_LINKS = true;     // draw rungs between strands
 
 export default function RightEdgeParticles() {
     const isMobile = useIsMobile();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const rafRef = useRef<number>(0);
 
-    // Whole-document scroll progress [0,1]
     const { scrollYProgress } = useScroll();
-    const smooth = useSpring(scrollYProgress, { stiffness: 60, damping: 28 });
+    const smooth = useSpring(scrollYProgress, { stiffness: 55, damping: 26 });
 
     useEffect(() => {
         if (isMobile) return;
@@ -52,108 +22,161 @@ export default function RightEdgeParticles() {
         if (!canvas) return;
 
         const resize = () => {
-            canvas.width = STRIP_WIDTH;
+            canvas.width = STRIP_W;
             canvas.height = window.innerHeight;
         };
         resize();
         window.addEventListener("resize", resize);
 
-        let startTime: number | null = null;
+        let t0: number | null = null;
 
         const draw = (ts: number) => {
-            if (!startTime) startTime = ts;
-            const elapsed = (ts - startTime) / 1000; // seconds
-            const scroll = smooth.get(); // 0–1
+            if (!t0) t0 = ts;
+            const elapsed = (ts - t0) / 1000;         // seconds
+            const scroll = smooth.get();              // 0–1
 
             const ctx = canvas.getContext("2d");
-            if (!ctx) return;
+            if (!ctx) { rafRef.current = requestAnimationFrame(draw); return; }
 
             const h = canvas.height;
-            ctx.clearRect(0, 0, STRIP_WIDTH, h);
+            const cx = STRIP_W / 2;
 
-            // ── Guide rail line ────────────────────────────────────────────────────
-            const railGrad = ctx.createLinearGradient(0, 0, 0, h);
-            railGrad.addColorStop(0, "rgba(192,57,43,0)");
-            railGrad.addColorStop(0.15, "rgba(192,57,43,0.14)");
-            railGrad.addColorStop(0.85, "rgba(192,57,43,0.14)");
-            railGrad.addColorStop(1, "rgba(192,57,43,0)");
-            ctx.strokeStyle = railGrad;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(STRIP_WIDTH / 2, 0);
-            ctx.lineTo(STRIP_WIDTH / 2, h);
-            ctx.stroke();
+            ctx.clearRect(0, 0, STRIP_W, h);
 
-            // ── "Wave crest": a bright highlight that travels down as you scroll ──
-            // crestY moves from top to bottom as scroll goes 0→1
-            const crestFrac = scroll;
-            const crestY = crestFrac * h;
-            const crestGlow = ctx.createRadialGradient(
-                STRIP_WIDTH / 2, crestY, 0,
-                STRIP_WIDTH / 2, crestY, 60
-            );
-            crestGlow.addColorStop(0, "rgba(220,60,43,0.22)");
-            crestGlow.addColorStop(0.5, "rgba(192,57,43,0.08)");
-            crestGlow.addColorStop(1, "rgba(192,57,43,0)");
-            ctx.fillStyle = crestGlow;
-            ctx.fillRect(0, Math.max(0, crestY - 60), STRIP_WIDTH, 120);
+            // ── rotation: time-driven + scroll accelerates it ────────────────────
+            // base rotation turns continuously; scroll adds extra angular offset
+            const baseRot = elapsed * 0.9;
+            const scrollRot = scroll * Math.PI * 3;  // extra 1.5 full turns at scroll=1
+            const rot = baseRot + scrollRot;
 
-            // ── Dots ───────────────────────────────────────────────────────────────
-            DOTS.forEach((dot) => {
-                // Vertical position: base + parallax shift from scroll
-                const parallaxShift = (dot.baseFrac - 0.5) * 180 * dot.speed * scroll;
-                const rawY = dot.baseFrac * h + parallaxShift;
-                const y = Math.max(dot.radius, Math.min(h - dot.radius, rawY));
+            // ── vertical scroll offset: helix drifts upward as user scrolls ─────
+            const scrollOffset = scroll * NODE_COUNT * NODE_SPACING * 0.6;
 
-                // Breathing pulse: each dot pulses independently
-                const pulse = 0.5 + 0.5 * Math.sin(elapsed * 1.6 + dot.phase);
+            // Total helix height
+            const helixH = (NODE_COUNT - 1) * NODE_SPACING;
+            // Start above viewport so it scrolls into view nicely
+            const startY = (h - helixH) / 2 - scrollOffset;
 
-                // Base opacity — always visible
-                const baseOpacity = 0.35 + pulse * 0.15;
+            // ─── helper: map depth (sin of angle) to visual properties ──────────
+            const depthProps = (depth: number) => {
+                // depth: -1 = behind, +1 = front
+                const normDepth = (depth + 1) / 2;        // 0–1
+                const opacity = 0.28 + normDepth * 0.62;
+                const radius = 2 + normDepth * 2.2;
+                const bright = 42 + normDepth * 18;   // hsl lightness
+                return { opacity, radius, bright };
+            };
 
-                // Proximity to wave crest → extra glow
-                const dist = Math.abs(y - crestY);
-                const crestBoost = Math.max(0, 1 - dist / 160);
-                const finalOpacity = Math.min(1, baseOpacity + crestBoost * 0.5);
+            // Build node data for both strands before drawing so we can layer properly
+            type NodeData = {
+                x: number; y: number; depth: number;
+                opacity: number; radius: number; bright: number; strand: 0 | 1;
+                idx: number;
+            };
+            const nodes: NodeData[] = [];
 
-                // Core dot
-                const r = dot.radius * (1 + pulse * 0.18);
-                ctx.beginPath();
-                ctx.arc(dot.x, y, r, 0, Math.PI * 2);
+            for (let i = 0; i < NODE_COUNT; i++) {
+                const angle = rot + i * (Math.PI * 2 / 8); // 8 steps per full turn
+                const y = startY + i * NODE_SPACING;
 
-                const coreHue = 4 + crestBoost * 6;
-                const coreLit = 54 + crestBoost * 10;
-                ctx.fillStyle = `hsla(${coreHue}, 72%, ${coreLit}%, ${finalOpacity})`;
-                ctx.fill();
+                // Skip nodes completely off screen
+                if (y < -20 || y > h + 20) continue;
 
-                // Soft glow halo
-                const glowR = r * (2.8 + crestBoost * 2);
-                const grad = ctx.createRadialGradient(dot.x, y, 0, dot.x, y, glowR);
-                grad.addColorStop(0, `hsla(4,72%,56%,${finalOpacity * 0.55})`);
-                grad.addColorStop(0.5, `hsla(4,72%,54%,${finalOpacity * 0.18})`);
-                grad.addColorStop(1, "hsla(4,72%,54%,0)");
-                ctx.beginPath();
-                ctx.arc(dot.x, y, glowR, 0, Math.PI * 2);
-                ctx.fillStyle = grad;
-                ctx.fill();
+                // Strand A
+                const ax = cx + Math.cos(angle) * AMPLITUDE;
+                const da = Math.sin(angle);
+                const pa = depthProps(da);
+                nodes.push({ x: ax, y, depth: da, ...pa, strand: 0, idx: i });
 
-                // Connector segment to next dot
-                const nextDot = DOTS[(DOTS.indexOf(dot) + 1) % DOTS.length];
-                if (nextDot) {
-                    const nextParallax = (nextDot.baseFrac - 0.5) * 180 * nextDot.speed * scroll;
-                    const nextY = Math.max(
-                        nextDot.radius,
-                        Math.min(h - nextDot.radius, nextDot.baseFrac * h + nextParallax)
-                    );
-                    const segOpacity = (finalOpacity * 0.25);
+                // Strand B (π offset)
+                const bx = cx + Math.cos(angle + Math.PI) * AMPLITUDE;
+                const db = Math.sin(angle + Math.PI);
+                const pb = depthProps(db);
+                nodes.push({ x: bx, y, depth: db, ...pb, strand: 1, idx: i });
+            }
+
+            // Sort back-to-front for painter's algorithm
+            nodes.sort((a, b) => a.depth - b.depth);
+
+            // ─── Draw cross-link rungs (behind everything) ────────────────────────
+            if (CROSS_LINKS) {
+                for (let i = 0; i < NODE_COUNT; i++) {
+                    const angle = rot + i * (Math.PI * 2 / 8);
+                    const y = startY + i * NODE_SPACING;
+                    if (y < -10 || y > h + 10) continue;
+
+                    const ax = cx + Math.cos(angle) * AMPLITUDE;
+                    const bx = cx + Math.cos(angle + Math.PI) * AMPLITUDE;
+
+                    // Cross-link only visible when the two strands are roughly side-by-side
+                    const da = Math.sin(angle);
+                    const crossOpacity = Math.max(0, (1 - Math.abs(da)) * 0.22);
+
                     ctx.beginPath();
-                    ctx.moveTo(dot.x, y);
-                    ctx.lineTo(nextDot.x, nextY);
-                    ctx.strokeStyle = `hsla(4,72%,54%,${segOpacity})`;
-                    ctx.lineWidth = 0.5;
+                    ctx.moveTo(ax, y);
+                    ctx.lineTo(bx, y);
+                    ctx.strokeStyle = `hsla(4,72%,54%,${crossOpacity})`;
+                    ctx.lineWidth = 0.8;
                     ctx.stroke();
                 }
-            });
+            }
+
+            // ─── Draw backbone curves between adjacent same-strand nodes ─────────
+            // Do this per strand to get smooth curves
+            for (const strand of [0, 1] as const) {
+                const strandNodes = nodes
+                    .filter(n => n.strand === strand)
+                    .sort((a, b) => a.idx - b.idx);
+
+                for (let k = 0; k < strandNodes.length - 1; k++) {
+                    const a = strandNodes[k];
+                    const b = strandNodes[k + 1];
+                    const avgOp = (a.opacity + b.opacity) / 2 * 0.32;
+
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y);
+                    ctx.lineTo(b.x, b.y);
+
+                    // Color shifts slightly per strand
+                    const hue = strand === 0 ? 4 : 8;
+                    ctx.strokeStyle = `hsla(${hue},72%,54%,${avgOp})`;
+                    ctx.lineWidth = 0.8;
+                    ctx.stroke();
+                }
+            }
+
+            // ─── Draw nodes (sorted back-to-front) ───────────────────────────────
+            for (const n of nodes) {
+                // Glow halo
+                const glowR = n.radius * 3.2;
+                const grd = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowR);
+                grd.addColorStop(0, `hsla(4,72%,60%,${n.opacity * 0.55})`);
+                grd.addColorStop(0.5, `hsla(4,72%,54%,${n.opacity * 0.15})`);
+                grd.addColorStop(1, "hsla(4,72%,54%,0)");
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, glowR, 0, Math.PI * 2);
+                ctx.fillStyle = grd;
+                ctx.fill();
+
+                // Core dot
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(4,72%,${n.bright}%,${n.opacity})`;
+                ctx.fill();
+            }
+
+            // ─── Subtle vignette fade at top and bottom ───────────────────────────
+            const vigTop = ctx.createLinearGradient(0, 0, 0, 80);
+            vigTop.addColorStop(0, "rgba(5,5,5,0.95)");
+            vigTop.addColorStop(1, "rgba(5,5,5,0)");
+            ctx.fillStyle = vigTop;
+            ctx.fillRect(0, 0, STRIP_W, 80);
+
+            const vigBot = ctx.createLinearGradient(0, h - 80, 0, h);
+            vigBot.addColorStop(0, "rgba(5,5,5,0)");
+            vigBot.addColorStop(1, "rgba(5,5,5,0.95)");
+            ctx.fillStyle = vigBot;
+            ctx.fillRect(0, h - 80, STRIP_W, 80);
 
             rafRef.current = requestAnimationFrame(draw);
         };
@@ -175,7 +198,7 @@ export default function RightEdgeParticles() {
                 position: "fixed",
                 top: 0,
                 right: 0,
-                width: STRIP_WIDTH,
+                width: STRIP_W,
                 height: "100vh",
                 pointerEvents: "none",
                 zIndex: 45,
