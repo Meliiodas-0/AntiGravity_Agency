@@ -48,12 +48,14 @@ function Orb({ orb, scrollYProgress, isMobile }: {
 export default function ParallaxOrbs() {
   const { scrollYProgress } = useScroll();
   const isMobile = useIsMobile();
-  const orbs = isMobile ? orbsMobile : orbsDesktop;
+
+  // Skip entirely on mobile — heavy blur causes GPU stalls and slows first paint
+  if (isMobile) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0" aria-hidden="true">
-      {orbs.map((orb, i) => (
-        <Orb key={i} orb={orb} scrollYProgress={scrollYProgress} isMobile={isMobile} />
+      {orbsDesktop.map((orb, i) => (
+        <Orb key={i} orb={orb} scrollYProgress={scrollYProgress} isMobile={false} />
       ))}
     </div>
   );

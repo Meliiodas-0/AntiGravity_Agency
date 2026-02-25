@@ -294,11 +294,13 @@ function InstagramScreen({ analyticsProgress }: { analyticsProgress: MotionValue
                             <motion.div
                                 key={i}
                                 className="flex-1 rounded-t-[1px]"
-                                style={{ background: `hsl(4 72% ${42 + h * 0.13}%)`, opacity: 0.65 + h * 0.0035 }}
-                                initial={{ scaleY: 0 }}
-                                animate={{ scaleY: 1 }}
-                                transition={{ delay: i * 0.04, duration: 0.5, ease: "easeOut" }}
-                                transformOrigin="bottom"
+                                style={{
+                                    background: `hsl(4 72% ${42 + h * 0.13}%)`,
+                                    opacity: 0.65 + h * 0.0035,
+                                    transformOrigin: "bottom",
+                                    scaleY: 1,
+                                    height: `${h}%`,
+                                }}
                             />
                         ))}
                     </div>
