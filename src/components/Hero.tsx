@@ -25,8 +25,11 @@ export default function Hero() {
   const ctaY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -8 : -20]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.8], [1, isMobile ? 1 : 0.95]);
-  const blur = useTransform(scrollYProgress, [0.4, 0.8], [0, isMobile ? 0 : 8]);
-  const filterStr = useTransform(blur, (v) => v > 0 ? `blur(${v}px)` : "none");
+  // Only blur hero text on desktop during scroll-out — never on mobile
+  const blur = useTransform(scrollYProgress, [0.45, 0.85], [0, 8]);
+  const filterStr = useTransform(blur, (v) =>
+    (!isMobile && v > 0) ? `blur(${v}px)` : "none"
+  );
 
   return (
     <section
@@ -59,7 +62,7 @@ export default function Hero() {
 
       <motion.div
         className="relative max-w-4xl text-center z-10"
-        style={{ opacity, scale, filter: filterStr }}
+        style={{ opacity, scale, ...(isMobile ? {} : { filter: filterStr }) }}
       >
         <motion.p
           initial={{ opacity: 0, y: 10 }}

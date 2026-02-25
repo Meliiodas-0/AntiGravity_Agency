@@ -14,6 +14,7 @@ import CounterStats from "@/components/motion/CounterStats";
 import SmoothScroll from "@/components/motion/SmoothScroll";
 import SectionSlide from "@/components/motion/SectionSlide";
 import MarketingDNA from "@/components/MarketingDNA";
+import RightEdgeParticles from "@/components/motion/RightEdgeParticles";
 
 const Index = () => {
   return (
@@ -22,6 +23,7 @@ const Index = () => {
       <ParallaxOrbs />
       <SectionIndicator />
       <ScrollLine />
+      <RightEdgeParticles />
       <Header />
       <main role="main" className="noise-overlay">
         <div className="section-gradient-hero">

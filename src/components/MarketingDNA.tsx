@@ -1,260 +1,246 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
     motion,
     useScroll,
     useTransform,
     useSpring,
-    useMotionValue,
     useMotionValueEvent,
     MotionValue,
 } from "framer-motion";
-import { Instagram, Youtube, Linkedin, Twitter, ArrowUpRight, TrendingUp, Grid, MessageCircle, Play, MoreHorizontal, ChevronDown, UserPlus, BarChart3, Users, Eye, Link2, Heart, Share2 } from "lucide-react";
+import {
+    Instagram, Youtube, Linkedin, Twitter,
+    ArrowUpRight, TrendingUp, Grid, MessageCircle,
+    Play, MoreHorizontal, ChevronDown, UserPlus,
+    BarChart3, Users, Eye, Link2, Heart, Share2
+} from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-// ─── Brand Config ─────────────────────────────────────────────────────────────
+// ─── Brand ────────────────────────────────────────────────────────────────────
 const BRAND = {
     handle: "studsagency",
     name: "Studs Agency",
     bio: "Engineered growth. Premium content.",
     category: "Marketing Agency",
     link: "studsagency.com",
-    posts: "124",
-    followers: "524k",
-    following: "1,412",
 };
 
-// ─── Social Orbit Icons ───────────────────────────────────────────────────────
+// ─── Social Icons ─────────────────────────────────────────────────────────────
 const ORBIT_ICONS = [
-    { Icon: Instagram, color: "#E4405F", label: "Instagram", bg: "#1a0a0d" },
-    { Icon: Twitter, color: "#1DA1F2", label: "X", bg: "#060f18" },
-    { Icon: Linkedin, color: "#0A66C2", label: "LinkedIn", bg: "#06101a" },
-    { Icon: Youtube, color: "#FF0000", label: "YouTube", bg: "#1a0606" },
+    { Icon: Instagram, color: "#E4405F", bg: "#1a0008" },
+    { Icon: Twitter, color: "#1DA1F2", bg: "#010d17" },
+    { Icon: Linkedin, color: "#0A66C2", bg: "#01091a" },
+    { Icon: Youtube, color: "#FF0000", bg: "#1a0101" },
 ];
 
-// ─── Post Grid Thumbnails ─────────────────────────────────────────────────────
+// ─── Post Grid ────────────────────────────────────────────────────────────────
 const POST_GRID = [
-    { bg: "from-[#1a0606] to-[#0d0d0d]", accent: "#c0392b", label: "300K REACH", sub: "Reel Workshop" },
-    { bg: "from-[#0d0d0d] to-[#111]", accent: "#888", label: "Ad Creative", sub: "↑ 4.2x ROAS" },
-    { bg: "from-[#060d12] to-[#0d0d0d]", accent: "#1DA1F2", label: "Client Win", sub: "+18k Followers" },
-    { bg: "from-[#111] to-[#0d0d0d]", accent: "#aaa", label: "Brand Shoot", sub: "Visual Identity" },
-    { bg: "from-[#1a0606] to-[#111]", accent: "#c0392b", label: "CASE STUDY", sub: "523% Growth" },
-    { bg: "from-[#0d1117] to-[#111]", accent: "#6e6e6e", label: "BTS", sub: "Production Day" },
-    { bg: "from-[#111] to-[#0d0d0d]", accent: "#c0392b", label: "Motion", sub: "Design Teaser" },
-    { bg: "from-[#060d12] to-[#0d0d0d]", accent: "#4ade80", label: "Results", sub: "+220k Reach" },
-    { bg: "from-[#0d0d0d] to-[#111]", accent: "#aaa", label: "Interview", sub: "CEO Feature" },
+    { bg: "from-[#200a0a] to-[#0f0f0f]", accent: "#c0392b", label: "300K REACH", reel: true },
+    { bg: "from-[#0f0f0f] to-[#111]", accent: "#555", label: "Ad Creative", reel: false },
+    { bg: "from-[#050d17] to-[#0f0f0f]", accent: "#1DA1F2", label: "Client Win", reel: false },
+    { bg: "from-[#111] to-[#0f0f0f]", accent: "#888", label: "Brand Shoot", reel: false },
+    { bg: "from-[#200a0a] to-[#111]", accent: "#c0392b", label: "CASE STUDY", reel: true },
+    { bg: "from-[#0a0f15] to-[#111]", accent: "#666", label: "BTS", reel: false },
+    { bg: "from-[#111] to-[#0f0f0f]", accent: "#c0392b", label: "Motion", reel: true },
+    { bg: "from-[#050d17] to-[#0f0f0f]", accent: "#4ade80", label: "+220k Reach", reel: false },
+    { bg: "from-[#0f0f0f] to-[#111]", accent: "#888", label: "Interview", reel: false },
 ];
 
 const HIGHLIGHTS = ["Results", "Clients", "Reels", "Ads", "BTS"];
 
 // ─── Stat Counter ─────────────────────────────────────────────────────────────
-function StatCounter({ value, prefix = "", suffix = "" }: { value: MotionValue<number>; prefix?: string; suffix?: string }) {
+function StatCounter({ value, prefix = "", suffix = "" }: {
+    value: MotionValue<number>; prefix?: string; suffix?: string;
+}) {
     const [display, setDisplay] = useState(() => Math.floor(value.get()));
     useMotionValueEvent(value, "change", (v) => setDisplay(Math.floor(v)));
     return <span>{prefix}{display.toLocaleString()}{suffix}</span>;
 }
 
-// ─── Orbiting Icon ────────────────────────────────────────────────────────────
+// ─── OrbitIcon – clean elliptical path ───────────────────────────────────────
 function OrbitIcon({
-    item, index, total, orbitProgress, radiusX, radiusY, isMobile,
+    item, index, total, orbitProgress, radiusX, radiusY, iconSize,
 }: {
     item: typeof ORBIT_ICONS[0];
-    index: number;
-    total: number;
+    index: number; total: number;
     orbitProgress: MotionValue<number>;
-    radiusX: number;
-    radiusY: number;
-    isMobile: boolean;
+    radiusX: number; radiusY: number; iconSize: number;
 }) {
     const baseAngle = (index / total) * Math.PI * 2;
-    const speed = 1 + index * 0.15; // slight speed variation per icon
 
-    const x = useTransform(orbitProgress, (p: number) => {
-        const angle = baseAngle + p * Math.PI * 2 * speed;
-        return Math.cos(angle) * radiusX;
-    });
-    const y = useTransform(orbitProgress, (p: number) => {
-        const angle = baseAngle + p * Math.PI * 2 * speed;
-        return Math.sin(angle) * radiusY;
-    });
-    const zDepth = useTransform(orbitProgress, (p: number) => {
-        const angle = baseAngle + p * Math.PI * 2 * speed;
-        return Math.sin(angle); // -1 behind phone, +1 in front
-    });
-    const opacity = useTransform(zDepth, [-1, -0.3, 0.3, 1], [0.4, 0.7, 0.85, 1]);
-    const scale = useTransform(zDepth, [-1, 0, 1], [0.75, 0.9, 1]);
-    const zIndex = useTransform(zDepth, [-1, 1], [10, 50]);
+    // x / y are the pixel offsets from the orbit centre
+    const x = useTransform(orbitProgress, (p: number) =>
+        Math.cos(baseAngle + p * Math.PI * 2) * radiusX
+    );
+    const y = useTransform(orbitProgress, (p: number) =>
+        Math.sin(baseAngle + p * Math.PI * 2) * radiusY
+    );
+
+    // Depth: sin(angle) gives -1 (behind) → +1 (front)
+    const sinAngle = useTransform(orbitProgress, (p: number) =>
+        Math.sin(baseAngle + p * Math.PI * 2)
+    );
+    const scale = useTransform(sinAngle, [-1, 1], [0.72, 1.05]);
+    const opacity = useTransform(sinAngle, [-1, -0.35, 0.35, 1], [0.35, 0.65, 0.82, 1]);
+    const zIndex = useTransform(sinAngle, [-1, 1], [10, 55]) as unknown as number;
 
     const Icon = item.Icon;
-    const size = isMobile ? 40 : 52;
+    const half = iconSize / 2;
 
     return (
         <motion.div
             style={{
                 position: "absolute",
-                top: "50%",
-                left: "50%",
-                x: useTransform(x, v => v - size / 2),
-                y: useTransform(y, v => v - size / 2),
-                opacity,
-                scale,
-                zIndex,
+                top: 0, left: 0,
+                // offset from centre, minus half icon to visually centre it
+                x: useTransform(x, v => v - half),
+                y: useTransform(y, v => v - half),
+                width: iconSize, height: iconSize,
+                scale, opacity, zIndex,
             }}
         >
-            <div
-                style={{
-                    width: size,
-                    height: size,
-                    borderRadius: 14,
-                    background: item.bg,
-                    border: `1px solid ${item.color}30`,
-                    boxShadow: `0 0 20px ${item.color}15, inset 0 1px 0 rgba(255,255,255,0.06)`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <Icon size={isMobile ? 18 : 24} color={item.color} />
+            <div style={{
+                width: "100%", height: "100%",
+                borderRadius: 14,
+                background: item.bg,
+                border: `1px solid ${item.color}28`,
+                boxShadow: `0 0 18px ${item.color}14, inset 0 1px 0 rgba(255,255,255,0.05)`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+            }}>
+                <Icon size={iconSize * 0.44} color={item.color} />
             </div>
         </motion.div>
     );
 }
 
-// ─── SVG Data Trail ───────────────────────────────────────────────────────────
+// ─── DataTrail – CSS rotation approach (no state per-frame) ──────────────────
 function DataTrail({
     index, total, orbitProgress, trailOpacity, radiusX, radiusY,
 }: {
-    index: number;
-    total: number;
+    index: number; total: number;
     orbitProgress: MotionValue<number>;
     trailOpacity: MotionValue<number>;
-    radiusX: number;
-    radiusY: number;
+    radiusX: number; radiusY: number;
 }) {
     const baseAngle = (index / total) * Math.PI * 2;
-    const speed = 1 + index * 0.15;
 
-    const [x1, setX1] = useState(0);
-    const [y1, setY1] = useState(0);
-
-    useMotionValueEvent(orbitProgress, "change", (p) => {
-        const angle = baseAngle + p * Math.PI * 2 * speed;
-        setX1(Math.cos(angle) * radiusX);
-        setY1(Math.sin(angle) * radiusY);
+    const rotate = useTransform(orbitProgress, (p: number) => {
+        const angle = baseAngle + p * Math.PI * 2;
+        const ex = Math.cos(angle) * radiusX;
+        const ey = Math.sin(angle) * radiusY;
+        return Math.atan2(ey, ex) * (180 / Math.PI);
     });
 
-    // Animate dash offset for draw-in effect
-    const pathLen = Math.sqrt(x1 * x1 + y1 * y1);
+    const width = useTransform(orbitProgress, (p: number) => {
+        const angle = baseAngle + p * Math.PI * 2;
+        const ex = Math.cos(angle) * radiusX;
+        const ey = Math.sin(angle) * radiusY;
+        return Math.sqrt(ex * ex + ey * ey);
+    });
 
     return (
-        <motion.svg
+        <motion.div
             style={{
                 position: "absolute",
-                top: "50%",
-                left: "50%",
-                overflow: "visible",
-                pointerEvents: "none",
+                top: 0, left: 0,
+                height: 1,
+                width,
+                rotate,
+                transformOrigin: "left center",
+                background: "linear-gradient(to right, hsl(4 72% 54% / 0.7), transparent)",
                 opacity: trailOpacity,
-                zIndex: 20,
+                zIndex: 18,
+                pointerEvents: "none",
             }}
-            width={0} height={0}
-        >
-            <motion.line
-                x1={x1} y1={y1} x2={0} y2={0}
-                stroke="hsl(4 72% 54% / 0.55)"
-                strokeWidth={1}
-                strokeDasharray={pathLen}
-                strokeDashoffset={0}
-                strokeLinecap="round"
-                style={{ filter: "blur(0.4px)" }}
-            />
-        </motion.svg>
+        />
     );
 }
 
-// ─── Instagram Profile Screen ─────────────────────────────────────────────────
+// ─── Instagram Screen ─────────────────────────────────────────────────────────
 function InstagramScreen({ analyticsProgress }: { analyticsProgress: MotionValue<number> }) {
-    const analyticsY = useTransform(analyticsProgress, [0, 1], ["102%", "0%"]);
+    const analyticsY = useTransform(analyticsProgress, [0, 1], ["104%", "0%"]);
 
     return (
-        <div className="w-full h-full bg-black rounded-[inherit] overflow-hidden relative flex flex-col select-none">
+        <div className="w-full h-full bg-black flex flex-col overflow-hidden select-none text-white">
+
             {/* Status bar */}
-            <div className="flex justify-between items-center px-5 py-2 text-[9px] text-white/80 font-medium shrink-0">
-                <span>9:41</span>
-                <div className="flex gap-1 items-center">
-                    <svg width="14" height="8" viewBox="0 0 14 8" fill="none">
-                        <rect x="0" width="3" height="8" rx="1" fill="white" fillOpacity="0.3" />
-                        <rect x="4" width="3" height="8" rx="1" fill="white" fillOpacity="0.6" />
-                        <rect x="8" width="3" height="8" rx="1" fill="white" />
-                        <rect x="12" y="2" width="2" height="4" rx="0.5" fill="white" fillOpacity="0.4" />
-                    </svg>
+            <div className="flex justify-between items-center px-4 pt-2 pb-1 text-[9px] font-medium shrink-0">
+                <span className="text-white/90">9:41</span>
+                <div className="flex items-center gap-0.5">
+                    {[0.3, 0.6, 1].map((o, i) => (
+                        <div key={i} style={{ width: 3, height: 6 + i * 2, borderRadius: 1, background: `rgba(255,255,255,${o})` }} />
+                    ))}
+                    <div className="w-4 h-2.5 rounded-[2px] border border-white/40 ml-1 flex items-center px-[1px]">
+                        <div className="w-2 h-1.5 bg-white rounded-[1px]" />
+                    </div>
                 </div>
             </div>
 
-            {/* IG Top bar */}
-            <div className="flex items-center justify-between px-4 pb-2 shrink-0">
+            {/* IG header */}
+            <div className="flex items-center justify-between px-3 pb-1.5 shrink-0">
                 <div className="flex items-center gap-1">
-                    <span className="text-white font-bold text-[12px]">{BRAND.handle}</span>
-                    <ChevronDown size={12} className="text-white/60" />
+                    <span className="font-bold text-[11px]">{BRAND.handle}</span>
+                    <ChevronDown size={10} className="text-white/50" />
                 </div>
-                <div className="flex gap-3 text-white">
-                    <TrendingUp size={18} />
-                    <MoreHorizontal size={18} />
+                <div className="flex gap-3">
+                    <TrendingUp size={15} />
+                    <MoreHorizontal size={15} />
                 </div>
             </div>
 
             {/* Profile row */}
-            <div className="flex items-start gap-3 px-4 pb-3 shrink-0">
-                {/* Avatar */}
-                <div className="w-16 h-16 rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 shrink-0">
+            <div className="flex items-center gap-3 px-3 pb-2 shrink-0">
+                <div className="w-14 h-14 rounded-full p-[2px] bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-600 shrink-0">
                     <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
-                        <div className="w-full h-full rounded-full bg-gradient-to-br from-[#c0392b] to-[#911] flex items-center justify-center text-white text-[15px] font-black tracking-tight">
+                        <div className="w-full h-full rounded-full bg-gradient-to-br from-[#c0392b] to-[#700] flex items-center justify-center text-[12px] font-black">
                             SA
                         </div>
                     </div>
                 </div>
-                {/* Stats */}
-                <div className="flex gap-3 flex-1 text-center pt-1">
-                    {[["124", "Posts"], ["524k", "Followers"], ["1.4k", "Following"]].map(([num, lbl]) => (
-                        <div key={lbl} className="flex-1">
-                            <p className="text-white font-bold text-[11px]">{num}</p>
-                            <p className="text-white/40 text-[8px] uppercase tracking-tight">{lbl}</p>
+                <div className="flex gap-2 flex-1 text-center">
+                    {[["124", "Posts"], ["524k", "Followers"], ["1.4k", "Following"]].map(([n, l]) => (
+                        <div key={l} className="flex-1">
+                            <p className="font-bold text-[10px]">{n}</p>
+                            <p className="text-white/40 text-[7px] uppercase tracking-tighter">{l}</p>
                         </div>
                     ))}
                 </div>
             </div>
 
             {/* Bio */}
-            <div className="px-4 pb-2 shrink-0">
-                <p className="text-white text-[10px] font-semibold">{BRAND.name}</p>
+            <div className="px-3 pb-1.5 shrink-0 space-y-[2px]">
+                <p className="font-semibold text-[10px]">{BRAND.name}</p>
                 <p className="text-white/50 text-[8px]">{BRAND.category}</p>
-                <p className="text-white/80 text-[10px] mt-0.5">{BRAND.bio}</p>
-                <p className="text-[#0095f6] text-[10px] mt-0.5">🔗 {BRAND.link}</p>
+                <p className="text-white/80 text-[9px]">{BRAND.bio}</p>
+                <p className="text-[#0095f6] text-[9px]">🔗 {BRAND.link}</p>
             </div>
 
-            {/* Action buttons */}
-            <div className="flex gap-1.5 px-4 pb-2 shrink-0">
-                <div className="flex-1 h-6 bg-white/10 rounded-md flex items-center justify-center text-[9px] font-semibold text-white">Edit profile</div>
-                <div className="flex-1 h-6 bg-white/10 rounded-md flex items-center justify-center text-[9px] font-semibold text-white">Share profile</div>
-                <div className="w-6 h-6 bg-white/10 rounded-md flex items-center justify-center"><UserPlus size={10} className="text-white" /></div>
+            {/* Buttons */}
+            <div className="flex gap-1.5 px-3 pb-2 shrink-0">
+                {["Edit profile", "Share profile"].map(t => (
+                    <div key={t} className="flex-1 h-5 bg-white/10 rounded text-[8px] font-semibold flex items-center justify-center">{t}</div>
+                ))}
+                <div className="w-5 h-5 bg-white/10 rounded flex items-center justify-center">
+                    <UserPlus size={9} />
+                </div>
             </div>
 
-            {/* Highlights */}
-            <div className="flex gap-3 px-4 pb-2 overflow-x-hidden shrink-0">
-                {HIGHLIGHTS.map((h) => (
+            {/* Story highlights */}
+            <div className="flex gap-2.5 px-3 pb-2 overflow-x-hidden shrink-0">
+                {HIGHLIGHTS.map(h => (
                     <div key={h} className="flex flex-col items-center gap-0.5 shrink-0">
-                        <div className="w-10 h-10 rounded-full border border-white/20 bg-white/5 flex items-center justify-center">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#c0392b]/60 to-black flex items-center justify-center text-[5px] text-white/70 font-bold uppercase text-center leading-tight">{h[0]}</div>
+                        <div className="w-9 h-9 rounded-full border border-white/15 bg-gradient-to-br from-[#c0392b]/50 to-black flex items-center justify-center text-[8px] font-bold">
+                            {h[0]}
                         </div>
-                        <span className="text-[7px] text-white/50">{h}</span>
+                        <span className="text-[6px] text-white/40">{h}</span>
                     </div>
                 ))}
             </div>
 
-            {/* Grid tabs */}
+            {/* Tabs */}
             <div className="flex border-t border-white/10 shrink-0">
                 {[Grid, Play, MessageCircle].map((Icon, i) => (
-                    <div key={i} className={`flex-1 flex items-center justify-center py-1.5 ${i === 0 ? "border-b border-white" : ""}`}>
-                        <Icon size={13} className={i === 0 ? "text-white" : "text-white/30"} />
+                    <div key={i} className={`flex-1 flex items-center justify-center py-1 ${i === 0 ? "border-b border-white" : ""}`}>
+                        <Icon size={11} className={i === 0 ? "text-white" : "text-white/25"} />
                     </div>
                 ))}
             </div>
@@ -262,60 +248,57 @@ function InstagramScreen({ analyticsProgress }: { analyticsProgress: MotionValue
             {/* Post grid */}
             <div className="grid grid-cols-3 gap-px flex-1 min-h-0 overflow-hidden">
                 {POST_GRID.map((p, i) => (
-                    <div key={i} className={`relative bg-gradient-to-br ${p.bg} flex flex-col items-start justify-end p-1 aspect-square`}>
+                    <div key={i} className={`relative bg-gradient-to-br ${p.bg} flex flex-col justify-end p-1`}>
                         <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-4 h-0.5 rounded-full" style={{ backgroundColor: p.accent + "80" }} />
+                            <div className="w-3 h-0.5 rounded-full" style={{ background: p.accent + "60" }} />
                         </div>
-                        <p className="text-[6px] font-bold leading-tight z-10 text-white/90">{p.label}</p>
-                        <p className="text-[5px] text-white/40 z-10">{p.sub}</p>
-                        {i % 3 === 0 && <Play size={6} className="absolute top-1 right-1 text-white/60" />}
+                        <p className="text-[5.5px] font-bold text-white/90 z-10 leading-tight">{p.label}</p>
+                        {p.reel && <Play size={5} className="absolute top-1 right-1 text-white/50" />}
                     </div>
                 ))}
             </div>
 
-            {/* Analytics overlay — slides up at scroll > 60% */}
+            {/* Analytics overlay */}
             <motion.div
                 style={{ y: analyticsY }}
-                className="absolute inset-x-0 bottom-0 bg-[#0a0a0a] border-t border-white/10 rounded-t-2xl p-3 z-40 shadow-2xl"
+                className="absolute inset-x-0 bottom-0 bg-[#080808]/98 border-t border-white/10 rounded-t-xl p-2.5 z-50"
             >
                 <div className="flex items-center justify-between mb-2">
-                    <span className="text-white text-[10px] font-bold">Professional Dashboard</span>
-                    <ArrowUpRight size={12} className="text-[#c0392b]" />
+                    <span className="text-[9px] font-bold">Professional Dashboard</span>
+                    <ArrowUpRight size={10} className="text-[#c0392b]" />
                 </div>
-
-                {/* Metrics grid */}
-                <div className="grid grid-cols-2 gap-1.5 mb-2">
+                <div className="grid grid-cols-2 gap-1 mb-2">
                     {[
                         { icon: Eye, label: "Reach", val: "524.8k" },
                         { icon: Users, label: "Profile Visits", val: "12,400" },
                         { icon: Link2, label: "Link Taps", val: "3,241" },
                         { icon: Heart, label: "Engagement", val: "6.8%" },
                     ].map(({ icon: Icon, label, val }) => (
-                        <div key={label} className="bg-white/5 rounded-lg px-2 py-1.5 border border-white/8">
-                            <div className="flex items-center gap-1 mb-0.5">
-                                <Icon size={8} className="text-white/40" />
-                                <span className="text-[7px] text-white/40">{label}</span>
+                        <div key={label} className="bg-white/5 rounded-lg px-1.5 py-1 border border-white/8">
+                            <div className="flex items-center gap-0.5 mb-0.5">
+                                <Icon size={7} className="text-white/35" />
+                                <span className="text-[6px] text-white/35">{label}</span>
                             </div>
-                            <p className="text-white text-[10px] font-bold">{val}</p>
+                            <p className="text-[9px] font-bold">{val}</p>
                         </div>
                     ))}
                 </div>
-
-                {/* Mini bar chart */}
-                <div className="bg-white/5 rounded-lg p-2 border border-white/8">
+                {/* Bar chart */}
+                <div className="bg-white/5 rounded-lg p-1.5 border border-white/8">
                     <div className="flex items-center justify-between mb-1">
-                        <span className="text-[7px] text-white/50">30-day reach</span>
-                        <BarChart3 size={8} className="text-[#c0392b]" />
+                        <span className="text-[6px] text-white/40">30-day reach</span>
+                        <BarChart3 size={7} className="text-[#c0392b]" />
                     </div>
-                    <div className="flex items-end gap-px h-8">
-                        {[35, 48, 42, 61, 55, 72, 68, 80, 75, 90, 85, 100, 95, 88].map((h, i) => (
+                    <div className="flex items-end gap-[2px] h-7">
+                        {[35, 52, 44, 63, 57, 74, 70, 82, 77, 92, 86, 100, 96, 88].map((h, i) => (
                             <motion.div
                                 key={i}
                                 className="flex-1 rounded-t-[1px]"
-                                style={{ background: `hsl(4 72% ${44 + h * 0.14}%)`, opacity: 0.7 + h * 0.003 }}
-                                initial={{ height: 0 }}
-                                animate={{ height: `${h}%` }}
-                                transition={{ delay: i * 0.05, duration: 0.6, ease: "easeOut" }}
+                                style={{ background: `hsl(4 72% ${42 + h * 0.13}%)`, opacity: 0.65 + h * 0.0035 }}
+                                initial={{ scaleY: 0 }}
+                                animate={{ scaleY: 1 }}
+                                transition={{ delay: i * 0.04, duration: 0.5, ease: "easeOut" }}
+                                transformOrigin="bottom"
                             />
                         ))}
                     </div>
@@ -323,16 +306,16 @@ function InstagramScreen({ analyticsProgress }: { analyticsProgress: MotionValue
             </motion.div>
 
             {/* Bottom nav */}
-            <div className="flex justify-around px-4 py-1.5 border-t border-white/10 bg-black shrink-0">
+            <div className="flex justify-around px-3 py-1 border-t border-white/10 bg-black shrink-0">
                 {[Grid, Play, Share2, Users, MessageCircle].map((Icon, i) => (
-                    <Icon key={i} size={14} className={i === 0 ? "text-white" : "text-white/25"} />
+                    <Icon key={i} size={12} className={i === 0 ? "text-white" : "text-white/20"} />
                 ))}
             </div>
         </div>
     );
 }
 
-// ─── Main Component ───────────────────────────────────────────────────────────
+// ─── Main ─────────────────────────────────────────────────────────────────────
 export default function MarketingDNA() {
     const containerRef = useRef<HTMLDivElement>(null);
     const isMobile = useIsMobile();
@@ -342,53 +325,50 @@ export default function MarketingDNA() {
         offset: ["start end", "end start"],
     });
 
-    // Smooth orbit progress: starts moving at scroll 0.2
+    // Orbit: starts at scroll 0.2, completes a full revolution by 1.0
     const rawOrbit = useTransform(scrollYProgress, [0.2, 1.0], [0, 1]);
-    const orbitProgress = useSpring(rawOrbit, { stiffness: 40, damping: 20 });
+    const orbitProgress = useSpring(rawOrbit, { stiffness: 36, damping: 22 });
 
-    // Data trails: visible from scroll 0.4 → 0.75
-    const trailOpacity = useTransform(scrollYProgress, [0.38, 0.45, 0.7, 0.78], [0, 1, 1, 0]);
+    // Data trails: appear at 0.4 → fade at 0.75
+    const trailOpacity = useTransform(scrollYProgress, [0.38, 0.46, 0.7, 0.78], [0, 1, 1, 0]);
 
-    // Analytics panel: slides up from scroll 0.65 → 1.0
-    const analyticsProgress = useTransform(scrollYProgress, [0.65, 0.9], [0, 1]);
-    const smoothAnalytics = useSpring(analyticsProgress, { stiffness: 50, damping: 20 });
+    // Analytics panel
+    const analyticsProgress = useTransform(scrollYProgress, [0.65, 0.92], [0, 1]);
+    const smoothAnalytics = useSpring(analyticsProgress, { stiffness: 48, damping: 22 });
 
     // KPI counters
     const reachCount = useTransform(scrollYProgress, [0.55, 0.95], [219000, 524800]);
-    const followerCount = useTransform(scrollYProgress, [0.5, 0.9], [162000, 524800]);
+    const followerCount = useTransform(scrollYProgress, [0.50, 0.90], [160000, 524800]);
 
-    // Phone idle float
-    const phoneFloat = useMotionValue(0);
+    // Reactor glow
+    const reactorScale = useTransform(scrollYProgress, [0.82, 0.90, 1.0], [1, 1.5, 1]);
+    const reactorOpacity = useTransform(scrollYProgress, [0.82, 0.88, 1.0], [0, 0.18, 0]);
 
-    // Subtle reactor glow at end
-    const reactorScale = useTransform(scrollYProgress, [0.82, 0.9, 1], [1, 1.6, 1]);
-    const reactorOpacity = useTransform(scrollYProgress, [0.82, 0.88, 1], [0, 0.2, 0]);
-
-    const radiusX = isMobile ? 100 : 155;
-    const radiusY = isMobile ? 52 : 80;
-
-    // Phone dimensions
-    const phoneW = isMobile ? 180 : 240;
-    const phoneH = isMobile ? 364 : 490;
+    // Dimensions
+    const phoneW = isMobile ? 200 : 250;
+    const phoneH = isMobile ? 406 : 508;
+    const radiusX = isMobile ? 114 : 215;   // large enough to clear phone edge
+    const radiusY = isMobile ? 56 : 98;
+    const iconSize = isMobile ? 42 : 54;
 
     return (
         <section
             ref={containerRef}
-            className="relative py-24 sm:py-36 md:py-56 overflow-hidden bg-[#050505]"
+            className="relative py-20 sm:py-32 md:py-52 overflow-visible bg-[#050505]"
         >
-            {/* Ambient background glow */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[160px]" />
+            {/* Ambient glow */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full bg-primary/5 blur-[150px]" />
             </div>
 
             <div className="max-w-7xl mx-auto px-5 sm:px-8 relative z-10">
-                <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
-                    {/* ── Left: Copy + KPIs ─────────────────────────────────────── */}
+                    {/* ── Left: Copy + KPIs ──────────────────────── */}
                     <div className="flex-1 text-center lg:text-left z-20">
                         {/* Badge */}
                         <motion.div
-                            initial={{ opacity: 0, y: 12 }}
+                            initial={{ opacity: 0, y: 10 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] uppercase tracking-widest font-bold mb-6"
@@ -400,39 +380,35 @@ export default function MarketingDNA() {
                             Proprietary Engine v3.0
                         </motion.div>
 
-                        {/* Headline */}
                         <motion.h2
-                            initial={{ opacity: 0, y: 24 }}
+                            initial={{ opacity: 0, y: 22 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             className="text-4xl sm:text-6xl md:text-7xl font-bold mb-6 tracking-tighter leading-[0.95]"
                         >
-                            Marketing In Our{" "}
-                            <br />
-                            <span className="text-foreground/35 italic font-light">Very</span>{" "}
-                            <br />
+                            Marketing In Our <br />
+                            <span className="text-foreground/30 italic font-light">Very</span> <br />
                             <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/50 bg-clip-text text-transparent">
                                 Digital DNA
                             </span>
                         </motion.h2>
 
-                        {/* Body */}
                         <motion.p
-                            initial={{ opacity: 0, y: 16 }}
+                            initial={{ opacity: 0, y: 14 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.1 }}
                             className="text-muted-foreground text-base sm:text-lg max-w-md mx-auto lg:mx-0 leading-relaxed font-light mb-10"
                         >
                             We analyse the DNA of viral moments to build reliable growth engines.
-                            Our neural pathing turns raw engagement into engineered, compounding results.
+                            Neural pathing turns raw engagement into engineered, compounding results.
                         </motion.p>
 
                         {/* KPIs */}
                         <div className="grid grid-cols-2 gap-8 max-w-xs mx-auto lg:mx-0 border-t border-white/5 pt-8">
                             {[
-                                { val: reachCount, label: "Reach Engineered", prefix: "+" },
-                                { val: followerCount, label: "Network Growth", prefix: "+" },
+                                { val: reachCount, label: "Reach Engineered" },
+                                { val: followerCount, label: "Network Growth" },
                             ].map((stat, i) => (
                                 <motion.div
                                     key={i}
@@ -441,8 +417,8 @@ export default function MarketingDNA() {
                                     viewport={{ once: true }}
                                     transition={{ delay: 0.15 + i * 0.1 }}
                                 >
-                                    <p className="text-2xl sm:text-3xl font-bold tracking-tighter text-foreground">
-                                        <StatCounter value={stat.val} prefix={stat.prefix} />
+                                    <p className="text-2xl sm:text-3xl font-bold tracking-tighter">
+                                        <StatCounter value={stat.val} prefix="+" />
                                     </p>
                                     <p className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">
                                         {stat.label}
@@ -452,110 +428,93 @@ export default function MarketingDNA() {
                         </div>
                     </div>
 
-                    {/* ── Right: Phone + Orbit ──────────────────────────────────── */}
+                    {/* ── Right: Phone + Orbit ────────────────────── */}
                     <div
-                        className="flex-1 relative flex items-center justify-center"
+                        className="flex-1 flex items-center justify-center relative"
                         style={{
-                            minHeight: isMobile ? 440 : 600,
-                            maxWidth: isMobile ? "100%" : 560,
-                            width: "100%",
+                            minHeight: isMobile ? 480 : 640,
+                            // Extra horizontal room so orbit icons don't clip
+                            paddingLeft: isMobile ? 0 : radiusX * 0.6,
+                            paddingRight: isMobile ? 0 : radiusX * 0.6,
                         }}
                     >
-                        {/* Subtle reactor glow */}
-                        <motion.div
-                            style={{
-                                scale: reactorScale,
-                                opacity: reactorOpacity,
-                                position: "absolute",
-                                width: 300,
-                                height: 300,
-                                borderRadius: "50%",
-                                background: "hsl(4 72% 54%)",
-                                filter: "blur(80px)",
-                                zIndex: 0,
-                                top: "50%",
-                                left: "50%",
-                                x: "-50%",
-                                y: "-50%",
-                                pointerEvents: "none",
-                            }}
-                        />
+                        {/* Reactor glow */}
+                        <motion.div style={{
+                            scale: reactorScale, opacity: reactorOpacity,
+                            position: "absolute", width: 280, height: 280, borderRadius: "50%",
+                            background: "hsl(4 72% 54%)", filter: "blur(70px)",
+                            zIndex: 0, top: "50%", left: "50%", x: "-50%", y: "-50%",
+                            pointerEvents: "none",
+                        }} />
 
-                        {/* Orbit icons */}
-                        <div className="absolute" style={{ top: "50%", left: "50%", zIndex: 1 }}>
+                        {/* Orbit anchor: sits at visual centre of phone */}
+                        <div style={{ position: "absolute", top: "50%", left: "50%", zIndex: 1 }}>
+
+                            {/* Icons */}
                             {ORBIT_ICONS.map((item, i) => (
                                 <OrbitIcon
-                                    key={item.label}
-                                    item={item}
-                                    index={i}
-                                    total={ORBIT_ICONS.length}
+                                    key={item.color}
+                                    item={item} index={i} total={ORBIT_ICONS.length}
                                     orbitProgress={orbitProgress}
-                                    radiusX={radiusX}
-                                    radiusY={radiusY}
-                                    isMobile={isMobile}
+                                    radiusX={radiusX} radiusY={radiusY} iconSize={iconSize}
                                 />
                             ))}
-                        </div>
 
-                        {/* SVG data trails */}
-                        <div className="absolute" style={{ top: "50%", left: "50%", zIndex: 15, overflow: "visible" }}>
+                            {/* Data trails */}
                             {ORBIT_ICONS.map((_, i) => (
                                 <DataTrail
                                     key={i}
-                                    index={i}
-                                    total={ORBIT_ICONS.length}
+                                    index={i} total={ORBIT_ICONS.length}
                                     orbitProgress={orbitProgress}
                                     trailOpacity={trailOpacity}
-                                    radiusX={radiusX}
-                                    radiusY={radiusY}
+                                    radiusX={radiusX} radiusY={radiusY}
                                 />
                             ))}
                         </div>
 
-                        {/* Phone mockup */}
+                        {/* Phone */}
                         <motion.div
-                            style={{ zIndex: 30, position: "relative" }}
-                            animate={{ y: [0, -8, 0] }}
-                            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                            animate={{ y: [0, -9, 0] }}
+                            transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+                            style={{ position: "relative", zIndex: 30 }}
                         >
-                            <motion.div
-                                style={{
-                                    width: phoneW,
-                                    height: phoneH,
-                                    borderRadius: isMobile ? 36 : 46,
-                                    background: "#0e0e0e",
-                                    border: "10px solid #1a1a1a",
-                                    boxShadow: `
-                                        0 0 0 1px rgba(255,255,255,0.06),
-                                        0 40px 100px rgba(0,0,0,0.8),
-                                        0 0 60px rgba(192,57,43,0.08),
-                                        inset 0 1px 0 rgba(255,255,255,0.08)
-                                    `,
-                                    position: "relative",
-                                    overflow: "hidden",
-                                    rotateX: 6,
-                                    rotateY: isMobile ? 0 : -18,
-                                    transformStyle: "preserve-3d",
-                                }}
-                            >
+                            <div style={{
+                                width: phoneW, height: phoneH,
+                                borderRadius: isMobile ? 38 : 48,
+                                background: "#0c0c0c",
+                                border: "9px solid #181818",
+                                boxShadow: `
+                                    0 0 0 1px rgba(255,255,255,0.06),
+                                    0 40px 100px rgba(0,0,0,0.85),
+                                    0 0 50px rgba(192,57,43,0.07),
+                                    inset 0 1px 0 rgba(255,255,255,0.07)
+                                `,
+                                position: "relative",
+                                transform: `perspective(1200px) rotateX(5deg) rotateY(${isMobile ? 0 : -14}deg)`,
+                                overflow: "hidden",
+                            }}>
                                 {/* Notch */}
                                 <div style={{
-                                    position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)",
-                                    width: "40%", height: 24, background: "#0e0e0e",
-                                    borderBottomLeftRadius: 16, borderBottomRightRadius: 16, zIndex: 60,
-                                    border: "1px solid rgba(255,255,255,0.04)", borderTop: "none",
+                                    position: "absolute", top: 0, left: "50%",
+                                    transform: "translateX(-50%)",
+                                    width: "38%", height: 22,
+                                    background: "#0c0c0c",
+                                    borderBottomLeftRadius: 14, borderBottomRightRadius: 14,
+                                    zIndex: 60, border: "1px solid rgba(255,255,255,0.04)", borderTop: "none",
                                 }} />
 
                                 {/* Glass glare */}
                                 <div style={{
-                                    position: "absolute", top: 0, left: "-20%", width: "45%", height: "100%",
-                                    background: "linear-gradient(115deg, rgba(255,255,255,0.04) 0%, transparent 60%)",
-                                    zIndex: 55, pointerEvents: "none", borderRadius: "inherit",
+                                    position: "absolute", top: 0, left: "-15%",
+                                    width: "40%", height: "100%",
+                                    background: "linear-gradient(115deg, rgba(255,255,255,0.04) 0%, transparent 55%)",
+                                    zIndex: 55, pointerEvents: "none",
                                 }} />
 
-                                {/* Screen content */}
+                                {/* Screen */}
                                 <div style={{
-                                    position: "absolute", inset: 0, borderRadius: isMobile ? 26 : 36,
+                                    position: "absolute", inset: 0,
+                                    borderRadius: isMobile ? 30 : 40,
                                     overflow: "hidden",
                                 }}>
                                     <InstagramScreen analyticsProgress={smoothAnalytics} />
@@ -563,11 +522,12 @@ export default function MarketingDNA() {
 
                                 {/* Rim light */}
                                 <div style={{
-                                    position: "absolute", inset: -1, borderRadius: "inherit",
-                                    border: "1px solid rgba(255,255,255,0.09)",
+                                    position: "absolute", inset: -1,
+                                    borderRadius: "inherit",
+                                    border: "1px solid rgba(255,255,255,0.08)",
                                     pointerEvents: "none", zIndex: 65,
                                 }} />
-                            </motion.div>
+                            </div>
                         </motion.div>
                     </div>
                 </div>
