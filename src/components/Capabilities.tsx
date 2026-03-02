@@ -67,12 +67,12 @@ export default function Capabilities() {
   const isMobile = useIsMobile();
 
   return (
-    <section id="capabilities" className="py-24 sm:py-32 px-5 sm:px-6 relative overflow-hidden bg-background/50">
+    <section id="capabilities" className="py-12 sm:py-16 px-5 sm:px-6 relative overflow-visible">
       <div className="max-w-7xl mx-auto">
-        <ScrollReveal className="text-center mb-16 sm:mb-24">
-          <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-primary/70 mb-4 font-medium">Expertise</p>
-          <h2 className="text-3xl sm:text-5xl font-bold mb-6 tracking-tight">{content.capabilities.title}</h2>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+        <ScrollReveal className="text-center mb-10 sm:mb-12">
+          <p className="text-[10px] sm:text-xs uppercase tracking-[0.34em] text-primary/60 mb-4 font-semibold">Expertise</p>
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-6 tracking-tight text-foreground">{content.capabilities.title}</h2>
+          <p className="text-muted-foreground/80 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-light">
             Our comprehensive digital suite ensures every aspect of your brand is handled with absolute precision and creative excellence.
           </p>
         </ScrollReveal>
@@ -84,17 +84,18 @@ export default function Capabilities() {
               <ScrollReveal key={i} delay={i * 0.1} scale blur={!isMobile}>
                 <TiltCard
                   idx={i}
-                  className="bg-[#0b0b0b] p-8 sm:p-10 rounded-2xl border border-white/5 relative overflow-hidden group h-full glow-hover transition-all duration-500"
+                  className="group relative h-full bg-white/40 backdrop-blur-md border border-black/[0.06] p-8 sm:p-10 rounded-3xl transition-all duration-700 hover:bg-white hover:shadow-2xl hover:shadow-primary/10 select-none cursor-default"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-8 group-hover:bg-white/10 group-hover:scale-110 transition-all duration-500">
-                    <IconComponent className="w-6 h-6 text-white group-hover:text-white transition-colors" />
+                  <div className="w-14 h-14 rounded-2xl bg-black/5 flex items-center justify-center mb-10 group-hover:bg-primary group-hover:scale-110 group-hover:rotate-6 transition-all duration-700">
+                    <IconComponent className="w-6 h-6 text-black group-hover:text-white transition-colors duration-700" />
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-bold mb-4 tracking-tight text-white group-hover:text-primary transition-colors duration-300">{item.title}</h3>
-                  <p className="text-white/60 text-sm sm:text-base leading-relaxed font-light">
+                  <h3 className="text-xl sm:text-2xl font-bold mb-5 tracking-tight text-black group-hover:text-primary transition-colors duration-500">{item.title}</h3>
+                  <p className="text-muted-foreground text-sm sm:text-base leading-relaxed font-light group-hover:text-foreground transition-colors duration-500">
                     {item.description}
                   </p>
-                  {/* Subtle index number instead of giant one */}
-                  <div className="absolute bottom-6 right-8 text-white/5 font-mono text-sm tracking-tighter select-none">
+
+                  {/* Subtle index number */}
+                  <div className="absolute top-10 right-10 text-black/[0.03] font-mono text-5xl tracking-tighter transition-all duration-700 group-hover:text-primary/5 group-hover:scale-110">
                     0{i + 1}
                   </div>
                 </TiltCard>

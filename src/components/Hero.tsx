@@ -30,7 +30,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={ref}
-      className="relative min-h-[160vh] sm:min-h-[180vh] flex flex-col items-center pt-24 sm:pt-32 pb-20 overflow-visible"
+      className="relative min-h-[120vh] sm:min-h-[140vh] flex flex-col items-center pt-20 sm:pt-28 pb-12 overflow-visible"
       onMouseMove={handleMouseMove}
     >
       {/* Background Decor */}

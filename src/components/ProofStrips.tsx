@@ -49,7 +49,7 @@ function MarqueeStrip({ items, reverse = false, speed = 35 }: { items: Client[];
 
 export default function ProofStrips() {
   return (
-    <section id="proof" className="relative scroll-mt-24 py-24 sm:py-32 md:py-40 overflow-hidden">
+    <section id="proof" className="relative scroll-mt-28 py-16 sm:py-20 md:py-24 overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10 animate-pulse" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -z-10" />

@@ -7,10 +7,10 @@ export default function Trust() {
   const isMobile = useIsMobile();
 
   return (
-    <section id="trust" className="relative scroll-mt-24 py-24 sm:py-32 px-5 sm:px-6">
+    <section id="trust" className="relative scroll-mt-24 py-12 sm:py-16 px-5 sm:px-6 overflow-visible">
       <div className="max-w-6xl mx-auto">
-        <ScrollReveal className="text-center mb-16 sm:mb-24" scale>
-          <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-primary/70 mb-4 font-medium">Why us</p>
+        <ScrollReveal className="text-center mb-10 sm:mb-12" scale>
+          <p className="text-[10px] sm:text-xs uppercase tracking-[0.34em] text-primary/60 mb-4 font-semibold">Why us</p>
           <h2 className="text-3xl sm:text-5xl font-bold text-foreground tracking-tight leading-tight max-w-3xl mx-auto">
             {content.trust.title}
           </h2>
@@ -20,24 +20,26 @@ export default function Trust() {
           {content.trust.cards.map((card, i) => (
             <motion.div
               key={card.title}
-              initial={{ opacity: 0, y: 30, scale: 0.92, filter: isMobile ? "none" : "blur(6px)" }}
-              whileInView={{ opacity: 1, y: 0, scale: 1, filter: "none" }}
+              initial={{ opacity: 0, y: 30, scale: 0.92 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.6, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-              className="group rounded-2xl bg-[#0b0b0b] border border-white/5 glow-hover p-8 sm:p-10 relative overflow-hidden"
+              transition={{ duration: 0.8, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative rounded-3xl bg-white/40 backdrop-blur-md border border-black/[0.06] p-8 sm:p-10 transition-all duration-700 hover:bg-white hover:shadow-2xl hover:shadow-primary/10 select-none cursor-default"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="h-px w-8 bg-white/20 group-hover:w-12 group-hover:bg-primary transition-all duration-500" />
-                <span className="text-xs font-mono font-bold text-white/40 group-hover:text-primary transition-colors">0{i + 1}</span>
+              <div className="flex items-center gap-3 mb-8">
+                <div className="h-px w-8 bg-black/10 group-hover:w-12 group-hover:bg-primary transition-all duration-700" />
+                <span className="text-xs font-mono font-bold text-muted-foreground group-hover:text-primary transition-colors duration-500">0{i + 1}</span>
               </div>
 
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors duration-300 tracking-tight">
+              <h3 className="text-xl sm:text-2xl font-bold text-black mb-5 group-hover:text-primary transition-colors duration-500 tracking-tight">
                 {card.title}
               </h3>
-              <p className="text-sm sm:text-base text-white/50 leading-relaxed font-light">{card.description}</p>
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed font-light group-hover:text-foreground transition-colors duration-500">
+                {card.description}
+              </p>
 
               {/* Subtle background glow on hover */}
-              <div className="absolute inset-0 bg-primary/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              <div className="absolute inset-0 bg-primary/[0.02] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-3xl" />
             </motion.div>
           ))}
         </div>
