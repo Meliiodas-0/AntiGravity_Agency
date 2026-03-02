@@ -19,12 +19,12 @@ function MarqueeStrip({ items, reverse = false, speed = 35 }: { items: Client[];
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative flex items-center justify-center rounded-2xl px-8 sm:px-12 py-8 sm:py-10 min-w-[200px] sm:min-w-[280px] md:min-w-[320px] bg-white/[0.02] border border-white/5 backdrop-blur-sm transition-all duration-700 hover:bg-white/[0.05] hover:border-white/20 hover:shadow-2xl hover:shadow-primary/10"
+            className="group relative flex items-center justify-center rounded-2xl px-10 sm:px-14 py-10 sm:py-12 min-w-[240px] sm:min-w-[340px] md:min-w-[420px] bg-white/[0.02] border border-white/5 backdrop-blur-sm transition-all duration-700 hover:bg-white/[0.05] hover:border-white/20 hover:shadow-2xl hover:shadow-primary/10"
           >
             {/* Ambient background glow on hover */}
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-            <div className="relative w-36 h-14 sm:w-48 sm:h-20 md:w-64 md:h-24 flex items-center justify-center transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+            <div className="relative w-44 h-18 sm:w-56 sm:h-24 md:w-72 md:h-32 flex items-center justify-center transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
               <img
                 src={item.logo}
                 alt={item.name}
