@@ -42,7 +42,7 @@ export default function ScrollLine() {
     }
   }, [dims]);
 
-  const gearOpacity = useTransform(smoothProgress, [0, 0.32, 0.35, 0.52, 0.55], [0.1, 0.1, 0.01, 0.01, 0.1]);
+  const gearOpacity = useTransform(smoothProgress, [0, 0.32, 0.35, 0.52, 0.55], [0.04, 0.04, 0.01, 0.01, 0.04]);
 
   useMotionValueEvent(smoothProgress, "change", (v) => {
     if (isMobile) return;
@@ -115,9 +115,9 @@ export default function ScrollLine() {
         <defs>
           <linearGradient id="scroll-line-grad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#000000" stopOpacity="0" />
-            <stop offset="5%" stopColor="#000000" stopOpacity="0.03" />
-            <stop offset="50%" stopColor="#000000" stopOpacity="0.06" />
-            <stop offset="95%" stopColor="#000000" stopOpacity="0.03" />
+            <stop offset="5%" stopColor="#000000" stopOpacity="0.01" />
+            <stop offset="50%" stopColor="#000000" stopOpacity="0.02" />
+            <stop offset="95%" stopColor="#000000" stopOpacity="0.01" />
             <stop offset="100%" stopColor="#000000" stopOpacity="0" />
           </linearGradient>
 
@@ -141,9 +141,9 @@ export default function ScrollLine() {
           {/* Gradient for active trail */}
           <linearGradient id="trail-grad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#000000" stopOpacity="0" />
-            <stop offset="15%" stopColor="#000000" stopOpacity="0.04" />
-            <stop offset="50%" stopColor="#000000" stopOpacity="0.05" />
-            <stop offset="85%" stopColor="#000000" stopOpacity="0.04" />
+            <stop offset="15%" stopColor="#000000" stopOpacity="0.15" />
+            <stop offset="50%" stopColor="#000000" stopOpacity="0.25" />
+            <stop offset="85%" stopColor="#000000" stopOpacity="0.15" />
             <stop offset="100%" stopColor="#000000" stopOpacity="0" />
           </linearGradient>
         </defs>
@@ -167,7 +167,7 @@ export default function ScrollLine() {
           strokeLinecap="round"
           style={{
             pathLength: smoothProgress,
-            opacity: 0.04,
+            opacity: 0.25,
           }}
         />
 
@@ -181,7 +181,7 @@ export default function ScrollLine() {
           filter="url(#gear-glow)"
           style={{
             pathLength: smoothProgress,
-            opacity: 0.02,
+            opacity: 0.04,
           }}
         />
 
