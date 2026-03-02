@@ -11,7 +11,7 @@ export const content = {
     cta: "Let's Talk",
   },
   proof: {
-    title: "Brands We Have Scaled",
+    title: "Brands We Have Worked With",
     sub: "Empowering visionary companies through tailored digital growth.",
   },
   proofStrips: [

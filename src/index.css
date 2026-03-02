@@ -322,11 +322,11 @@
 }
 
 .section-gradient-proof {
-  background: linear-gradient(180deg, #ffffff 0%, #f0f0f5 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #eef2f6 100%);
 }
 
 .section-gradient-stats {
-  background: linear-gradient(180deg, #f0f0f5 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #eef2f6 0%, #ffffff 100%);
 }
 
 .section-gradient-capabilities {
@@ -338,16 +338,30 @@
 }
 
 .section-gradient-trust {
-  background: linear-gradient(180deg, #ffffff 0%, #f0f0f5 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #eef2f6 100%);
 }
 
 .section-gradient-contact {
-  background: linear-gradient(180deg, #f0f0f5 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #eef2f6 0%, #ffffff 100%);
 }
 
 /* Subtle mobile divider */
 .mobile-divider {
-  @apply block md:hidden h-px w-full bg-black/[0.04] mx-auto;
+  @apply block md:hidden h-[1px] w-full bg-black/[0.08] mx-auto;
+}
+
+/* Ensure sections have a slight visual border on mobile */
+@media (max-width: 767px) {
+
+  .section-gradient-hero,
+  .section-gradient-proof,
+  .section-gradient-capabilities,
+  .section-gradient-process,
+  .section-gradient-trust,
+  .section-gradient-contact {
+    position: relative;
+    box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.02);
+  }
 }
 
 /* Gear continuous spin */
