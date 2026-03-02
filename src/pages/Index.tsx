@@ -42,6 +42,7 @@ const Index = () => {
 
         <SectionSlide index={1}>
           <div className="section-gradient-proof">
+            <div className="mobile-divider" />
             <ProofStrips />
           </div>
         </SectionSlide>
@@ -58,6 +59,7 @@ const Index = () => {
         {/* Capabilities: Lazy */}
         <SectionSlide index={3}>
           <div className="section-gradient-capabilities">
+            <div className="mobile-divider" />
             <Suspense fallback={<SectionPlaceholder height="600px" />}>
               <Capabilities />
             </Suspense>
@@ -67,6 +69,7 @@ const Index = () => {
         {/* Process: Lazy */}
         <SectionSlide index={4}>
           <div className="section-gradient-process">
+            <div className="mobile-divider" />
             <Suspense fallback={<SectionPlaceholder height="600px" />}>
               <Process />
             </Suspense>
@@ -76,6 +79,7 @@ const Index = () => {
         {/* Trust: Lazy */}
         <SectionSlide index={5}>
           <div className="section-gradient-trust">
+            <div className="mobile-divider" />
             <Suspense fallback={<SectionPlaceholder height="600px" />}>
               <Trust />
             </Suspense>

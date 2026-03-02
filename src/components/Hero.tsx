@@ -34,9 +34,9 @@ export default function Hero() {
       onMouseMove={handleMouseMove}
     >
       {/* Background Decor */}
-      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/5 blur-[100px] rounded-full" />
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <div className="absolute top-0 -right-4 w-[600px] sm:w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 -left-4 w-[400px] sm:w-[600px] h-[600px] bg-blue-500/5 blur-[100px] rounded-full" />
       </div>
 
       {/* 1. Top Content (H1 & Sub) */}
