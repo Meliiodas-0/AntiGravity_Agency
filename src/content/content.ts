@@ -10,8 +10,8 @@ export const content = {
     cta: "Let's Talk",
   },
   proof: {
-    title: "Our Satisfied Clients",
-    sub: "Brands that trust us with their growth.",
+    title: "Brands We Have Scaled",
+    sub: "Empowering visionary companies through tailored digital growth.",
   },
   proofStrips: [
     [
