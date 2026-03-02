@@ -4,6 +4,7 @@ import { content } from "@/content/content";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import ScrollReveal from "./motion/ScrollReveal";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const COUNTRY_CODES = [
   { code: "+91", label: "🇮🇳 +91" },
@@ -26,6 +27,7 @@ const contactSchema = z.object({
 });
 
 export default function ContactForm() {
+  const isMobile = useIsMobile();
   const [form, setForm] = useState({ name: "", brand: "", message: "", contact: "" });
   const [countryCode, setCountryCode] = useState("+91");
   const [loading, setLoading] = useState(false);
@@ -91,10 +93,13 @@ export default function ContactForm() {
         </ScrollReveal>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{
+            opacity: isMobile ? 0.3 : 0,
+            y: isMobile ? 10 : 20
+          }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true, margin: isMobile ? "200px" : "-60px" }}
+          transition={{ duration: isMobile ? 0.4 : 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
             {fields.map((field) => (

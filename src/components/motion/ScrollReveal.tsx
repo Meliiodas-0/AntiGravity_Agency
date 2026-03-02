@@ -26,19 +26,19 @@ export default function ScrollReveal({
   // Simpler animations on mobile — no blur filter (GPU expensive)
   const mobileBlur = false;
   const useBlur = isMobile ? mobileBlur : blur;
-  const moveDistance = isMobile ? Math.min(y, 20) : y;
+  const moveDistance = isMobile ? Math.min(y, 10) : y;
 
-  const initial: Record<string, number | string> = { opacity: 0 };
+  const initial: Record<string, number | string> = { opacity: isMobile ? 0.3 : 0 };
   const animate: Record<string, number | string> = { opacity: 1 };
 
   if (direction === "up") {
     initial.y = moveDistance;
     animate.y = 0;
   } else if (direction === "left") {
-    initial.x = isMobile ? -20 : -40;
+    initial.x = isMobile ? -10 : -40;
     animate.x = 0;
   } else if (direction === "right") {
-    initial.x = isMobile ? 20 : 40;
+    initial.x = isMobile ? 10 : 40;
     animate.x = 0;
   }
 
@@ -48,7 +48,7 @@ export default function ScrollReveal({
   }
 
   if (scale) {
-    initial.scale = isMobile ? 0.96 : 0.92;
+    initial.scale = isMobile ? 0.98 : 0.92;
     animate.scale = 1;
   }
 
@@ -56,8 +56,8 @@ export default function ScrollReveal({
     <motion.div
       initial={initial}
       whileInView={animate}
-      viewport={{ once: true, margin: isMobile ? "-30px" : "-80px" }}
-      transition={{ duration: isMobile ? 0.5 : 0.7, ease: [0.22, 1, 0.36, 1], delay: isMobile ? delay * 0.6 : delay }}
+      viewport={{ once: true, margin: isMobile ? "200px" : "-80px" }}
+      transition={{ duration: isMobile ? 0.4 : 0.7, ease: [0.22, 1, 0.36, 1], delay: isMobile ? delay * 0.4 : delay }}
       className={className}
     >
       {children}

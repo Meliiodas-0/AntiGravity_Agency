@@ -77,10 +77,14 @@ export default function Hero() {
 
       {/* 3. Bottom Content (Tagline & CTA) */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        initial={{
+          opacity: isMobile ? 0.3 : 0,
+          y: isMobile ? 10 : 30,
+          scale: isMobile ? 0.98 : 1
+        }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, margin: isMobile ? "200px" : "-100px" }}
+        transition={{ duration: isMobile ? 0.5 : 0.8, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-30 flex flex-col items-center gap-10 sm:gap-14 mt-12 sm:mt-20 px-6 text-center"
       >
         <div className="space-y-4">

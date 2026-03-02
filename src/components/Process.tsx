@@ -1,8 +1,10 @@
 import { content } from "@/content/content";
 import { motion } from "framer-motion";
 import ScrollReveal from "./motion/ScrollReveal";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function Process() {
+  const isMobile = useIsMobile();
   const steps = content.process.steps;
 
   return (
@@ -32,17 +34,17 @@ export default function Process() {
               <motion.div
                 key={step.step}
                 initial={{
-                  opacity: 0,
-                  y: 30,
-                  scale: 0.95,
+                  opacity: isMobile ? 0.3 : 0,
+                  y: isMobile ? 10 : 30,
+                  scale: isMobile ? 0.98 : 0.95,
                 }}
                 whileInView={{
                   opacity: 1,
                   y: 0,
                   scale: 1,
                 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.22, 1, 0.36, 1] }}
+                viewport={{ once: true, margin: isMobile ? "200px" : "-60px" }}
+                transition={{ duration: isMobile ? 0.4 : 0.8, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 className="relative group p-8 sm:p-10 rounded-3xl bg-white/50 backdrop-blur-sm border border-black/[0.05] hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-700 h-full select-none cursor-default"
               >
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-black/5 text-black text-sm font-mono font-bold mb-8 group-hover:bg-primary group-hover:text-white group-hover:rotate-12 transition-all duration-700">

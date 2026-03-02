@@ -1,6 +1,7 @@
 import { content } from "@/content/content";
 import ScrollReveal from "./motion/ScrollReveal";
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type Client = { name: string; url: string; logo: string };
 
@@ -48,6 +49,7 @@ function MarqueeStrip({ items, reverse = false, speed = 35 }: { items: Client[];
 }
 
 export default function ProofStrips() {
+  const isMobile = useIsMobile();
   return (
     <section id="proof" className="relative scroll-mt-28 py-10 sm:py-20 md:py-24 overflow-hidden">
       {/* Background Decorative Elements */}
@@ -70,10 +72,14 @@ export default function ProofStrips() {
       </ScrollReveal>
 
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+        initial={{
+          opacity: isMobile ? 0.3 : 0,
+          y: isMobile ? 10 : 40,
+          scale: isMobile ? 0.98 : 1
+        }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
+        viewport={{ once: true, margin: isMobile ? "200px" : "-100px" }}
+        transition={{ duration: isMobile ? 0.5 : 1, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-10"
       >
         <div className="space-y-6 sm:space-y-8">

@@ -20,10 +20,14 @@ export default function Trust() {
           {content.trust.cards.map((card, i) => (
             <motion.div
               key={card.title}
-              initial={{ opacity: 0, y: 30, scale: 0.92 }}
+              initial={{
+                opacity: isMobile ? 0.3 : 0,
+                y: isMobile ? 10 : 30,
+                scale: isMobile ? 0.98 : 0.92
+              }}
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.8, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              viewport={{ once: true, margin: isMobile ? "200px" : "-30px" }}
+              transition={{ duration: isMobile ? 0.4 : 0.8, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
               className="group relative rounded-3xl bg-white/40 backdrop-blur-md border border-black/[0.06] p-8 sm:p-10 transition-all duration-700 hover:bg-white hover:shadow-2xl hover:shadow-primary/10 select-none cursor-default"
             >
               <div className="flex items-center gap-3 mb-8">
