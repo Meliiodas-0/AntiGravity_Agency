@@ -7,7 +7,7 @@ export default function Trust() {
   const isMobile = useIsMobile();
 
   return (
-    <section id="trust" className="relative scroll-mt-24 py-12 sm:py-16 px-5 sm:px-6 overflow-visible">
+    <section id="trust" className="relative scroll-mt-24 py-8 sm:py-16 px-5 sm:px-6 overflow-visible">
       <div className="max-w-6xl mx-auto">
         <ScrollReveal className="text-center mb-10 sm:mb-12" scale>
           <p className="text-[10px] sm:text-xs uppercase tracking-[0.34em] text-primary/60 mb-4 font-semibold">Why us</p>

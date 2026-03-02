@@ -275,11 +275,11 @@ export default function PhoneAnimation() {
     // Scale down phone on scroll to make room for text below
     const phoneScale = useTransform(scrollYProgress, [0.7, 1], [1, 0.85]);
 
-    const phoneW = isMobile ? 240 : 280;
-    const phoneH = isMobile ? 480 : 560;
-    const radiusX = isMobile ? 180 : 240;
-    const radiusY = isMobile ? 80 : 100;
-    const iconSize = isMobile ? 48 : 56;
+    const phoneW = isMobile ? 220 : 280;
+    const phoneH = isMobile ? 440 : 560;
+    const radiusX = isMobile ? 140 : 240;
+    const radiusY = isMobile ? 60 : 100;
+    const iconSize = isMobile ? 40 : 56;
     const activeIcons = isMobile ? ORBIT_ICONS.slice(0, 3) : ORBIT_ICONS;
 
     return (

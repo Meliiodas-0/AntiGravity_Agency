@@ -19,12 +19,12 @@ function MarqueeStrip({ items, reverse = false, speed = 35 }: { items: Client[];
             href={item.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative flex items-center justify-center rounded-2xl px-10 sm:px-14 py-10 sm:py-12 min-w-[240px] sm:min-w-[340px] md:min-w-[420px] bg-white/[0.02] border border-white/5 backdrop-blur-sm transition-all duration-700 hover:bg-white/[0.05] hover:border-white/20 hover:shadow-2xl hover:shadow-primary/10"
+            className="group relative flex items-center justify-center rounded-2xl px-6 sm:px-14 py-6 sm:py-12 min-w-[140px] sm:min-w-[340px] md:min-w-[420px] bg-white/[0.02] border border-white/5 backdrop-blur-sm transition-all duration-700 hover:bg-white/[0.05] hover:border-white/20 hover:shadow-2xl hover:shadow-primary/10"
           >
             {/* Ambient background glow on hover */}
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-            <div className="relative w-44 h-18 sm:w-56 sm:h-24 md:w-72 md:h-32 flex items-center justify-center transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+            <div className="relative w-32 h-12 sm:w-56 sm:h-24 md:w-72 md:h-32 flex items-center justify-center transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
               <img
                 src={item.logo}
                 alt={item.name}
@@ -49,7 +49,7 @@ function MarqueeStrip({ items, reverse = false, speed = 35 }: { items: Client[];
 
 export default function ProofStrips() {
   return (
-    <section id="proof" className="relative scroll-mt-28 py-16 sm:py-20 md:py-24 overflow-hidden">
+    <section id="proof" className="relative scroll-mt-28 py-10 sm:py-20 md:py-24 overflow-hidden">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10 animate-pulse" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -z-10" />

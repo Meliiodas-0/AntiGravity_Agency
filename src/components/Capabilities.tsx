@@ -67,7 +67,7 @@ export default function Capabilities() {
   const isMobile = useIsMobile();
 
   return (
-    <section id="capabilities" className="py-12 sm:py-16 px-5 sm:px-6 relative overflow-visible">
+    <section id="capabilities" className="py-8 sm:py-16 px-5 sm:px-6 relative overflow-visible">
       <div className="max-w-7xl mx-auto">
         <ScrollReveal className="text-center mb-10 sm:mb-12">
           <p className="text-[10px] sm:text-xs uppercase tracking-[0.34em] text-primary/60 mb-4 font-semibold">Expertise</p>
