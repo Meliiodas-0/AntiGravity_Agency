@@ -42,7 +42,7 @@ export default function ScrollLine() {
     }
   }, [dims]);
 
-  const gearOpacity = useTransform(smoothProgress, [0, 0.78, 0.83, 0.93, 0.98], [1, 1, 0.15, 0.15, 1]);
+  const gearOpacity = useTransform(smoothProgress, [0, 0.32, 0.35, 0.52, 0.55], [1, 1, 0.1, 0.1, 1]);
 
   useMotionValueEvent(smoothProgress, "change", (v) => {
     if (isMobile) return;
@@ -103,7 +103,7 @@ export default function ScrollLine() {
   return (
     <div
       className="absolute top-0 left-0 w-full pointer-events-none"
-      style={{ height: h, zIndex: 1 }}
+      style={{ height: h, zIndex: 50 }}
       aria-hidden="true"
     >
       <svg
@@ -115,9 +115,9 @@ export default function ScrollLine() {
         <defs>
           <linearGradient id="scroll-line-grad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#000000" stopOpacity="0" />
-            <stop offset="5%" stopColor="#000000" stopOpacity="0.04" />
-            <stop offset="50%" stopColor="#000000" stopOpacity="0.08" />
-            <stop offset="95%" stopColor="#000000" stopOpacity="0.04" />
+            <stop offset="5%" stopColor="#000000" stopOpacity="0.2" />
+            <stop offset="50%" stopColor="#000000" stopOpacity="0.4" />
+            <stop offset="95%" stopColor="#000000" stopOpacity="0.2" />
             <stop offset="100%" stopColor="#000000" stopOpacity="0" />
           </linearGradient>
 
@@ -141,9 +141,9 @@ export default function ScrollLine() {
           {/* Gradient for active trail */}
           <linearGradient id="trail-grad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#000000" stopOpacity="0" />
-            <stop offset="15%" stopColor="#000000" stopOpacity="0.6" />
-            <stop offset="50%" stopColor="#555555" stopOpacity="0.8" />
-            <stop offset="85%" stopColor="#000000" stopOpacity="0.6" />
+            <stop offset="15%" stopColor="#000000" stopOpacity="0.85" />
+            <stop offset="50%" stopColor="#000000" stopOpacity="1" />
+            <stop offset="85%" stopColor="#000000" stopOpacity="0.85" />
             <stop offset="100%" stopColor="#000000" stopOpacity="0" />
           </linearGradient>
         </defs>
@@ -153,7 +153,7 @@ export default function ScrollLine() {
           d={d}
           fill="none"
           stroke="url(#scroll-line-grad)"
-          strokeWidth={1}
+          strokeWidth={2}
           strokeLinecap="round"
         />
 
@@ -163,11 +163,11 @@ export default function ScrollLine() {
           d={d}
           fill="none"
           stroke="url(#trail-grad)"
-          strokeWidth={2}
+          strokeWidth={3}
           strokeLinecap="round"
           style={{
             pathLength: smoothProgress,
-            opacity: 0.5,
+            opacity: 0.9,
           }}
         />
 
@@ -176,12 +176,12 @@ export default function ScrollLine() {
           d={d}
           fill="none"
           stroke="hsl(var(--primary))"
-          strokeWidth={6}
+          strokeWidth={8}
           strokeLinecap="round"
           filter="url(#gear-glow)"
           style={{
             pathLength: smoothProgress,
-            opacity: 0.08,
+            opacity: 0.25,
           }}
         />
 
@@ -193,7 +193,7 @@ export default function ScrollLine() {
               cy={dot.y}
               r={5}
               fill="hsl(var(--primary))"
-              opacity={0.1}
+              opacity={0.4}
               filter="url(#dot-glow)"
             />
             <circle
@@ -201,7 +201,7 @@ export default function ScrollLine() {
               cy={dot.y}
               r={2}
               fill="hsl(var(--primary))"
-              opacity={0.25}
+              opacity={0.8}
             />
           </g>
         ))}
@@ -229,8 +229,11 @@ export default function ScrollLine() {
             />
             <Settings
               size={gearSize}
-              className="text-primary/90 relative z-10 drop-shadow-[0_0_10px_hsl(var(--primary)/0.4)]"
-              strokeWidth={1.5}
+              className="text-primary relative z-10"
+              style={{
+                filter: "drop-shadow(0 0 2px white) drop-shadow(0 0 2px white) drop-shadow(0 0 5px rgba(0,0,0,0.5))"
+              }}
+              strokeWidth={2.5}
             />
           </div>
         </motion.div>
