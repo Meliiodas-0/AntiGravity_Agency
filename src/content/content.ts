@@ -7,6 +7,7 @@ export const content = {
     eyebrow: "End-to-end digital growth partner",
     h1: "Everything digital. Fully handled.",
     sub: "Strategy, scripting, shooting, publishing, performance, websites, SEO, funnels, and large-scale events - owned end-to-end.",
+    tagline: "Engineering what the Algorithm demands",
     cta: "Let's Talk",
   },
   proof: {

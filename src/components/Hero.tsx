@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import TextReveal from "./motion/TextReveal";
 import DNANode from "./DNANode";
+import PhoneAnimation from "./PhoneAnimation";
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
@@ -21,54 +22,33 @@ export default function Hero() {
     mouseY.set(clientY / innerHeight);
   };
 
-  const subY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -15 : -40]);
-  const ctaY = useTransform(scrollYProgress, [0, 1], [0, isMobile ? -8 : -20]);
-  const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.8], [1, isMobile ? 1 : 0.95]);
-  // Only blur hero text on desktop during scroll-out — never on mobile
-  const blur = useTransform(scrollYProgress, [0.45, 0.85], [0, 8]);
-  const filterStr = useTransform(blur, (v) =>
-    (!isMobile && v > 0) ? `blur(${v}px)` : "none"
-  );
+  // Exit animations for the top text
+  const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.4], [1, 0.9]);
 
   return (
     <section
       id="hero"
       ref={ref}
-      className="relative min-h-[85vh] sm:min-h-screen flex flex-col items-center justify-center px-5 sm:px-6 pt-14 overflow-visible"
+      className="relative min-h-[160vh] sm:min-h-[180vh] flex flex-col items-center pt-24 sm:pt-32 pb-20 overflow-visible"
       onMouseMove={handleMouseMove}
     >
-      {/* Layered atmospheric background — simplified on mobile */}
-      <div className="absolute inset-0 -bottom-32 pointer-events-none" aria-hidden="true">
-        <div className="absolute -top-[20%] -right-[10%] w-[350px] sm:w-[700px] h-[350px] sm:h-[700px] rounded-full bg-primary/8 blur-[80px] sm:blur-[140px]" />
-        <div className="absolute -bottom-[15%] -left-[10%] w-[250px] sm:w-[500px] h-[250px] sm:h-[500px] rounded-full bg-primary/5 blur-[60px] sm:blur-[120px]" />
-        {!isMobile && (
-          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-primary/4 blur-[160px] animate-[pulse-glow_6s_ease-in-out_infinite]" />
-        )}
-        {/* Grid overlay — desktop only */}
-        {!isMobile && (
-          <div
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage:
-                "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)",
-              backgroundSize: "80px 80px",
-              maskImage: "linear-gradient(to bottom, black 40%, transparent 85%)",
-              WebkitMaskImage: "linear-gradient(to bottom, black 40%, transparent 85%)",
-            }}
-          />
-        )}
+      {/* Background Decor */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-blue-500/5 blur-[100px] rounded-full" />
       </div>
 
+      {/* 1. Top Content (H1 & Sub) */}
       <motion.div
-        className="relative max-w-4xl text-center z-10"
-        style={{ opacity, scale, ...(isMobile ? {} : { filter: filterStr }) }}
+        className="relative max-w-5xl text-center z-10 px-5"
+        style={{ opacity, scale }}
       >
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-primary/80 mb-4 sm:mb-6 font-medium"
+          transition={{ duration: 0.8 }}
+          className="text-[10px] sm:text-xs uppercase tracking-[0.4em] text-primary/70 mb-6 font-semibold"
         >
           {content.hero.eyebrow}
         </motion.p>
@@ -76,47 +56,58 @@ export default function Hero() {
         <TextReveal
           text={content.hero.h1}
           as="h1"
-          className="text-[2.2rem] leading-[1.1] sm:text-6xl md:text-7xl lg:text-8xl font-bold text-foreground sm:leading-[1.05] mb-5 sm:mb-8"
-          blurIn={!isMobile}
+          className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-foreground leading-[1] tracking-tighter mb-8"
           heroMode
         />
 
         <motion.p
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-          style={{ y: subY }}
-          className="text-sm sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 sm:mb-14 leading-relaxed px-2 font-light"
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-base sm:text-xl md:text-2xl text-muted-foreground/80 max-w-3xl mx-auto leading-relaxed font-light"
         >
           {content.hero.sub}
         </motion.p>
+      </motion.div>
+
+      {/* 2. Phone Animation (Centerpiece) */}
+      <div className="w-full relative z-20 mt-12 sm:mt-24">
+        <PhoneAnimation />
+      </div>
+
+      {/* 3. Bottom Content (Tagline & CTA) */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="relative z-30 flex flex-col items-center gap-10 sm:gap-14 mt-12 sm:mt-20 px-6 text-center"
+      >
+        <div className="space-y-4">
+          <h3 className="text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+            {content.hero.tagline || "Engineering what the Algorithm demands"}
+          </h3>
+          <p className="text-xs sm:text-sm uppercase tracking-[0.3em] text-primary/60 font-medium">
+            Neural Content Architecture
+          </p>
+        </div>
+
         <motion.a
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-          style={{ y: ctaY }}
           href="#contact"
-          className="inline-block bg-primary text-primary-foreground font-semibold px-8 sm:px-12 py-3.5 sm:py-5 rounded-lg hover:brightness-110 sm:hover:scale-105 active:scale-[0.97] transition-all text-sm sm:text-lg shadow-lg shadow-primary/20 cta-glow"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.98 }}
+          className="inline-flex bg-primary text-primary-foreground font-bold px-10 sm:px-16 py-4 sm:py-6 rounded-full transition-all text-base sm:text-xl shadow-2xl shadow-primary/30 cta-glow items-center gap-3"
         >
           {content.hero.cta}
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
         </motion.a>
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.8, duration: 0.6 }}
-        className="absolute bottom-6 sm:bottom-10 flex flex-col items-center text-muted-foreground text-xs uppercase tracking-widest pointer-events-none"
-      >
-        <span className="opacity-50">Scroll</span>
-        <svg className="w-4 h-4 mt-1 animate-bounce opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </motion.div>
-
-      {/* Neural DNA Transition — Subtle edge particles only */}
-      <div className="absolute inset-0 pointer-events-none overflow-visible z-20" aria-hidden="true">
-        {[...Array(10)].map((_, i) => (
+      {/* Neural Particles */}
+      <div className="absolute inset-0 pointer-events-none z-10" aria-hidden="true">
+        {[...Array(6)].map((_, i) => (
           <DNANode
             key={i}
             i={i}

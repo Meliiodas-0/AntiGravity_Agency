@@ -20,7 +20,6 @@ import SectionPlaceholder from "@/components/motion/SectionPlaceholder";
 
 // MOVE TO LAZY (Below Fold):
 // Splitting these reduces initial JS parse time on mobile/iOS.
-const MarketingDNA = lazy(() => import("@/components/MarketingDNA"));
 const CounterStats = lazy(() => import("@/components/motion/CounterStats"));
 const Capabilities = lazy(() => import("@/components/Capabilities"));
 const Process = lazy(() => import("@/components/Process"));
@@ -41,23 +40,14 @@ const Index = () => {
           <Hero />
         </div>
 
-        {/* MarketingDNA: Lazy with stable placeholder */}
         <SectionSlide index={1}>
-          <div className="section-gradient-dna relative">
-            <Suspense fallback={<SectionPlaceholder height="80vh" />}>
-              <MarketingDNA />
-            </Suspense>
-          </div>
-        </SectionSlide>
-
-        <SectionSlide index={2}>
           <div className="section-gradient-proof">
             <ProofStrips />
           </div>
         </SectionSlide>
 
         {/* Stats: Lazy */}
-        <SectionSlide index={3}>
+        <SectionSlide index={2}>
           <div className="section-gradient-stats">
             <Suspense fallback={<SectionPlaceholder height="400px" />}>
               <CounterStats />
@@ -66,7 +56,7 @@ const Index = () => {
         </SectionSlide>
 
         {/* Capabilities: Lazy */}
-        <SectionSlide index={4}>
+        <SectionSlide index={3}>
           <div className="section-gradient-capabilities">
             <Suspense fallback={<SectionPlaceholder height="600px" />}>
               <Capabilities />
@@ -75,7 +65,7 @@ const Index = () => {
         </SectionSlide>
 
         {/* Process: Lazy */}
-        <SectionSlide index={5}>
+        <SectionSlide index={4}>
           <div className="section-gradient-process">
             <Suspense fallback={<SectionPlaceholder height="600px" />}>
               <Process />
@@ -84,7 +74,7 @@ const Index = () => {
         </SectionSlide>
 
         {/* Trust: Lazy */}
-        <SectionSlide index={6}>
+        <SectionSlide index={5}>
           <div className="section-gradient-trust">
             <Suspense fallback={<SectionPlaceholder height="600px" />}>
               <Trust />
@@ -93,7 +83,7 @@ const Index = () => {
         </SectionSlide>
 
         {/* ContactForm: Lazy */}
-        <SectionSlide index={7}>
+        <SectionSlide index={6}>
           <div className="section-gradient-contact">
             <Suspense fallback={<SectionPlaceholder height="80vh" />}>
               <ContactForm />
