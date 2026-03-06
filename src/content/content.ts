@@ -29,7 +29,6 @@ export const content = {
       { name: "Kothari Jewellers", url: "https://www.instagram.com/kotharijewellerskj/", logo: "/logos/kothari-jewellers.png" },
       { name: "Gupta Hospitality", url: "https://guptahospitality.com/", logo: "/logos/gupta-hospitality.png" },
       { name: "Vidhima Fashion", url: "#", logo: "/logos/vidhima-fashion.png" },
-      { name: "Be Foundations", url: "#", logo: "/logos/be-foundations.png" },
       { name: "Organic Zing", url: "https://organiczing.co", logo: "/logos/organic-zing.png" },
       { name: "Littloo", url: "https://littloo.in", logo: "/logos/littloo.png" },
       { name: "Taabi", url: "https://taabi.ai/", logo: "/logos/taabi.png" },
