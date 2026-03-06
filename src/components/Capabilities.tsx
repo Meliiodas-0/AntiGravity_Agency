@@ -95,7 +95,7 @@ export default function Capabilities() {
                   </p>
 
                   {/* Subtle index number */}
-                  <div className="absolute top-10 right-10 text-black/[0.03] font-mono text-5xl tracking-tighter transition-all duration-700 group-hover:text-primary/5 group-hover:scale-110">
+                  <div className="absolute top-10 right-10 text-black/10 font-mono text-5xl tracking-tighter transition-all duration-700 group-hover:text-primary/20 group-hover:scale-110">
                     0{i + 1}
                   </div>
                 </TiltCard>
