@@ -220,7 +220,7 @@ function InstagramScreen() {
                         <p className="text-[10px] sm:text-[11px] font-semibold text-white">Professional dashboard</p>
                         <div className="flex items-center gap-1 mt-[2px]">
                             <TrendingUp size={isMobile ? 9 : 10} className="text-green-400" />
-                            <span className="text-[8px] sm:text-[9px] text-white/50">1.4K views in the last 30 days.</span>
+                            <span className="text-[8px] sm:text-[9px] text-white/50">40K views in the last 30 days.</span>
                         </div>
                     </div>
                     <ArrowUpRight size={isMobile ? 11 : 12} className="text-white/40" />
@@ -325,8 +325,11 @@ export default function MarketingDNA() {
     const reactorOpacity = useTransform(scrollYProgress, [0.82, 0.88, 1.0], [0, 0.18, 0]);
 
     // Dimensions — mobile matches desktop proportions, same high-detail look
-    const phoneW = isMobile ? 260 : 315;
-    const phoneH = isMobile ? 528 : 640;
+    // Dimensions — base PC proportions
+    const phoneW = 315;
+    const phoneH = 640;
+    const phoneScaleFactor = isMobile ? 0.85 : 1;
+
     const radiusX = isMobile ? 200 : 280;   // large enough to clear phone edge
     const radiusY = isMobile ? 90 : 120;
     const iconSize = isMobile ? 54 : 68;
@@ -450,7 +453,7 @@ export default function MarketingDNA() {
                         >
                             <div style={{
                                 width: phoneW, height: phoneH,
-                                borderRadius: isMobile ? 38 : 48,
+                                borderRadius: 48,
                                 background: "#050505",
                                 border: "9px solid #141414",
                                 boxShadow: `
@@ -460,8 +463,8 @@ export default function MarketingDNA() {
                                     inset 0 0 0 1px rgba(255,255,255,0.8)
                                 `,
                                 position: "relative",
-                                transform: `perspective(1800px) rotateX(5deg) rotateY(-14deg) translateZ(0)`,
-                                WebkitTransform: `perspective(1800px) rotateX(5deg) rotateY(-14deg) translateZ(0)`,
+                                transform: `perspective(1800px) rotateX(5deg) rotateY(-14deg) scale(${phoneScaleFactor}) translateZ(0)`,
+                                WebkitTransform: `perspective(1800px) rotateX(5deg) rotateY(-14deg) scale(${phoneScaleFactor}) translateZ(0)`,
                                 transformStyle: "preserve-3d",
                                 WebkitTransformStyle: "preserve-3d",
                                 WebkitFontSmoothing: "antialiased",
@@ -490,7 +493,7 @@ export default function MarketingDNA() {
                                 {/* Screen */}
                                 <div style={{
                                     position: "absolute", inset: 0,
-                                    borderRadius: isMobile ? 30 : 40,
+                                    borderRadius: 40,
                                     overflow: "hidden",
                                 }}>
                                     <InstagramScreen />

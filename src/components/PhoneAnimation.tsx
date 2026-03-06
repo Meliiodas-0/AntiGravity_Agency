@@ -191,7 +191,7 @@ function InstagramScreen() {
                         <p className="text-[10px] sm:text-[11px] font-semibold text-white">Professional dashboard</p>
                         <div className="flex items-center gap-1 mt-[2px]">
                             <TrendingUp size={isMobile ? 9 : 10} className="text-green-400" />
-                            <span className="text-[8px] sm:text-[9px] text-white/50">1.4K views in the last 30 days.</span>
+                            <span className="text-[8px] sm:text-[9px] text-white/50">40K views in the last 30 days.</span>
                         </div>
                     </div>
                     <ArrowUpRight size={isMobile ? 11 : 12} className="text-white/40" />
@@ -273,10 +273,12 @@ export default function PhoneAnimation() {
     const trailOpacity = useTransform(scrollYProgress, [0.2, 0.3, 0.7, 0.8], [0, 1, 1, 0]);
 
     // Scale down phone on scroll to make room for text below
-    const phoneScale = useTransform(scrollYProgress, [0.7, 1], [1, 0.85]);
+    const rawPhoneScale = useTransform(scrollYProgress, [0.7, 1], [1, 0.85]);
+    const phoneScale = useTransform(rawPhoneScale, (v) => v * phoneScaleFactor);
 
-    const phoneW = isMobile ? 220 : 280;
-    const phoneH = isMobile ? 440 : 560;
+    const phoneW = 280;
+    const phoneH = 560;
+    const phoneScaleFactor = isMobile ? 0.78 : 1;
     const radiusX = isMobile ? 140 : 240;
     const radiusY = isMobile ? 60 : 100;
     const iconSize = isMobile ? 40 : 56;
@@ -284,7 +286,7 @@ export default function PhoneAnimation() {
 
     return (
         <div ref={containerRef} className="relative w-full flex items-center justify-center overflow-visible py-12 sm:py-20">
-            <div className="relative" style={{ minHeight: phoneH }}>
+            <div className="relative" style={{ minHeight: phoneH * (isMobile ? phoneScaleFactor : 1) }}>
                 {/* Orbit anchor */}
                 <div style={{ position: "absolute", top: "50%", left: "50%", zIndex: 1 }}>
                     {activeIcons.map((item, i) => (
@@ -314,7 +316,7 @@ export default function PhoneAnimation() {
                 >
                     <div style={{
                         width: phoneW, height: phoneH,
-                        borderRadius: isMobile ? 32 : 40,
+                        borderRadius: 40,
                         background: "#050505",
                         border: "8px solid #141414",
                         boxShadow: `0 30px 60px rgba(0,0,0,0.12), inset 0 0 0 1px rgba(255,255,255,0.05)`,
