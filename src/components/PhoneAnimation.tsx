@@ -272,13 +272,14 @@ export default function PhoneAnimation() {
     const orbitProgress = useSpring(rawOrbit, { stiffness: 40, damping: 25 });
     const trailOpacity = useTransform(scrollYProgress, [0.2, 0.3, 0.7, 0.8], [0, 1, 1, 0]);
 
+    const phoneScaleFactor = isMobile ? 0.78 : 1;
     // Scale down phone on scroll to make room for text below
     const rawPhoneScale = useTransform(scrollYProgress, [0.7, 1], [1, 0.85]);
     const phoneScale = useTransform(rawPhoneScale, (v) => v * phoneScaleFactor);
 
     const phoneW = 280;
     const phoneH = 560;
-    const phoneScaleFactor = isMobile ? 0.78 : 1;
+
     const radiusX = isMobile ? 140 : 240;
     const radiusY = isMobile ? 60 : 100;
     const iconSize = isMobile ? 40 : 56;
