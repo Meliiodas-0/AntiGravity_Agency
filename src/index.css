@@ -202,13 +202,13 @@
   }
 
   100% {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(calc(-100% / 3), 0, 0);
   }
 }
 
 @keyframes marquee-scroll-reverse {
   0% {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(calc(-100% / 3), 0, 0);
   }
 
   100% {
