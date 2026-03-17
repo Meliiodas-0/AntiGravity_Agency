@@ -27,7 +27,7 @@ export const content = {
       { name: "Sippa", url: "#", logo: "/logos/sippa.png" },
     ],
     [
-      { name: "Funpunch", url: "#", logo: "/logos/funpunch.png?v=2" },
+      { name: "Funpunch", url: "https://www.instagram.com/p/DBKPov_hWC3/", logo: "/logos/funpunch.png?v=2" },
       { name: "Glazer Games", url: "#", logo: "/logos/glazer-games.png?v=2" },
       { name: "Kothari Jewellers", url: "https://www.instagram.com/kotharijewellerskj/", logo: "/logos/kothari-jewellers.png" },
       { name: "Gupta Hospitality", url: "https://guptahospitality.com/", logo: "/logos/gupta-hospitality.png" },
