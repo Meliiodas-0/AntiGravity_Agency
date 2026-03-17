@@ -16,7 +16,7 @@ export const content = {
   },
   proofStrips: [
     [
-      { name: "Magadha Studios", url: "#", logo: "/logos/magadha-studios.png" },
+      { name: "Magadha Studios", url: "#", logo: "/logos/magadha-studios.png?v=2" },
       { name: "HCL Healthcare", url: "https://hclhealthcare.in/", logo: "/logos/hcl-healthcare.png" },
       { name: "E-Factor Experiences", url: "https://www.efactorexp.com/", logo: "/logos/e-factor.png" },
       { name: "SkyWalz", url: "https://www.skywaltz.com/", logo: "/logos/skywalz.png" },
@@ -27,15 +27,15 @@ export const content = {
       { name: "Sippa", url: "#", logo: "/logos/sippa.png" },
     ],
     [
-      { name: "Funpunch", url: "#", logo: "/logos/funpunch.png" },
-      { name: "Glazer Games", url: "#", logo: "/logos/glazer-games.png" },
+      { name: "Funpunch", url: "#", logo: "/logos/funpunch.png?v=2" },
+      { name: "Glazer Games", url: "#", logo: "/logos/glazer-games.png?v=2" },
       { name: "Kothari Jewellers", url: "https://www.instagram.com/kotharijewellerskj/", logo: "/logos/kothari-jewellers.png" },
       { name: "Gupta Hospitality", url: "https://guptahospitality.com/", logo: "/logos/gupta-hospitality.png" },
       { name: "Vidhima Fashion", url: "#", logo: "/logos/vidhima-fashion.png" },
-      { name: "Organic Zing", url: "https://organiczing.co", logo: "/logos/organic-zing.png" },
-      { name: "Littloo", url: "https://littloo.in", logo: "/logos/littloo.png" },
-      { name: "Taabi", url: "https://taabi.ai/", logo: "/logos/taabi.png" },
-      { name: "Shop Rhythm", url: "https://www.shoprythm.com", logo: "/logos/shop-rhythm.png" },
+      { name: "Organic Zing", url: "https://organiczing.co", logo: "/logos/organic-zing.png?v=2" },
+      { name: "Littloo", url: "https://littloo.in", logo: "/logos/littloo.png?v=2" },
+      { name: "Taabi", url: "https://taabi.ai/", logo: "/logos/taabi.png?v=2" },
+      { name: "Shop Rhythm", url: "https://www.shoprythm.com", logo: "/logos/shop-rhythm.png?v=2" },
     ],
   ],
   objectives: {
