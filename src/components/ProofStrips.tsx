@@ -83,8 +83,7 @@ export default function ProofStrips() {
         className="relative z-10"
       >
         <div className="space-y-6 sm:space-y-8">
-          <MarqueeStrip items={content.proofStrips[0]} speed={40} />
-          <MarqueeStrip items={content.proofStrips[1]} reverse speed={50} />
+          <MarqueeStrip items={content.proofStrips as any} speed={40} />
         </div>
       </motion.div>
     </section>
