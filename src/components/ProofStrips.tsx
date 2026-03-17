@@ -25,14 +25,14 @@ function MarqueeStrip({ items, reverse = false, speed = 35 }: { items: Client[];
             {/* Ambient background glow on hover */}
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
-            <div className="relative w-32 h-14 sm:w-56 sm:h-24 md:w-72 md:h-32 flex items-center justify-center transition-all duration-700 group-hover:scale-105 group-hover:brightness-110">
+            <div className="relative w-32 h-14 sm:w-56 sm:h-24 md:w-72 md:h-32 flex items-center justify-center transition-all duration-700 group-hover:scale-105">
               <img
                 src={item.logo}
                 alt={item.name}
                 title={item.name}
                 loading="lazy"
                 decoding="async"
-                className="w-full h-full object-contain filter drop-shadow-md brightness-90 contrast-110 group-hover:brightness-100 transition-all duration-700"
+                className="w-full h-full object-contain transition-all duration-700"
               />
             </div>
 
