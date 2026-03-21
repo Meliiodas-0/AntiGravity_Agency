@@ -19,7 +19,7 @@ export const content = {
       { name: "Magadha Studios", url: "#", logo: "/logos/magadha-studios.png?v=2" },
       { name: "HCL Healthcare", url: "https://hclhealthcare.in/", logo: "/logos/hcl-healthcare.png" },
       { name: "E-Factor Experiences", url: "https://www.efactorexp.com/", logo: "/logos/e-factor.png" },
-      { name: "SkyWalz", url: "https://www.skywaltz.com/", logo: "/logos/skywaltz.png" },
+      { name: "SkyWalz", url: "https://www.skywaltz.com/", logo: "/logos/skywalz.png" },
       { name: "Anmol Dairy", url: "https://www.instagram.com/anmoldairyproduct/", logo: "/logos/anmol-dairy.png" },
       { name: "Swan Agro", url: "https://www.swanagro.in", logo: "/logos/swan-agro.png" },
       { name: "EEMA", url: "https://www.eemaindia.com/", logo: "/logos/eema.png" },
