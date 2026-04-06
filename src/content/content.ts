@@ -1,6 +1,6 @@
 export const content = {
   agency: {
-    name: "Studs Agency",
+    name: "your brand",
   },
   nav: ["Proof", "Capabilities", "Process", "Trust", "Contact"],
   hero: {

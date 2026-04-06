@@ -17,11 +17,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 // ─── Brand ────────────────────────────────────────────────────────────────────
 const BRAND = {
-    handle: "studsagency",
-    name: "Studs Agency",
+    handle: "yourBrand",
+    name: "your brand",
     bio: "Engineered growth. Premium content.",
-    category: "Marketing Agency",
-    link: "studsagency.com",
+    category: "your niche",
+    link: "yourbrand.com",
 };
 
 // ─── Social Icons ─────────────────────────────────────────────────────────────
@@ -191,7 +191,7 @@ function InstagramScreen() {
                 <div className="w-14 h-14 rounded-full p-[2px] bg-gradient-to-tr from-[#000000] via-[#555555] to-[#000000] shrink-0">
                     <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
                         <div className="w-full h-full rounded-full bg-gradient-to-br from-[#f0f0f0] to-[#ffffff] flex items-center justify-center text-[12px] font-black text-black">
-                            SA
+                            YB
                         </div>
                     </div>
                 </div>
