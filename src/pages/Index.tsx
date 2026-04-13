@@ -15,7 +15,7 @@ import WorkInProgress from "@/components/WorkInProgress";
 
 // ─── CONFIGURATION ─────────────────────────────────────────────────────────────
 // Set ENABLE_WIP to false to restore the full website content.
-const ENABLE_WIP = true; 
+const ENABLE_WIP = false; 
 // VERSION 007 - CURRENT STABLE CONTENT
 // ──────────────────────────────────────────────────────────────────────────────
 
@@ -70,16 +70,6 @@ const Index = () => {
         {/* Capabilities: Lazy */}
         <SectionSlide index={3}>
           <div className="section-gradient-capabilities">
-            <div className="mobile-divider" />
-            <Suspense fallback={<SectionPlaceholder height="600px" />}>
-              <Capabilities />
-            </Suspense>
-          </div>
-        </SectionSlide>
-
-        {/* Process: Lazy */}
-        <SectionSlide index={4}>
-          <div className="section-gradient-process">
             <div className="mobile-divider" />
             <Suspense fallback={<SectionPlaceholder height="600px" />}>
               <Capabilities />
