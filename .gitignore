@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Working scratch notes (not part of the site)
+WORK SHOWCASE.md

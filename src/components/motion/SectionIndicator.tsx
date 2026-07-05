@@ -5,6 +5,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const SECTIONS = [
   { id: "hero", label: "Home" },
   { id: "proof", label: "Clients" },
+  { id: "work", label: "Work" },
   { id: "capabilities", label: "Services" },
   { id: "process", label: "Process" },
   { id: "trust", label: "Trust" },

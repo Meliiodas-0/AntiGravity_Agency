@@ -17,11 +17,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 // ─── Brand ────────────────────────────────────────────────────────────────────
 const BRAND = {
-    handle: "yourBrand",
-    name: "your brand",
+    handle: "studsagency",
+    name: "Studs Agency",
     bio: "Engineered growth. Premium content.",
-    category: "your niche",
-    link: "yourbrand.com",
+    category: "Digital Growth Partner",
+    link: "studsagency.com",
 };
 
 // ─── Social Icons ─────────────────────────────────────────────────────────────

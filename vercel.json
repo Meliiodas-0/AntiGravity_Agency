@@ -5,10 +5,10 @@
             "has": [
                 {
                     "type": "host",
-                    "value": "yourbrand.com"
+                    "value": "studsagency.com"
                 }
             ],
-            "destination": "https://www.yourbrand.com/:path*",
+            "destination": "https://www.studsagency.com/:path*",
             "permanent": true
         }
     ],

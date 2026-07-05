@@ -94,7 +94,7 @@ const WorkInProgress = () => {
 
             {/* Footer Tag */}
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 opacity-20 text-[10px] tracking-widest uppercase">
-                &copy; YOUR BRAND 2026 // v007
+                &copy; STUDS AGENCY 2026 // v007
             </div>
         </div>
     );

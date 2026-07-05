@@ -28,6 +28,7 @@ const ENABLE_WIP = false;
 // MOVE TO LAZY (Below Fold):
 // Splitting these reduces initial JS parse time on mobile/iOS.
 const CounterStats = lazy(() => import("@/components/motion/CounterStats"));
+const WorkShowcase = lazy(() => import("@/components/WorkShowcase"));
 const Capabilities = lazy(() => import("@/components/Capabilities"));
 const Process = lazy(() => import("@/components/Process"));
 const Trust = lazy(() => import("@/components/Trust"));
@@ -58,8 +59,18 @@ const Index = () => {
           </div>
         </SectionSlide>
 
-        {/* Stats: Lazy */}
+        {/* Work Showcase: Lazy */}
         <SectionSlide index={2}>
+          <div className="section-gradient-work">
+            <div className="mobile-divider" />
+            <Suspense fallback={<SectionPlaceholder height="600px" />}>
+              <WorkShowcase />
+            </Suspense>
+          </div>
+        </SectionSlide>
+
+        {/* Stats: Lazy */}
+        <SectionSlide index={3}>
           <div className="section-gradient-stats">
             <Suspense fallback={<SectionPlaceholder height="400px" />}>
               <CounterStats />
@@ -68,7 +79,7 @@ const Index = () => {
         </SectionSlide>
 
         {/* Capabilities: Lazy */}
-        <SectionSlide index={3}>
+        <SectionSlide index={4}>
           <div className="section-gradient-capabilities">
             <div className="mobile-divider" />
             <Suspense fallback={<SectionPlaceholder height="600px" />}>
@@ -78,7 +89,7 @@ const Index = () => {
         </SectionSlide>
 
         {/* Process: Lazy */}
-        <SectionSlide index={4}>
+        <SectionSlide index={5}>
           <div className="section-gradient-process">
             <div className="mobile-divider" />
             <Suspense fallback={<SectionPlaceholder height="600px" />}>
@@ -88,7 +99,7 @@ const Index = () => {
         </SectionSlide>
 
         {/* Trust: Lazy */}
-        <SectionSlide index={5}>
+        <SectionSlide index={6}>
           <div className="section-gradient-trust">
             <div className="mobile-divider" />
             <Suspense fallback={<SectionPlaceholder height="600px" />}>
@@ -98,7 +109,7 @@ const Index = () => {
         </SectionSlide>
 
         {/* ContactForm: Lazy */}
-        <SectionSlide index={6}>
+        <SectionSlide index={7}>
           <div className="section-gradient-contact">
             <Suspense fallback={<SectionPlaceholder height="80vh" />}>
               <ContactForm />

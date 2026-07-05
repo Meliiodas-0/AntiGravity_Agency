@@ -1,8 +1,8 @@
 export const content = {
   agency: {
-    name: "your brand",
+    name: "Studs Agency",
   },
-  nav: ["Proof", "Capabilities", "Process", "Trust", "Contact"],
+  nav: ["Proof", "Work", "Capabilities", "Process", "Trust", "Contact"],
   hero: {
     eyebrow: "End-to-end digital growth partner",
     h1: "Everything digital. Fully handled.",
@@ -21,6 +21,56 @@ export const content = {
       { name: "Glazer Games", url: "#", logo: "/logos/glazer-games.png?v=2" },
     ],
   ],
+  work: {
+    eyebrow: "Selected Work",
+    title: "Proof in the output",
+    sub: "A sample of the edits, key art, and brand design we ship for creators, gaming talent, and large-scale events.",
+    categories: [
+      {
+        key: "video",
+        label: "Video Editing",
+        blurb: "Short-form edits engineered for retention, reach, and recall.",
+        media: "video",
+        aspect: "9 / 16",
+        items: [
+          { title: "Founders' Mindset - E-Cell CMR", tag: "Entrepreneurship", src: "/work/reels/reel02.webm", poster: "/work/reels/reel02.jpg" },
+          { title: "Cinematic Brand Film", tag: "Cinematic Edit", src: "/work/reels/reel04.webm", poster: "/work/reels/reel04.jpg" },
+          { title: "Hook-Driven Reel", tag: "Retention Edit", src: "/work/reels/reel07.webm", poster: "/work/reels/reel07.jpg" },
+          { title: "Diwali Special - Baklava", tag: "Food Reel", src: "/work/reels/reel08.webm", poster: "/work/reels/reel08.jpg" },
+          { title: "San Sebastián Cheesecake", tag: "Food Reel", src: "/work/reels/reel10.webm", poster: "/work/reels/reel10.jpg" },
+          { title: "Founder Story Edit", tag: "Talking Head", src: "/work/reels/reel12.webm", poster: "/work/reels/reel12.jpg" },
+        ],
+      },
+      {
+        key: "design",
+        label: "Graphic Design",
+        blurb: "Scroll-stopping thumbnails and key art built to win the click.",
+        media: "image",
+        aspect: "16 / 9",
+        items: [
+          { title: "Valorant - New Act", tag: "Gaming Thumbnail", src: "/work/design/gfx01.webp" },
+          { title: "#1 Leaderboard Player", tag: "Gaming Thumbnail", src: "/work/design/gfx06.webp" },
+          { title: "Custom Rooms & Codes", tag: "Gaming Thumbnail", src: "/work/design/gfx09.webp" },
+          { title: "You Peek You Die", tag: "Gaming Thumbnail", src: "/work/design/gfx12.webp" },
+          { title: "Demon Slayer - Key Art", tag: "Anime Edit", src: "/work/design/gfx18.webp" },
+          { title: "Unstoppable", tag: "Gaming Thumbnail", src: "/work/design/gfx21.webp" },
+        ],
+      },
+      {
+        key: "art",
+        label: "Posters & 3D",
+        blurb: "Event identities and 3D art direction with a premium finish.",
+        media: "image",
+        aspect: "4 / 5",
+        items: [
+          { title: "NEXUS ESummit 2K25", tag: "Event Poster", src: "/work/art/poster-esummit.webp" },
+          { title: "Dreamscape", tag: "3D Art Direction", src: "/work/art/art-dream.jpg" },
+          { title: "Liftoff", tag: "3D Art Direction", src: "/work/art/art-astronaut.jpg" },
+          { title: "Stillness", tag: "3D Art Direction", src: "/work/art/art-iceberg.jpg" },
+        ],
+      },
+    ],
+  },
   objectives: {
     title: "What drives us",
     items: [
