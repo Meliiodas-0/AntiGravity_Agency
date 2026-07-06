@@ -33,6 +33,9 @@ export const content = {
         media: "video",
         aspect: "9 / 16",
         items: [
+          { title: "Funpunch - Creator Reel", tag: "Gaming Creator", platform: "Instagram", href: "https://www.instagram.com/funpunch_india/reel/DBKPov_hWC3/", poster: "/work/reels/ig-funpunch.jpg" },
+          { title: "Exams Are Finally Over", tag: "Gaming Reel", platform: "Instagram", href: "https://www.instagram.com/glazer.games/reel/CxLFe4QSr7g/", poster: "/work/reels/ig-glazer-1.jpg" },
+          { title: "BGMI Montage", tag: "Gaming Reel", platform: "Instagram", href: "https://www.instagram.com/glazer.games/reel/Cw4-K2LtG-O/", poster: "/work/reels/ig-glazer-2.jpg" },
           { title: "Founders' Mindset - E-Cell CMR", tag: "Entrepreneurship", src: "/work/reels/reel02.webm", poster: "/work/reels/reel02.jpg" },
           { title: "Cinematic Brand Film", tag: "Cinematic Edit", src: "/work/reels/reel04.webm", poster: "/work/reels/reel04.jpg" },
           { title: "Hook-Driven Reel", tag: "Retention Edit", src: "/work/reels/reel07.webm", poster: "/work/reels/reel07.jpg" },
