@@ -16,9 +16,26 @@ export const content = {
   },
   proofStrips: [
     [
+      { name: "HCL Healthcare", url: "#", logo: "/logos/hcl-healthcare.png" },
+      { name: "e-factor", url: "#", logo: "/logos/e-factor.png" },
+      { name: "EEMA", url: "#", logo: "/logos/eema.png" },
+      { name: "Kothari Jewellers", url: "#", logo: "/logos/kothari-jewellers.png" },
+      { name: "Gupta Hospitality", url: "#", logo: "/logos/gupta-hospitality.png" },
+      { name: "HT Digital", url: "#", logo: "/logos/ht-digital.png" },
       { name: "Magadha Studios", url: "#", logo: "/logos/magadha-studios.png?v=2" },
-      { name: "Funpunch", url: "https://www.instagram.com/p/DBKPov_hWC3/", logo: "/logos/funpunch.png?v=2" },
-      { name: "Glazer Games", url: "#", logo: "/logos/glazer-games.png?v=2" },
+      { name: "Funpunch", url: "https://www.instagram.com/funpunch_india/reel/DBKPov_hWC3/", logo: "/logos/funpunch.png?v=2" },
+      { name: "Glazer Games", url: "https://www.instagram.com/glazer.games/", logo: "/logos/glazer-games.png?v=2" },
+    ],
+    [
+      { name: "Organic Zing", url: "#", logo: "/logos/organic-zing.png" },
+      { name: "Swan Agro", url: "#", logo: "/logos/swan-agro.png" },
+      { name: "Anmol Dairy", url: "#", logo: "/logos/anmol-dairy.png" },
+      { name: "Uttam Dairy", url: "#", logo: "/logos/uttam-dairy.png" },
+      { name: "Vidhima Fashion", url: "#", logo: "/logos/vidhima-fashion.png" },
+      { name: "Sippa", url: "#", logo: "/logos/sippa.png" },
+      { name: "Skywalz", url: "#", logo: "/logos/skywalz.png" },
+      { name: "Shop Rhythm", url: "#", logo: "/logos/shop-rhythm.png" },
+      { name: "Littloo", url: "#", logo: "/logos/littloo.png" },
     ],
   ],
   work: {
