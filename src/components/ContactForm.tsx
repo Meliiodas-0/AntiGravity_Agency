@@ -31,6 +31,7 @@ export default function ContactForm() {
   const [form, setForm] = useState({ name: "", brand: "", message: "", contact: "" });
   const [countryCode, setCountryCode] = useState("+91");
   const [loading, setLoading] = useState(false);
+  const [honeypot, setHoneypot] = useState(""); // bot trap — real users leave it blank
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,17 +43,15 @@ export default function ContactForm() {
 
     setLoading(true);
     try {
-      const res = await fetch(
-        "https://anbhgvgkxwofdmbhevbl.supabase.co/functions/v1/submit-contact",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...result.data,
-            contact: `${countryCode}${result.data.contact}`,
-          }),
-        }
-      );
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...result.data,
+          contact: `${countryCode}${result.data.contact}`,
+          company: honeypot, // honeypot — must stay empty
+        }),
+      });
 
       if (res.status === 429) {
         toast.error("Too many submissions. Please try again later.");
@@ -102,6 +101,17 @@ export default function ContactForm() {
           transition={{ duration: isMobile ? 0.4 : 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
+            {/* Honeypot: hidden from users, bots fill it and get silently dropped */}
+            <input
+              type="text"
+              name="company"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              aria-hidden="true"
+              className="absolute left-[-9999px] h-0 w-0 opacity-0"
+            />
             {fields.map((field) => (
               <div key={field.key}>
                 <label className="block text-sm sm:text-base text-muted-foreground mb-2">
