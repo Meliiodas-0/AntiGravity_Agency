@@ -29,7 +29,7 @@ const ENABLE_WIP = false;
 // Splitting these reduces initial JS parse time on mobile/iOS.
 const CounterStats = lazy(() => import("@/components/motion/CounterStats"));
 const WorkShowcase = lazy(() => import("@/components/WorkShowcase"));
-const Capabilities = lazy(() => import("@/components/Capabilities"));
+const Arsenal = lazy(() => import("@/components/Arsenal"));
 const Process = lazy(() => import("@/components/Process"));
 const Trust = lazy(() => import("@/components/Trust"));
 const ContactForm = lazy(() => import("@/components/ContactForm"));
@@ -78,12 +78,12 @@ const Index = () => {
           </div>
         </SectionSlide>
 
-        {/* Capabilities: Lazy */}
+        {/* Arsenal (Sh*t We Get Done): Lazy */}
         <SectionSlide index={4}>
           <div className="section-gradient-capabilities">
             <div className="mobile-divider" />
             <Suspense fallback={<SectionPlaceholder height="600px" />}>
-              <Capabilities />
+              <Arsenal />
             </Suspense>
           </div>
         </SectionSlide>
