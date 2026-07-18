@@ -4,15 +4,15 @@ export const content = {
   },
   nav: ["Proof", "Arsenal", "Process", "Trust", "Contact"],
   hero: {
-    eyebrow: "End-to-end digital growth partner",
+    eyebrow: "Full-stack growth agency",
     h1: "Everything digital. Fully handled.",
-    sub: "Strategy, scripting, shooting, publishing, performance, websites, SEO, funnels, and large-scale events - owned end-to-end.",
+    sub: "Brand, content, performance, websites, AI, and automation, engineered as one system and owned end-to-end.",
     tagline: "Engineering what the Algorithm demands",
     cta: "Let's Talk",
   },
   proof: {
     title: "Brands We Have Worked With",
-    sub: "Empowering visionary companies through tailored digital growth.",
+    sub: "Founders, D2C brands, and creators we've grown across content, performance, web, and AI.",
   },
   proofStrips: [
     [
@@ -140,24 +140,24 @@ export const content = {
       {
         step: "01",
         title: "Clarity",
-        description: "Understand what must grow and why it matters now.",
+        description: "We map what needs to grow across brand, marketing, product, and systems.",
       },
       {
         step: "02",
         title: "System",
         description:
-          "Strategy, content, and execution designed as one connected structure.",
+          "Strategy, creative, web, and automation designed as one connected engine.",
       },
       {
         step: "03",
         title: "Ownership",
-        description: "Everything digital handled end-to-end. Nothing falls through.",
+        description: "Everything handled end-to-end, from content to code to campaigns.",
       },
       {
         step: "04",
         title: "Scale",
         description:
-          "Optimized, expanded, and repeated across every channel that counts.",
+          "Optimized with data and AI, then repeated across every channel that counts.",
       },
     ],
   },

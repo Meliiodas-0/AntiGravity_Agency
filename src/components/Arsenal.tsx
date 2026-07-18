@@ -54,14 +54,17 @@ function computeLayout(w: number, h: number, n: number) {
   const cardHFit = Math.floor((maxGridH - (rows - 1) * gap) / rows);
   // Let cards fill the vertical space (cap the aspect so they don't get absurdly tall).
   const cardH = Math.max(170, Math.min(Math.round(cardW * 0.82), cardHFit));
-  const gridW = cols * cardW + (cols - 1) * gap;
   const gridH = rows * cardH + (rows - 1) * gap;
+  const lastRowCount = n - (rows - 1) * cols;
   const slots: Slot[] = [];
   for (let i = 0; i < n; i++) {
     const col = i % cols;
     const row = Math.floor(i / cols);
+    // Center any short final row instead of leaving an empty slot on the right.
+    const inRow = row === rows - 1 ? lastRowCount : cols;
+    const rowW = inRow * cardW + (inRow - 1) * gap;
     slots.push({
-      tx: -gridW / 2 + col * (cardW + gap) + cardW / 2,
+      tx: -rowW / 2 + col * (cardW + gap) + cardW / 2,
       ty: -gridH / 2 + row * (cardH + gap) + cardH / 2,
     });
   }
