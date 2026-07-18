@@ -2,7 +2,7 @@ export const content = {
   agency: {
     name: "Studs Agency",
   },
-  nav: ["Proof", "Work", "Arsenal", "Process", "Trust", "Contact"],
+  nav: ["Proof", "Arsenal", "Process", "Trust", "Contact"],
   hero: {
     eyebrow: "End-to-end digital growth partner",
     h1: "Everything digital. Fully handled.",
