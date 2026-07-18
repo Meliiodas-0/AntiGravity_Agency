@@ -46,14 +46,14 @@ const clamp01 = (t: number) => Math.min(1, Math.max(0, t));
 // ─── Layout: where each card lands once the deck is dealt ─────────────────────
 function computeLayout(w: number, h: number, n: number) {
   const cols = w < 640 ? 2 : w < 920 ? 3 : w < 1220 ? 4 : 5;
-  const gap = w < 640 ? 14 : 22;
-  const maxGridW = Math.min(w * 0.97, 1440);
+  const gap = w < 640 ? 14 : 24;
+  const maxGridW = Math.min(w * 0.95, 1880);
   const cardW = Math.floor((maxGridW - (cols - 1) * gap) / cols);
   const rows = Math.ceil(n / cols);
   const maxGridH = h * 0.99;
   const cardHFit = Math.floor((maxGridH - (rows - 1) * gap) / rows);
   // Let cards fill the vertical space (cap the aspect so they don't get absurdly tall).
-  const cardH = Math.max(150, Math.min(Math.round(cardW * 0.9), cardHFit));
+  const cardH = Math.max(170, Math.min(Math.round(cardW * 0.82), cardHFit));
   const gridW = cols * cardW + (cols - 1) * gap;
   const gridH = rows * cardH + (rows - 1) * gap;
   const slots: Slot[] = [];
@@ -94,7 +94,8 @@ function ThrowCard({
   const x = useTransform(spread, (p) => stackX + (slot.tx - stackX) * local(p));
   const y = useTransform(spread, (p) => slot.ty * local(p));
   const rotate = useTransform(spread, (p) => stackRot * (1 - local(p)));
-  const scale = useTransform(spread, (p) => 0.86 + 0.14 * local(p));
+  // Deck already sits near full size so the stack reads big.
+  const scale = useTransform(spread, (p) => 0.94 + 0.06 * local(p));
 
   return (
     <motion.button
