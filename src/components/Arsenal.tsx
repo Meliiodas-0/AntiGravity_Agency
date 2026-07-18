@@ -45,14 +45,15 @@ const clamp01 = (t: number) => Math.min(1, Math.max(0, t));
 
 // ─── Layout: where each card lands once the deck is dealt ─────────────────────
 function computeLayout(w: number, h: number, n: number) {
-  const cols = w < 640 ? 2 : w < 920 ? 3 : w < 1200 ? 4 : 5;
-  const gap = w < 640 ? 12 : 20;
-  const maxGridW = Math.min(w * 0.94, 1180);
+  const cols = w < 640 ? 2 : w < 920 ? 3 : w < 1220 ? 4 : 5;
+  const gap = w < 640 ? 14 : 22;
+  const maxGridW = Math.min(w * 0.97, 1440);
   const cardW = Math.floor((maxGridW - (cols - 1) * gap) / cols);
   const rows = Math.ceil(n / cols);
-  const maxGridH = h * 0.96;
+  const maxGridH = h * 0.99;
   const cardHFit = Math.floor((maxGridH - (rows - 1) * gap) / rows);
-  const cardH = Math.max(120, Math.min(Math.round(cardW * 0.66), cardHFit));
+  // Let cards fill the vertical space (cap the aspect so they don't get absurdly tall).
+  const cardH = Math.max(150, Math.min(Math.round(cardW * 0.9), cardHFit));
   const gridW = cols * cardW + (cols - 1) * gap;
   const gridH = rows * cardH + (rows - 1) * gap;
   const slots: Slot[] = [];
@@ -107,21 +108,28 @@ function ThrowCard({
         marginTop: -cardH / 2,
         zIndex: total - index,
       }}
-      className="group absolute left-1/2 top-1/2 flex flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/60 p-4 text-left shadow-[0_16px_50px_-16px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-colors duration-500 hover:bg-white/90 sm:p-5"
+      className="group absolute left-1/2 top-1/2 flex flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/60 p-5 text-left shadow-[0_16px_50px_-16px_rgba(0,0,0,0.28)] backdrop-blur-xl transition-colors duration-500 hover:bg-white/90 sm:p-6"
     >
       <div className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-accent/[0.08] via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <div className="relative flex items-center justify-between">
-        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
-          <Icon className="h-[18px] w-[18px]" strokeWidth={1.8} />
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
+          <Icon className="h-[22px] w-[22px]" strokeWidth={1.8} />
         </div>
-        <ArrowUpRight className="h-4 w-4 text-muted-foreground/50 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
+        <ArrowUpRight className="h-[18px] w-[18px] text-muted-foreground/50 transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent" />
       </div>
-      <h3 className="relative mt-3 text-base font-bold leading-tight tracking-tight text-foreground sm:text-lg">
+      <h3 className="relative mt-4 text-lg font-bold leading-tight tracking-tight text-foreground sm:text-xl">
         {cap.title}
       </h3>
-      <p className="relative mt-1 line-clamp-2 text-xs leading-relaxed text-muted-foreground sm:text-sm">
+      <p className="relative mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
         {cap.blurb}
       </p>
+      <div className="relative mt-auto flex flex-wrap gap-1.5 pt-4">
+        {cap.items.slice(0, 3).map((it) => (
+          <span key={it} className="rounded-full border border-black/[0.06] bg-white/70 px-2.5 py-1 text-[11px] font-medium text-muted-foreground">
+            {it}
+          </span>
+        ))}
+      </div>
     </motion.button>
   );
 }
@@ -213,10 +221,10 @@ function IntroCopy({ arsenal }: { arsenal: typeof content.arsenal }) {
         <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-accent" />
         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-accent sm:text-xs">{arsenal.eyebrow}</span>
       </div>
-      <h2 className="mx-auto max-w-4xl text-4xl font-bold leading-[0.95] tracking-tight text-foreground sm:text-6xl md:text-7xl">
+      <h2 className="mx-auto max-w-4xl text-4xl font-bold leading-[0.95] tracking-tight text-foreground sm:text-5xl md:text-6xl">
         {arsenal.title}
       </h2>
-      <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">{arsenal.sub}</p>
+      <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">{arsenal.sub}</p>
     </>
   );
 }
@@ -307,13 +315,13 @@ export default function Arsenal() {
       <div className="pointer-events-none absolute bottom-40 right-1/4 -z-10 h-[420px] w-[420px] rounded-full bg-primary/[0.04] blur-[120px]" />
 
       <div ref={sectionRef} className="relative h-[300vh]">
-        <div className="sticky top-0 flex h-screen flex-col overflow-hidden pt-20">
+        <div className="sticky top-0 flex h-screen flex-col overflow-hidden pt-16">
           <div className="relative z-30 shrink-0 px-6 text-center">
             <IntroCopy arsenal={arsenal} />
           </div>
 
           {/* Card stage — deck stacks in the middle, then deals into the grid */}
-          <div ref={layerRef} className="relative mt-4 flex-1">
+          <div ref={layerRef} className="relative mt-2 flex-1">
             {layout &&
               caps.map((cap, i) => (
                 <ThrowCard
