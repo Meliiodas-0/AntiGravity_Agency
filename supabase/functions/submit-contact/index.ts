@@ -16,6 +16,49 @@ function json(body: Record<string, unknown>, status = 200) {
   });
 }
 
+// Fire-and-forget lead alerts. Each channel only runs if its secrets are set,
+// so an unconfigured or failing notifier never affects the submission itself.
+function notifyLead(lead: { name: string; brand: string; contact: string; message: string }) {
+  const text =
+    `🔔 New lead — Studs Agency\n\n` +
+    `Name: ${lead.name}\n` +
+    `Brand/Role: ${lead.brand}\n` +
+    `Phone: ${lead.contact}\n\n` +
+    `${lead.message}`;
+
+  const jobs: Promise<unknown>[] = [];
+
+  // WhatsApp via CallMeBot (free): message the bot once to get an API key.
+  const waPhone = Deno.env.get("NOTIFY_WHATSAPP_PHONE");
+  const waKey = Deno.env.get("NOTIFY_CALLMEBOT_APIKEY");
+  if (waPhone && waKey) {
+    const url =
+      `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(waPhone)}` +
+      `&text=${encodeURIComponent(text)}&apikey=${encodeURIComponent(waKey)}`;
+    jobs.push(fetch(url).catch((e) => console.error("WhatsApp notify failed:", e)));
+  }
+
+  // Telegram (free, very reliable): set bot token + chat id.
+  const tgToken = Deno.env.get("NOTIFY_TELEGRAM_BOT_TOKEN");
+  const tgChat = Deno.env.get("NOTIFY_TELEGRAM_CHAT_ID");
+  if (tgToken && tgChat) {
+    jobs.push(
+      fetch(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: tgChat, text }),
+      }).catch((e) => console.error("Telegram notify failed:", e))
+    );
+  }
+
+  const all = Promise.allSettled(jobs);
+  // Run after the response is sent when the runtime supports it.
+  const runtime = (globalThis as { EdgeRuntime?: { waitUntil: (p: Promise<unknown>) => void } })
+    .EdgeRuntime;
+  if (runtime?.waitUntil) runtime.waitUntil(all);
+  return all;
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -91,6 +134,14 @@ Deno.serve(async (req) => {
     console.error("Insert failed:", insertError);
     return json({ error: "Failed to submit. Please try again." }, 500);
   }
+
+  // Alert the team (WhatsApp / Telegram) — never blocks or fails the submission.
+  notifyLead({
+    name: name.trim(),
+    brand: brand.trim(),
+    contact: contact.trim(),
+    message: message.trim(),
+  });
 
   return json({ success: true });
 });
