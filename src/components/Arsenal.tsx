@@ -86,10 +86,11 @@ function ThrowCard({
 }) {
   const Icon = ICONS[cap.icon] ?? Sparkles;
 
-  // Deal top-left first: card 0 leaves first, over the first ~70% of scroll.
-  const step = 0.62 / total;
+  // Deal top-left first: card 0 leaves first. Finishes by ~0.68 so the tail
+  // of the scroll is free for the finale.
+  const step = 0.42 / total;
   const startP = index * step;
-  const dur = 0.3;
+  const dur = 0.28;
   const stackRot = (index - (total - 1) / 2) * 1.6;
   const stackX = (index - (total - 1) / 2) * 4;
 
@@ -270,6 +271,14 @@ export default function Arsenal() {
     if (v > spread.get()) spread.set(v);
   });
 
+  // Finale: once the deck has settled, the grid recedes and a closing line
+  // rises in — so the tail of the scroll is a payoff, not dead static space.
+  // (Transform values track scroll live; opacity is toggled via state + CSS.)
+  const gridScale = useTransform(scrollYProgress, [0.7, 0.95], [1, 0.9]);
+  const finaleY = useTransform(scrollYProgress, [0.76, 0.94], [48, 0]);
+  const [finaleOn, setFinaleOn] = useState(false);
+  useMotionValueEvent(scrollYProgress, "change", (v) => setFinaleOn(v > 0.8));
+
   // Measure the card stage so cards land in a centered, responsive grid.
   const layerRef = useRef<HTMLDivElement>(null);
   const [dims, setDims] = useState({ w: 0, h: 0 });
@@ -318,14 +327,29 @@ export default function Arsenal() {
       <div className="pointer-events-none absolute left-1/4 top-40 -z-10 h-[500px] w-[500px] rounded-full bg-accent/[0.06] blur-[130px]" />
       <div className="pointer-events-none absolute bottom-40 right-1/4 -z-10 h-[420px] w-[420px] rounded-full bg-primary/[0.04] blur-[120px]" />
 
-      <div ref={sectionRef} className="relative h-[300vh]">
+      <div ref={sectionRef} className="relative h-[260vh]">
         <div className="sticky top-0 flex h-screen flex-col overflow-hidden pt-16">
+          {/* Subtle dot texture so the stage never reads as blank white */}
+          <div
+            className="pointer-events-none absolute inset-0 -z-10"
+            style={{
+              backgroundImage: "radial-gradient(circle, rgba(0,0,0,0.055) 1px, transparent 1px)",
+              backgroundSize: "26px 26px",
+              maskImage: "radial-gradient(ellipse 65% 55% at 50% 45%, #000, transparent 75%)",
+              WebkitMaskImage: "radial-gradient(ellipse 65% 55% at 50% 45%, #000, transparent 75%)",
+            }}
+          />
+
           <div className="relative z-30 shrink-0 px-6 text-center">
             <IntroCopy arsenal={arsenal} />
           </div>
 
-          {/* Card stage — deck stacks in the middle, then deals into the grid */}
-          <div ref={layerRef} className="relative mt-2 flex-1">
+          {/* Card stage — deck stacks in the middle, deals into the grid, then recedes */}
+          <motion.div
+            ref={layerRef}
+            style={{ scale: gridScale }}
+            className={`relative mt-2 flex-1 transition-opacity duration-500 ${finaleOn ? "opacity-20" : "opacity-100"}`}
+          >
             {layout &&
               caps.map((cap, i) => (
                 <ThrowCard
@@ -340,12 +364,28 @@ export default function Arsenal() {
                   onOpen={() => setActive(i)}
                 />
               ))}
-          </div>
-        </div>
-      </div>
+          </motion.div>
 
-      <div className="mx-auto max-w-7xl px-5 pb-20 sm:px-6 sm:pb-28">
-        <ClosingCTA arsenal={arsenal} />
+          {/* Finale — rises in over the settled grid as the last of the scroll plays */}
+          <motion.div
+            style={{ y: finaleY }}
+            className={`absolute inset-x-0 bottom-0 top-0 z-40 flex flex-col items-center justify-center px-6 text-center transition-opacity duration-500 ${
+              finaleOn ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+          >
+            <p className="text-[11px] uppercase tracking-[0.3em] text-accent/70">The bottom line</p>
+            <h3 className="mx-auto mt-4 max-w-3xl text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl md:text-6xl">
+              {arsenal.cta}
+            </h3>
+            <a
+              href="#contact"
+              className="mt-9 inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 text-sm font-semibold text-primary-foreground shadow-xl shadow-primary/20 transition-transform duration-300 hover:scale-[1.03]"
+            >
+              {arsenal.ctaButton}
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </motion.div>
+        </div>
       </div>
 
       {modal}
