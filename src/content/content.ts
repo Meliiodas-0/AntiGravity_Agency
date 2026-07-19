@@ -136,28 +136,29 @@ export const content = {
   },
   process: {
     title: "How it works",
+    sub: "One team, one system, from the first strategy call to compounding growth.",
     steps: [
       {
         step: "01",
         title: "Clarity",
-        description: "We map what needs to grow across brand, marketing, product, and systems.",
+        description: "We map the business, the goal, and every gap between you and it.",
       },
       {
         step: "02",
         title: "System",
         description:
-          "Strategy, creative, web, and automation designed as one connected engine.",
+          "Brand, creative, web, ads, and automation built as one connected engine.",
       },
       {
         step: "03",
         title: "Ownership",
-        description: "Everything handled end-to-end, from content to code to campaigns.",
+        description: "We run it end-to-end. Content to code to campaigns, all handled.",
       },
       {
         step: "04",
         title: "Scale",
         description:
-          "Optimized with data and AI, then repeated across every channel that counts.",
+          "Measure, optimize with data and AI, then repeat what works across every channel.",
       },
     ],
   },
@@ -270,19 +271,27 @@ export const content = {
   },
   trust: {
     title: "Trust, built in",
+    sub: "How we keep it accountable, transparent, and built to last.",
     cards: [
       {
-        title: "Ownership",
-        description: "One accountable team. No handoffs. No gaps.",
-      },
-      {
-        title: "Reporting",
-        description: "Weekly scorecard. Clear actions. Measurable movement.",
-      },
-      {
-        title: "Continuity",
+        title: "One Team",
         description:
-          "Long-term support. Systems documented. Clean handover when needed.",
+          "Strategy, creative, and tech under one roof. No agencies stacked on agencies, no handoffs, no gaps.",
+      },
+      {
+        title: "Senior Talent",
+        description:
+          "Your work is run by people who have shipped it before, not juniors learning on your budget.",
+      },
+      {
+        title: "Clear Reporting",
+        description:
+          "A weekly scorecard with the numbers that matter and the next moves. You always know where you stand.",
+      },
+      {
+        title: "Built to Last",
+        description:
+          "Documented systems and clean handovers. What we build keeps working long after we ship it.",
       },
     ],
   },

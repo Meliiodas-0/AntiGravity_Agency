@@ -15,6 +15,9 @@ export default function Process() {
           <h2 className="text-3xl sm:text-5xl font-bold text-foreground tracking-tight leading-tight">
             {content.process.title}
           </h2>
+          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-muted-foreground leading-relaxed">
+            {content.process.sub}
+          </p>
         </ScrollReveal>
 
         <div className="relative">

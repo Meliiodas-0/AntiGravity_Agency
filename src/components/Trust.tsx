@@ -14,9 +14,12 @@ export default function Trust() {
           <h2 className="text-3xl sm:text-5xl font-bold text-foreground tracking-tight leading-tight max-w-3xl mx-auto">
             {content.trust.title}
           </h2>
+          <p className="mt-4 max-w-2xl mx-auto text-sm sm:text-base text-muted-foreground leading-relaxed">
+            {content.trust.sub}
+          </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
           {content.trust.cards.map((card, i) => (
             <motion.div
               key={card.title}
@@ -28,7 +31,7 @@ export default function Trust() {
               whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: isMobile ? "200px" : "-30px" }}
               transition={{ duration: isMobile ? 0.4 : 0.8, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative rounded-3xl bg-white/40 backdrop-blur-md border border-black/[0.06] p-8 sm:p-10 transition-all duration-700 hover:bg-white hover:shadow-2xl hover:shadow-primary/10 select-none cursor-default"
+              className="group relative rounded-3xl bg-white/40 backdrop-blur-md border border-black/[0.06] p-6 sm:p-8 transition-all duration-700 hover:bg-white hover:shadow-2xl hover:shadow-primary/10 select-none cursor-default"
             >
               <div className="flex items-center gap-3 mb-8">
                 <div className="h-px w-8 bg-black/10 group-hover:w-12 group-hover:bg-primary transition-all duration-700" />
