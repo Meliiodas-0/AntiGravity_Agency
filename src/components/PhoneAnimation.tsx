@@ -17,11 +17,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 // ─── Brand ────────────────────────────────────────────────────────────────────
 const BRAND = {
-    handle: "studsagency",
-    name: "Studs Agency",
+    handle: "UrBrand",
+    name: "UrBrand",
     bio: "Engineered growth. Premium content.",
-    category: "Digital Growth Partner",
-    link: "studsagency.com",
+    category: "Powered by Studs Agency",
+    link: "urbrand.com",
 };
 
 // ─── Social Icons ─────────────────────────────────────────────────────────────
@@ -164,7 +164,7 @@ function InstagramScreen() {
                 <div className="w-14 h-14 rounded-full p-[2px] bg-gradient-to-tr from-[#000000] via-[#555555] to-[#000000] shrink-0">
                     <div className="w-full h-full rounded-full bg-white flex items-center justify-center">
                         <div className="w-full h-full rounded-full bg-gradient-to-br from-[#f0f0f0] to-[#ffffff] flex items-center justify-center text-[12px] font-black text-black">
-                            SA
+                            UB
                         </div>
                     </div>
                 </div>
@@ -277,6 +277,13 @@ export default function PhoneAnimation() {
     const rawPhoneScale = useTransform(scrollYProgress, [0.7, 1], [1, 0.85]);
     const phoneScale = useTransform(rawPhoneScale, (v) => v * phoneScaleFactor);
 
+    // Scroll-reactive annotation: "your brand, with us" + a hand-drawn arrow
+    // that literally draws itself toward the phone as the section scrolls in.
+    const captionOpacity = useTransform(scrollYProgress, [0.06, 0.26], [0, 1]);
+    const captionY = useTransform(scrollYProgress, [0.06, 0.26], [18, 0]);
+    const arrowDraw = useTransform(scrollYProgress, [0.12, 0.44], [0, 1]);
+    const headDraw = useTransform(scrollYProgress, [0.42, 0.52], [0, 1]);
+
     const phoneW = 280;
     const phoneH = 560;
 
@@ -288,6 +295,38 @@ export default function PhoneAnimation() {
     return (
         <div ref={containerRef} className="relative w-full flex items-center justify-center overflow-visible py-12 sm:py-20">
             <div className="relative" style={{ minHeight: phoneH * (isMobile ? phoneScaleFactor : 1) }}>
+                {/* Scroll-reactive annotation pointing at the phone */}
+                <motion.div
+                    className="hidden lg:block absolute z-[5]"
+                    style={{ top: 8, left: -252, width: 232, opacity: captionOpacity, y: captionY }}
+                    aria-hidden="true"
+                >
+                    <p
+                        className="text-primary/70 text-2xl leading-[1.15] -rotate-3"
+                        style={{ fontFamily: "'Segoe Script','Bradley Hand','Snell Roundhand','Brush Script MT',cursive" }}
+                    >
+                        your brand,<br />with us.
+                    </p>
+                    <svg viewBox="0 0 232 118" fill="none" className="mt-1 h-[118px] w-[232px] overflow-visible">
+                        <motion.path
+                            d="M 14 26 C 44 4, 70 8, 74 36 C 78 60, 42 64, 46 40 C 49 22, 86 28, 124 52 C 154 71, 182 86, 206 98"
+                            className="text-primary/45"
+                            stroke="currentColor"
+                            strokeWidth="2.4"
+                            strokeLinecap="round"
+                            style={{ pathLength: arrowDraw }}
+                        />
+                        <motion.path
+                            d="M 206 98 L 184 96 M 206 98 L 199 77"
+                            className="text-primary/45"
+                            stroke="currentColor"
+                            strokeWidth="2.4"
+                            strokeLinecap="round"
+                            style={{ pathLength: headDraw }}
+                        />
+                    </svg>
+                </motion.div>
+
                 {/* Orbit anchor */}
                 <div style={{ position: "absolute", top: "50%", left: "50%", zIndex: 1 }}>
                     {activeIcons.map((item, i) => (
