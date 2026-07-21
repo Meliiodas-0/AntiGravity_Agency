@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { content } from "@/content/content";
 
 export default function Footer() {
@@ -7,12 +8,12 @@ export default function Footer() {
         <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
           {/* Brand */}
           <div className="max-w-sm">
-            <a
-              href="#"
+            <Link
+              to="/"
               className="text-sm font-bold uppercase tracking-[0.2em] text-foreground"
             >
               {content.agency.name}
-            </a>
+            </Link>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               {content.hero.tagline}. Strategy to execution, owned end-to-end.
             </p>
@@ -38,13 +39,24 @@ export default function Footer() {
           </nav>
         </div>
 
-        <div className="mt-10 flex flex-col items-start justify-between gap-3 border-t border-border/40 pt-6 sm:flex-row sm:items-center">
+        <div className="mt-10 flex flex-col items-start justify-between gap-4 border-t border-border/40 pt-6 sm:flex-row sm:items-center">
           <p className="text-xs text-muted-foreground/60">
             &copy; 2026 {content.agency.name}. All rights reserved.
           </p>
-          <p className="text-xs text-muted-foreground/50">
-            Everything digital. Fully handled.
-          </p>
+          <nav aria-label="Legal" className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <Link
+              to="/privacy"
+              className="text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              to="/terms"
+              className="text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Terms
+            </Link>
+          </nav>
         </div>
       </div>
     </footer>

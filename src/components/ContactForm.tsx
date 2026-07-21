@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { z } from "zod";
 import { content } from "@/content/content";
 import { toast } from "sonner";
@@ -6,34 +7,22 @@ import { motion } from "framer-motion";
 import ScrollReveal from "./motion/ScrollReveal";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-const COUNTRY_CODES = [
-  { code: "+91", label: "🇮🇳 +91" },
-  { code: "+1", label: "🇺🇸 +1" },
-  { code: "+44", label: "🇬🇧 +44" },
-  { code: "+61", label: "🇦🇺 +61" },
-  { code: "+971", label: "🇦🇪 +971" },
-  { code: "+65", label: "🇸🇬 +65" },
-  { code: "+49", label: "🇩🇪 +49" },
-  { code: "+33", label: "🇫🇷 +33" },
-  { code: "+81", label: "🇯🇵 +81" },
-  { code: "+86", label: "🇨🇳 +86" },
-];
-
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
   brand: z.string().trim().min(1, "Brand/Role is required").max(100),
   message: z.string().trim().min(1, "Message is required").max(1000),
-  contact: z.string().regex(/^\d{10}$/, "Enter a valid 10-digit phone number"),
 });
 
 export default function ContactForm() {
   const isMobile = useIsMobile();
-  const [form, setForm] = useState({ name: "", brand: "", message: "", contact: "" });
-  const [countryCode, setCountryCode] = useState("+91");
-  const [loading, setLoading] = useState(false);
-  const [honeypot, setHoneypot] = useState(""); // bot trap — real users leave it blank
+  const [form, setForm] = useState({ name: "", brand: "", message: "" });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // No backend: the form hands the lead straight to the agency's WhatsApp via a
+  // wa.me deep link. Free, nothing to keep alive, and can't silently drop leads.
+  // We don't ask for a phone number: when the visitor sends the WhatsApp message,
+  // their number reaches us through WhatsApp automatically, so a field would be
+  // redundant (and one less piece of data we ever collect).
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const result = contactSchema.safeParse(form);
     if (!result.success) {
@@ -41,35 +30,29 @@ export default function ContactForm() {
       return;
     }
 
-    setLoading(true);
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...result.data,
-          contact: `${countryCode}${result.data.contact}`,
-          company: honeypot, // honeypot — must stay empty
-        }),
-      });
-
-      if (res.status === 429) {
-        toast.error("Too many submissions. Please try again later.");
-        return;
-      }
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Submission failed");
-      }
-
-      toast.success("Message sent! We'll be in touch.");
-      setForm({ name: "", brand: "", message: "", contact: "" });
-    } catch {
-      toast.error("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
+    // wa.me needs digits only, country code included, no "+" or spaces.
+    const waNumber = content.contact.whatsapp.replace(/\D/g, "");
+    if (waNumber.length < 8) {
+      toast.error("Contact channel isn't set up yet. Please try again later.");
+      return;
     }
+
+    const { name, brand, message } = result.data;
+    const text =
+      `Hi Studs Agency! 👋\n\n` +
+      `Name: ${name}\n` +
+      `Brand / Role: ${brand}\n\n` +
+      `${message}`;
+
+    const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`;
+
+    // Runs inside the submit gesture, so browsers won't block the new tab.
+    // Fall back to same-tab navigation if a popup blocker still intervenes.
+    const win = window.open(url, "_blank", "noopener,noreferrer");
+    if (!win) window.location.href = url;
+
+    toast.success("Opening WhatsApp — just hit send to reach us.");
+    setForm({ name: "", brand: "", message: "" });
   };
 
   const fields = [
@@ -101,17 +84,6 @@ export default function ContactForm() {
           transition={{ duration: isMobile ? 0.4 : 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
-            {/* Honeypot: hidden from users, bots fill it and get silently dropped */}
-            <input
-              type="text"
-              name="company"
-              tabIndex={-1}
-              autoComplete="off"
-              value={honeypot}
-              onChange={(e) => setHoneypot(e.target.value)}
-              aria-hidden="true"
-              className="absolute left-[-9999px] h-0 w-0 opacity-0"
-            />
             {fields.map((field) => (
               <div key={field.key}>
                 <label className="block text-sm sm:text-base text-muted-foreground mb-2">
@@ -136,44 +108,24 @@ export default function ContactForm() {
               </div>
             ))}
 
-            <div>
-              <label className="block text-sm sm:text-base text-muted-foreground mb-2">Phone number</label>
-              <div className="flex gap-2">
-                <select
-                  value={countryCode}
-                  onChange={(e) => setCountryCode(e.target.value)}
-                  className="rounded-lg border border-border/60 bg-card/50 px-3 py-3.5 text-base text-foreground focus:outline-none focus:ring-2 focus:ring-primary/40 shrink-0 min-w-[100px] transition-colors"
-                >
-                  {COUNTRY_CODES.map((cc) => (
-                    <option key={cc.code} value={cc.code}>{cc.label}</option>
-                  ))}
-                </select>
-                <input
-                  type="tel"
-                  inputMode="numeric"
-                  value={form.contact}
-                  onChange={(e) => {
-                    const val = e.target.value.replace(/\D/g, "").slice(0, 10);
-                    setForm({ ...form, contact: val });
-                  }}
-                  placeholder="10-digit number"
-                  className="w-full rounded-lg border border-border/60 bg-card/50 px-4 py-3.5 text-base text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/40 transition-colors"
-                />
-              </div>
-              {form.contact.length > 0 && form.contact.length < 10 && (
-                <p className="text-xs text-destructive mt-1.5">
-                  Enter a 10-digit phone number ({form.contact.length}/10)
-                </p>
-              )}
-            </div>
-
             <button
               type="submit"
-              disabled={loading}
-              className="w-full bg-primary text-primary-foreground font-semibold py-4 rounded-lg hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50 text-base shadow-lg shadow-primary/20 cta-glow"
+              className="w-full bg-primary text-primary-foreground font-semibold py-4 rounded-lg hover:brightness-110 active:scale-[0.98] transition-all text-base shadow-lg shadow-primary/20 cta-glow"
             >
-              {loading ? "Sending..." : "Send"}
+              Send
             </button>
+
+            <p className="text-xs text-muted-foreground/70 text-center leading-relaxed">
+              This opens WhatsApp with your message ready to send. By continuing you agree to our{" "}
+              <Link to="/privacy" className="underline underline-offset-2 hover:text-foreground transition-colors">
+                Privacy Policy
+              </Link>{" "}
+              and{" "}
+              <Link to="/terms" className="underline underline-offset-2 hover:text-foreground transition-colors">
+                Terms
+              </Link>
+              .
+            </p>
           </form>
         </motion.div>
       </div>

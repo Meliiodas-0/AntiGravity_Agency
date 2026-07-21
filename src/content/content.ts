@@ -299,5 +299,9 @@ export const content = {
     title: "Let's talk",
     sub: "Share what you need. We respond with a clear plan.",
     success: "Message received. We'll be in touch.",
+    // Agency WhatsApp number that leads are sent to. Digits only, with country
+    // code, NO "+" or spaces (e.g. India 98765 43210 -> "919876543210").
+    // This is the only value you need to change to point leads at a new number.
+    whatsapp: "918595481642",
   },
 };
