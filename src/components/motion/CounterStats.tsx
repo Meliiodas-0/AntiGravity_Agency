@@ -46,7 +46,10 @@ function AnimatedCounter({ target, suffix, inView }: { target: number; suffix: s
 
 export default function CounterStats() {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
+  // Positive margin so the counters trigger well before they scroll into view.
+  // With a negative margin a fast phone scroll can skip the trigger, leaving the
+  // stats stuck at 0 and invisible.
+  const inView = useInView(ref, { once: true, margin: "200px" });
 
   return (
     <section className="relative py-16 sm:py-20 px-5 sm:px-6">
@@ -55,8 +58,10 @@ export default function CounterStats() {
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-              animate={inView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
+              // Visibility-safe: never start at opacity 0, so the stats can't be
+              // left blank if the in-view trigger is missed on a phone.
+              initial={{ opacity: 1, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: i * 0.18, ease: [0.22, 1, 0.36, 1] }}
               className="text-center"
             >

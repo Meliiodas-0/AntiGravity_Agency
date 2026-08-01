@@ -146,11 +146,17 @@ function GlassCard({ cap, index, onOpen }: { cap: Capability; index: number; onO
     <motion.button
       type="button"
       onClick={onOpen}
-      initial={{ opacity: 0, y: 24 }}
+      // Never start invisible. This card is the mobile/reduced-motion path, so a
+      // missed IntersectionObserver (fast flick scroll, bfcache restore, Safari
+      // quirk) would otherwise leave the entire Arsenal section blank on a phone.
+      // Only the slide is animated; opacity stays at 1 no matter what fires.
+      initial={{ opacity: 1, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
+      viewport={{ once: true, amount: 0, margin: "200px" }}
       transition={{ duration: 0.5, delay: (index % 4) * 0.05 }}
-      className="group relative flex min-h-[170px] flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/60 p-5 text-left shadow-[0_8px_40px_-12px_rgba(0,0,0,0.12)] backdrop-blur-xl"
+      // No backdrop-blur here: 14 blurred layers is a known way to blow up the
+      // iOS Safari compositor. An opaque-ish white reads the same at this size.
+      className="group relative flex min-h-[170px] flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/80 p-5 text-left shadow-[0_8px_40px_-12px_rgba(0,0,0,0.12)]"
     >
       <div className="flex items-center justify-between">
         <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg">
@@ -237,14 +243,15 @@ function IntroCopy({ arsenal }: { arsenal: typeof content.arsenal }) {
 function ClosingCTA({ arsenal }: { arsenal: typeof content.arsenal }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }}
+      // Visibility-safe on mobile: animate the rise, never the opacity (see GlassCard).
+      initial={{ opacity: 1, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0, margin: "200px" }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="relative mt-6 overflow-hidden rounded-[2rem] border border-white/60 bg-gradient-to-br from-primary to-[#1a1a1a] px-8 py-14 text-center shadow-2xl sm:mt-10 sm:px-12 sm:py-20"
     >
       <div className="pointer-events-none absolute -left-20 -top-20 h-64 w-64 rounded-full bg-accent/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
-      <p className="relative text-[11px] uppercase tracking-[0.3em] text-white/50">The bottom line</p>
-      <h3 className="relative mx-auto mt-4 max-w-3xl text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
+      <p className="relative text-xs font-semibold uppercase tracking-[0.3em] text-white/60">The bottom line</p>
+      <h3 className="relative mx-auto mt-4 max-w-3xl text-balance text-3xl/[1.15] font-bold tracking-tight text-white sm:text-4xl/[1.12] md:text-5xl/[1.1]">
         {arsenal.cta}
       </h3>
       <a href="#contact" className="relative mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-black transition-transform duration-300 hover:scale-[1.03]">
@@ -348,7 +355,7 @@ export default function Arsenal() {
           <motion.div
             ref={layerRef}
             style={{ scale: gridScale }}
-            className={`relative mt-2 flex-1 transition-opacity duration-500 ${finaleOn ? "opacity-20" : "opacity-100"}`}
+            className={`relative mt-2 flex-1 transition-opacity duration-500 ${finaleOn ? "opacity-[0.05]" : "opacity-100"}`}
           >
             {layout &&
               caps.map((cap, i) => (
@@ -373,8 +380,13 @@ export default function Arsenal() {
               finaleOn ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
           >
-            <p className="text-[11px] uppercase tracking-[0.3em] text-accent/70">The bottom line</p>
-            <h3 className="mx-auto mt-4 max-w-3xl text-3xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl md:text-6xl">
+            {/* Soft white scrim so the closing line rests on clean space, not the ghosted grid */}
+            <div
+              className="pointer-events-none absolute inset-0 -z-10"
+              style={{ background: "radial-gradient(ellipse 72% 60% at 50% 48%, rgba(255,255,255,0.97), rgba(255,255,255,0) 74%)" }}
+            />
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-accent/80 sm:text-sm">The bottom line</p>
+            <h3 className="mx-auto mt-6 max-w-4xl text-balance text-4xl/[1.15] font-bold tracking-[-0.01em] text-foreground sm:text-5xl/[1.12] md:text-6xl/[1.1] lg:text-7xl/[1.08]">
               {arsenal.cta}
             </h3>
             <a
