@@ -53,7 +53,10 @@ export default function ProofStrips() {
   return (
     <section id="proof" className="relative scroll-mt-28 py-10 sm:py-20 md:py-24 overflow-hidden">
       {/* Background Decorative Elements */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10 animate-pulse" />
+      {/* Pulse only from sm up: animating a 500px blur-[120px] layer repaints a very
+          expensive surface every frame, which is a real source of scroll jank on phones.
+          Desktop keeps the exact same look. */}
+      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10 sm:animate-pulse" />
       <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-blue-500/5 rounded-full blur-[100px] -z-10" />
 
       <ScrollReveal className="max-w-7xl mx-auto px-6 sm:px-8 mb-16 sm:mb-24" scale>
@@ -73,9 +76,11 @@ export default function ProofStrips() {
 
       <motion.div
         initial={{
-          opacity: isMobile ? 0.3 : 0,
+          // Mobile never starts faded: a missed in-view trigger would otherwise
+          // leave the whole logo marquee dimmed. Only the slide animates there.
+          opacity: isMobile ? 1 : 0,
           y: isMobile ? 10 : 40,
-          scale: isMobile ? 0.98 : 1
+          scale: 1
         }}
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, margin: isMobile ? "200px" : "-100px" }}

@@ -51,7 +51,7 @@ export default function ContactForm() {
     const win = window.open(url, "_blank", "noopener,noreferrer");
     if (!win) window.location.href = url;
 
-    toast.success("Opening WhatsApp — just hit send to reach us.");
+    toast.success("Opening WhatsApp. Just hit send to reach us.");
     setForm({ name: "", brand: "", message: "" });
   };
 
