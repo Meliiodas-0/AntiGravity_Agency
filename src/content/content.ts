@@ -302,6 +302,6 @@ export const content = {
     // Agency WhatsApp number that leads are sent to. Digits only, with country
     // code, NO "+" or spaces (e.g. India 98765 43210 -> "919876543210").
     // This is the only value you need to change to point leads at a new number.
-    whatsapp: "918595481642",
+    whatsapp: "919971355102",
   },
 };
