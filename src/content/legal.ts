@@ -18,7 +18,7 @@ export const legalMeta = {
   entityName: "Studs Agency",
 
   website: "https://www.studsagency.com",
-  whatsapp: "+91 85954 81642",
+  whatsapp: "+91 99713 55102",
 
   // TODO(owner): a real inbox you actually monitor for privacy/legal requests.
   contactEmail: "hello@studsagency.com",
@@ -83,7 +83,7 @@ export const privacyPolicy: LegalDocData = {
         },
         {
           "type": "p",
-          "text": "If you have questions about this policy or how we handle your information, you can reach us at [[CONTACT_EMAIL]] or on WhatsApp at +91 85954 81642."
+          "text": "If you have questions about this policy or how we handle your information, you can reach us at [[CONTACT_EMAIL]] or on WhatsApp at +91 99713 55102."
         }
       ]
     },
@@ -121,7 +121,7 @@ export const privacyPolicy: LegalDocData = {
       "blocks": [
         {
           "type": "p",
-          "text": "When you complete the \"Let's talk\" form and click Send, the Site does not transmit your entries to us over the internet and does not save them anywhere on our infrastructure. Instead, it generates a WhatsApp deep link (a wa.me link) that opens WhatsApp on your device with a message pre-filled with the details you entered, addressed to the Studs Agency WhatsApp number (+91 85954 81642)."
+          "text": "When you complete the \"Let's talk\" form and click Send, the Site does not transmit your entries to us over the internet and does not save them anywhere on our infrastructure. Instead, it generates a WhatsApp deep link (a wa.me link) that opens WhatsApp on your device with a message pre-filled with the details you entered, addressed to the Studs Agency WhatsApp number (+91 99713 55102)."
         },
         {
           "type": "p",
@@ -351,7 +351,7 @@ export const privacyPolicy: LegalDocData = {
           "items": [
             "Studs Agency, operated by [[ENTITY_NAME]] (Data Fiduciary)",
             "Email: [[CONTACT_EMAIL]]",
-            "WhatsApp: +91 85954 81642",
+            "WhatsApp: +91 99713 55102",
             "Address: [[BUSINESS_ADDRESS]]",
             "Website: www.studsagency.com"
           ]
@@ -432,7 +432,7 @@ export const termsOfService: LegalDocData = {
         },
         {
           "type": "p",
-          "text": "The Website offers a contact form (\"Let's talk\") that collects your name, brand or role, and a free-text message. Please note that this form does not transmit your information to any Studs Agency server or database. When you choose to send, the form opens your own WhatsApp application with a pre-filled message addressed to our WhatsApp number (+91 85954 81642), and you decide whether to actually send it. We receive your information only if and when you choose to send that message through WhatsApp. WhatsApp is operated by Meta Platforms, and its own terms and privacy practices apply to that message. Our handling of information is described further in our Privacy Policy."
+          "text": "The Website offers a contact form (\"Let's talk\") that collects your name, brand or role, and a free-text message. Please note that this form does not transmit your information to any Studs Agency server or database. When you choose to send, the form opens your own WhatsApp application with a pre-filled message addressed to our WhatsApp number (+91 99713 55102), and you decide whether to actually send it. We receive your information only if and when you choose to send that message through WhatsApp. WhatsApp is operated by Meta Platforms, and its own terms and privacy practices apply to that message. Our handling of information is described further in our Privacy Policy."
         }
       ]
     },
@@ -743,7 +743,7 @@ export const termsOfService: LegalDocData = {
             "Entity: [[ENTITY_NAME]], trading as \"Studs Agency\"",
             "Website: www.studsagency.com",
             "Email: [[CONTACT_EMAIL]]",
-            "WhatsApp: +91 85954 81642",
+            "WhatsApp: +91 99713 55102",
             "Address: [[BUSINESS_ADDRESS]]"
           ]
         }
